@@ -3,6 +3,14 @@ Oxana USHAKOVA
 :feelpp: Feel++
 :stem: latexmath
 
+== PLAN
+* Solution des EDOs du modèle SIR (epidémiologie) - Euler
+* Méthode des caractéristiques (MC)
+** MC pour l'équation de transport 
+** MC pour le PDE stochastique du modèle SIR (epidémiologie)
+
+
+
 
 == Intro 
 
