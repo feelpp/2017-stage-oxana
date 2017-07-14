@@ -19,9 +19,11 @@ module mathis {
             }
 
 
-            let security = 100;
+            let security = 10;
             let NOTfinished = true;
             let attempts = 0;
+            let min = -1;
+            let max = 2;
 
 
             // allJumps stores all possibles steps in 3D on [-1;1]- 0,0,0 ; 0,1,1; -1,0,1; etc
@@ -29,88 +31,93 @@ module mathis {
             let none: XYZ = new XYZ(0, 0, 0);
             allJumps.push(none);
 
-            for (let i = -1; i < 2; i = i + 2) {
-                let coordinatesA: XYZ = new XYZ(i, i, i);
-                let coordinatesB: XYZ = new XYZ(i, i, 0);
-                let coordinatesC: XYZ = new XYZ(i, 0, i);
-                let coordinatesD: XYZ = new XYZ(0, i, i);
-                let coordinatesF: XYZ = new XYZ(i, 0, 0);
-                let coordinatesG: XYZ = new XYZ(0, i, 0);
-                let coordinatesH: XYZ = new XYZ(0, 0, i);
+            while (allJumps.length<27) {
+
+                let alea1 = Math.floor(Math.random() * (max - min)) + min;
+                let alea2 = Math.floor(Math.random() * (max - min)) + min;
+                let alea3 = Math.floor(Math.random() * (max - min)) + min;
+
+                let coordinates: XYZ = new XYZ(alea1, alea2, alea3);
+
+                if (!contains(allJumps, coordinates)) {
+                    allJumps.push(coordinates)
+                }
 
 
-                allJumps.push(coordinatesA);
-                allJumps.push(coordinatesB);
-                allJumps.push(coordinatesC);
-                allJumps.push(coordinatesD);
-                allJumps.push(coordinatesF);
-                allJumps.push(coordinatesG);
-                allJumps.push(coordinatesH);
             }
 
-            cc('allJumps', allJumps)
-            cc('allJumps length', allJumps.length)
 
+            //cc('allJumps', allJumps)
+            //cc('allJumps length', allJumps.length)
+
+            //first vertex
+            let x = 0;
+            let y = 0;
+            let z = 0;
+            let origin : XYZ = new XYZ(x,y,z);
+
+            //Updating mamesh.vertices
+            let vertex0 = new mathis.Vertex();
+            vertex0.position=origin;
+            mamesh.vertices.push(vertex0);
+
+
+            // validatedVertexes stores all the validated vertexes
+            let validatedVertexes: XYZ[] = [];
+
+
+
+            validatedVertexes[0] = new XYZ(x,y,z);
+            cc('validatedVertexes[0]', validatedVertexes[0]);
 
             while (NOTfinished && attempts < security) {
 
-                //first vertex
-                let x = 0;
-                let y = 0;
-                let z = 0;
-                let coordinates0 : XYZ = new XYZ(x,y,z);
+                for (let j = 1; j < chainSize-1; j++) {
 
-
-                // validatedVertexes stores all the validated vertexes
-                var validatedVertexes: XYZ[] = [];
-
-                //Updating mamesh.vertices
-                let vertex0 = new mathis.Vertex();
-                vertex0.position=coordinates0;
-                mamesh.vertices.push(vertex0);
-
-
-
-
-                for (let j = 1; j < chainSize; j++) {
-                    validatedVertexes[0] = new XYZ(x, y, z);
                     //First, we must sort allJumps and choose those, that will not lead to intersection
                     //We'll keep them in availableJumps
                     let availableJumps: XYZ[] = [];
 
-                    for (let i = 0; i < allJumps.length-1; i++) {
-                        //Get the last validated vertex
-                        let testJump = validatedVertexes[j - 1];
-                        cc('validatedVertexes', validatedVertexes[j - 1])
+                    for (let i = 0; i < allJumps.length; i++) {
+                        //Get the last validated vertex  , check if this vertex is really new; if so - add to availableJumps
 
-                        cc('testJump', testJump)
+                        let testJump = new XYZ(validatedVertexes[j-1].x + allJumps[i].x, validatedVertexes[j-1].y + allJumps[i].y, validatedVertexes[j-1].z + allJumps[i].z);
 
-                        //and jump in any direction (taken from allJumps) to a new potential vertex
-                        testJump=testJump.add(allJumps[i]);
-                        cc('testJump After', testJump)
-
-                        //Check if this vertex is really new; if so - add to availableJumps
                         if (!contains(validatedVertexes, testJump)) {
-                            availableJumps.push(testJump);
+                            availableJumps.push(allJumps[i]);
+                        }
+
+                        else{
+                            cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
                         }
 
                     }
-                    cc('availableJumps', availableJumps)
+                    cc('availableJumps', availableJumps);
 
 
 
                     //Now we have a list of available jumps at step i that won't lead to self intersection.
                     if (availableJumps.length > 0) {
 
-                            let newVertex = mamesh.vertices[mamesh.vertices.length - 1].position;
-                            let randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
-                            cc('randomStep', randomStep)
-                            newVertex.add(randomStep);
+                        let randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
 
-                            validatedVertexes.push(newVertex);
-                            let vertex = new mathis.Vertex();
-                            vertex.position = newVertex;
-                            mamesh.vertices.push(vertex);
+                        cc('validatedVertexes[j-1]', validatedVertexes[j-1]);
+                        cc('randomStep', randomStep);
+
+
+                        let newVertex = new XYZ(validatedVertexes[j-1].x + randomStep.x, validatedVertexes[j-1].y + randomStep.y, validatedVertexes[j-1].z + randomStep.z);
+
+
+                        validatedVertexes.push(newVertex);
+                        let vertex = new mathis.Vertex();
+                        vertex.position = newVertex;
+                        mamesh.vertices.push(vertex);
+                        cc('We add ', newVertex);
+
+                        if (validatedVertexes.length>chainSize){
+                            break;
+                        }
+
 
 
                     }
@@ -131,19 +138,14 @@ module mathis {
 
 
             }
-            cc('validatedVertexes', validatedVertexes)
+            cc('validatedVertexes', validatedVertexes);
             cc('Attempts', attempts)
 
 
-/*
-            for (let i=0; i < ALLcoordinates.length; i++){
-                let vertex = new mathis.Vertex();
-                vertex.position = ALLcoordinates[i];
-                mamesh.vertices.push(vertex);
-            }
 
 
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+
+            for (let i = 1; i < mamesh.vertices.length - 1; i++) {
                 mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
             }
             mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
@@ -151,11 +153,11 @@ module mathis {
 
 
             let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-           // linkViewer.go();
+            linkViewer.go();
 
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
-           // verticesViewer.go();
-*/
+            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
+            verticesViewer.go();
+
 
 
 

@@ -1,0 +1,150 @@
+////////////////////////////////////
+//                                //
+// Equation des ondes             //
+// (visualisation par xd3d)       //
+//                                //
+// Ecole Polytechnique, MAP 431   //
+// Copyright G. Allaire, 2003     //
+//                                //
+////////////////////////////////////
+// Nom du fichier de sauvegarde
+// des figures postscript
+string sauve="onde";
+string fichier ;
+string fichier2 ;
+string fichier3 ;
+///////////////////////////////////////
+// Definition de quelques parametres //
+///////////////////////////////////////
+real mu=1.;
+real dt=0.01 ;
+real temps ;
+string legende ;
+int iter=1 ;
+int niter=50 ;
+real[int] energie(niter+1) ;
+////////////////////////////////////////////////////
+// Ouverture d'un fichier pour imprimer l'energie //
+////////////////////////////////////////////////////
+ofstream energfile("energfile.txt") ;
+/////////////////////////////////////
+// isovaleurs des figures
+real[int] vviso(11);
+real[int] arrperso(11) ;
+for (int i=0;i<11;i++)
+vviso[i]=(0.01*i) ;
+arrperso = vviso ;
+/////////////////////////////
+// Définition du domaine   //
+/////////////////////////////
+real pi=4*atan(1) ;
+//  bord inférieur 
+border a1(t=0,1) { x=t; y=0;label=1; };
+// bord droit 
+border a2(t=0,1)  { x=1; y=t;label=1;}; 
+// bord supérieur courbe
+border a3(t=1,0) { x=t; y=1;label=1; };
+//  bord gauche 
+border a4(t=1,0)  { x=0; y=t;label=1; };
+////////////////////////////////////////
+// construction du maillage //
+////////////////////////////////////////
+int n=10 ;
+mesh Sh;
+Sh= buildmesh (a1(10*n)+a2(10*n)+a3(10*n)+a4(10*n));
+//
+plot(Sh,wait=1,ps=sauve+".maillage.eps"); 
+fichier2=sauve+".msh";
+savemesh(Sh,fichier2);
+////////////////////////////////
+// Définition de l'espace P1  //
+// u  = solution au temps n+1 //
+// u1 = solution au temps n   //
+// u0 = solution au temps n-1 //
+////////////////////////////////
+fespace Vh1(Sh,P1);
+Vh1 u,v,u0,u1;
+//Définition de l'espace P0
+fespace Vh0(Sh,P0);
+Vh0 gradient;	
+////////////////////////
+// Donnees initiales  //
+////////////////////////
+func initdep=max(0. , 0.01-((x-0.3)*(x-0.3)+(y-0.4)*(y-0.4)));
+func initvit=0. ;
+u0 = initdep ;
+u1 = initdep + dt*initvit ;
+/////////////////////////////////////////////
+// Définition du système à résoudre :      //
+// schéma de Crank Nicholson en temps,     //
+// conditions aux limites de Neumann       //
+/////////////////////////////////////////////
+problem ondes(u,v) =
+        int2d(Sh)( 0.5*dt*dt*mu*(dx(u)*dx(v)+dy(u)*dy(v)) + u*v )
+       +int2d(Sh)( 0.5*dt*dt*mu*(dx(u0)*dx(v)+dy(u0)*dy(v)) - 2*u1*v + u0*v )
+;
+////////////////////////////////////
+// Impression au 1er pas de temps //
+////////////////////////////////////
+int nsave=1 ;
+iter=1;
+temps=iter*dt ;
+gradient=mu*sqrt(dx(u1)*dx(u1)+dy(u1)*dy(u1)) ;
+plot(Sh,gradient,fill=1,wait=1,value=0,viso=vviso,varrow=arrperso,ps=sauve+nsave+".eps"); 
+fichier=sauve+nsave;
+fichier3=fichier+".bb";
+{ ofstream file(fichier+".bb");
+	file << gradient[].n << " \n";
+	int j;
+	for (j=0;j<gradient[].n ; j++)  
+	file << gradient[][j] << endl;  }  	
+exec("xd3d -bord=3 -hidden -fich="+fichier3+" -iso=1 -table=8 -vmax=0.1 "+sauve);
+/////////////////////////////////////////////
+// Boucle en temps                         //
+////////////////////////////////////////////
+int isave = 0 ;
+for (iter=2;iter< niter+1;iter=iter+1)  
+{
+isave = isave + 1 ;
+cout << isave << " " << iter << endl ;
+//
+ondes ;
+//
+energie(iter) = 0.5*int2d(Sh)(
+(u-u0)*(u-u0)/(4*dt*dt) + mu*(dx(u1)*dx(u1)+dy(u1)*dy(u1))
+) ;
+//
+energfile << energie(iter) << endl ;
+cout << "energie =" << energie(iter) << endl ;
+//
+// Impression tous les 10 pas de temps
+if (isave>9)
+{
+isave=0 ;
+nsave = nsave + 1 ;
+temps=iter*dt ;
+gradient=mu*sqrt(dx(u)*dx(u)+dy(u)*dy(u)) ;
+cout << "sauvegarde a l'iteration " << iter << " et au temps " << temps << endl ;
+plot(Sh,gradient,fill=1,wait=1,value=0,viso=vviso,varrow=arrperso); 
+fichier=sauve+nsave;
+fichier3=fichier+".bb";
+{ ofstream file(fichier+".bb");
+	file << gradient[].n << " \n";
+	int j;
+	for (j=0;j<gradient[].n ; j++)  
+	file << gradient[][j] << endl;  }  	
+exec("xd3d -bord=3 -hidden -fich="+fichier3+" -iso=1 -table=8 -vmax=0.1 "+sauve);
+}
+
+u0=u1 ;
+u1=u ;
+
+};
+
+
+
+
+
+
+
+

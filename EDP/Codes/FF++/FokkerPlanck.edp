@@ -1,0 +1,109 @@
+//  fokker.edp
+//
+//  Discussion:
+//
+//    Fokker-Planck equations.
+//    Simple stochastic metabolite reaction model
+//
+//  Location:
+//
+//    http://people.sc.fsu.edu/~jburkardt/freefem++/fokker/fokker.edp
+//
+//  Modified:
+//
+//    20 May 2015
+//
+//  Author:
+//
+//    Florian De Vuyst
+//
+//  Reference:
+//
+//    Florian De Vuyst,
+//    Numerical modeling of transport problems using freefem++ software -
+//    with examples in biology, CFD, traffic flow and energy transfer,
+//    HAL id: cel-00842234
+//    https://cel.archives-ouvertes.fr/cel-00842234
+//
+real kx = 0.6;
+real ky = kx;
+real mu = 0.001;
+real k2 = 0.001;
+real dt = 0.1;
+//
+//  Define the mesh.
+//
+real Lx = 200;
+real Ly = 200;
+mesh Th = square(60, 60, [x*Lx, y*Ly]);
+//
+//  Define the finite element space.
+//
+fespace Vh(Th, P2); 
+fespace Wh(Th,P1);
+Vh p, qh, pold;
+Wh v1h, v2h;
+
+func a11 = kx + mu*x+k2 * x*y;
+func a12 = k2*x*y;
+func a21 = k2*x*y;
+func a22 = ky+mu*y+k2 * x*y;
+func v1 = (kx-mu*x-k2*x*y) - 0.5 * (mu+k2*y +k2*x);
+func v2 = (ky-mu*y-k2*x*y) - 0.5 * (k2*y +mu+k2*x);
+func dxv1 = - mu - k2*y - 0.5 * k2;
+func dyv2 = - mu - k2*x -0.5 * k2;
+//
+v1h=v1;
+v2h=v2;
+plot([v1h, v2h], ps="fokker_velocity.ps");
+//
+// Set the initial PDF
+//
+real sigma = 5;
+real sigma2=sigma^2;
+p = exp(-0.5*(x-140)^2/sigma2) * exp(-0.5*(y-160)^2/sigma2);
+Th = adaptmesh ( Th, p );
+p = p;
+real massp = int2d(Th) (p);
+p = p / massp;
+pold = p;
+plot ( p, nbiso=60, ps="fokker_p_initial.ps" );
+plot ( p, Th, nbiso=60, ps="fokker_p_initial_mesh.ps");
+//
+//  Define the weak formulation of the Fokker-Planck equations.
+//
+problem fokker(p, qh) =
+  int2d (Th) (p*qh/dt)
+- int2d (Th) (convect([v1, v2], -dt, pold)*qh/dt)
++ int2d (Th) (0.5*a11*dx(p)*dx(qh)+0.5*a22*dy(p)*dy(qh))
++ int2d (Th) (0.5*a12*dy(p)*dx(qh)+0.5*a21*dx(p)*dy(qh))
+- int1d (Th, 1,2,3,4) ((v1*N.x+v2*N.y)*p*qh)
++ int2d (Th) ( (dxv1+dyv2)*p*qh );
+//
+int it;
+for ( it = 0; it < 200; it++ )
+{
+  for ( int subit = 0; subit < 5; subit++ )
+  {
+    fokker; 
+    massp = int2d(Th) (p); 
+    p = p /massp; 
+    pold = p;
+  }
+
+  Th = adaptmesh ( Th, p );
+  massp = int2d(Th) (p);
+  p = p / massp;
+  pold = p;
+  plot ( p, Th, nbiso=60 );
+  cout << "  Mass = " << int2d(Th)(p) << endl;
+}
+plot ( p, nbiso=40, ps="fokker_p_final.ps");
+plot ( p, Th, nbiso=40, ps="fokker_p_final_mesh.ps");
+//
+//  Terminate.
+//
+cout << "\n";
+cout << "FOKKER:\n";
+cout << "  Normal end of execution.\n";
+

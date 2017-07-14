@@ -43,6 +43,8 @@ TODO List  Semaine 27:
 
 TODO List  Semaine 28:
 
+* Méthode static : biased 2D,3D with weight - **OK**
+* SAW: épidémiologique - **à demander - bugs**
 * SAW : finir vulcanistation
 * SAW : faire SIR dans Python
 * EDP : finir EDOs dans Octave 
