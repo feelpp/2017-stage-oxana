@@ -44,11 +44,17 @@ TODO List  Semaine 27:
 TODO List  Semaine 28:
 
 * Méthode static : biased 2D,3D with weight - **OK**
-* SAW: épidémiologique - **à demander - bugs**
-* SAW : finir vulcanistation
-* SAW : faire SIR dans Python
-* EDP : finir EDOs dans Octave 
-* EDP : méthode des caractèristiques?
-* EDP : MEF - maths
+* SAW: épidémiologie - **OK**
+* SAW : finir vulcanistation - **to finish**
+* SAW : faire SIR dans Python - ** no more needed**
+* EDP : finir EDOs dans Octave - **NOT DONE**
+* EDP : méthode des caractèristiques? - **OK**
+* EDP : MEF - maths - ** no more needed **
 
+TODO List  Semaine 29:
 
+* Mathis: buttons
+* PDE : finish PDEs in Octave
+* SAW : finish vulcanistation
+* Put all in the same language
+* _Rapport_ : Put all together
