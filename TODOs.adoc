@@ -56,5 +56,6 @@ TODO List  Semaine 29:
 * Mathis: buttons
 * PDE : finish PDEs in Octave
 * SAW : finish vulcanistation
+* SAW : add animation to snake
 * Put all in the same language
 * _Rapport_ : Put all together
