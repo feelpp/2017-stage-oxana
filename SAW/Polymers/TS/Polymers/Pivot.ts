@@ -87,7 +87,7 @@ module mathis {
                 let randomVertex = Math.floor(Math.random() * (ALLc_new.length-1 - 0)) + 0;
                 cc('Random Vertex in ALLc_new', ALLc_new[randomVertex]);
 
-                //Learn its index
+                //Learn its value
                 let indexOfVertex = ALLc_new.indexOf( ALLc_new[randomVertex] );
                 let myIndex = findIndex(ALLc_new, ALLc_new[randomVertex]);
                 cc('Index of the chosen vertex', indexOfVertex);

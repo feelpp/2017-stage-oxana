@@ -1,10 +1,15 @@
 module mathis {
     export module polymer {
+        import GrabberCamera = mathis.macamera.GrabberCamera;
         export function vulca2D() {
 
 
 
             let mathisFrame = new mathis.MathisFrame();
+            let camera:GrabberCamera=mathisFrame.getGrabberCamera()
+            camera.setFreeDisplacementMode()
+            camera.changePosition(new XYZ(0,0,-35))
+
 
             let mamesh = new mathis.Mamesh();
             let w1 = 12;
@@ -195,16 +200,11 @@ module mathis {
             mamesh.vertices[296].setTwoOppositeLinks(mamesh.vertices[295], mamesh.vertices[147]);
 
 
-
-
-
-
-
             let x = 0;
-            for (let k = 0; k<m; k++){
+            for (let k = 0; k<n; k++){
                 mamesh.vertices[0+x].setOneLink(mamesh.vertices[x+1]);
 
-                for (let j=0; j<n; j++) {
+                for (let j=0; j<m; j++) {
 
                     mamesh.vertices[x + 1 + 10 * j].setTwoOppositeLinks(mamesh.vertices[x + 5 + 10 * j], mamesh.vertices[x + 6 + 10 * j]);
                     mamesh.vertices[x + 2 + 10 * j].setTwoOppositeLinks(mamesh.vertices[x + 7 + 10 * j], mamesh.vertices[x + 8 + 10 * j]);
@@ -223,19 +223,19 @@ module mathis {
             mine = [0,51,52,103,104,155, 156, 207, 208,259]
 
 
-            let verticesViewerNon = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //Not visible
-            verticesViewerNon.vertices = [mamesh.vertices[0],mamesh.vertices[51],mamesh.vertices[52],mamesh.vertices[103],
+
+            let verticesNon = [mamesh.vertices[0],mamesh.vertices[51],mamesh.vertices[52],mamesh.vertices[103],
                 mamesh.vertices[104],mamesh.vertices[155],mamesh.vertices[156],mamesh.vertices[207],mamesh.vertices[208],
                 mamesh.vertices[259],
                 mamesh.vertices[260],mamesh.vertices[261],mamesh.vertices[262],mamesh.vertices[263],mamesh.vertices[264]
 
             ];
+            let verticesViewerNon = new mathis.visu3d.VerticesViewer(verticesNon,mathisFrame.scene); //Not visible
             //verticesViewerNon.go();
 
 
-
-            let xx = 0;
-            let verticesViewerC = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //Carbone
+            let verticesC = [];
+            let xx = 0; //Carbone
             for (let i=0;i<n; i++){
                 for (let j=0; j<5; j++){
 
@@ -245,34 +245,46 @@ module mathis {
                     mine.push(4+10*j+xx);
 
 
-                    verticesViewerC.vertices.push(mamesh.vertices[1+10*j+xx]);
-                    verticesViewerC.vertices.push(mamesh.vertices[2+10*j+xx]);
-                    verticesViewerC.vertices.push(mamesh.vertices[3+10*j+xx]);
-                    verticesViewerC.vertices.push(mamesh.vertices[4+10*j+xx]);
+                    verticesC.push(mamesh.vertices[1+10*j+xx]);
+                    verticesC.push(mamesh.vertices[2+10*j+xx]);
+                    verticesC.push(mamesh.vertices[3+10*j+xx]);
+                    verticesC.push(mamesh.vertices[4+10*j+xx]);
                 }
                 xx = xx+52;
             }
+
+            let verticesViewerC = new mathis.visu3d.VerticesViewer(verticesC,mathisFrame.scene);
+            verticesViewerC.color = new mathis.Color(mathis.Color.names.red);
+            verticesViewerC.radiusAbsolute = 1.0;
             verticesViewerC.go();
 
+
+
+
+            let verticesH = [];
             let yy=0;
-            let verticesViewerH = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene); //H
             for (let i=0;i<n; i++){
                 for (let j=0; j<5; j++){
 
                     mine.push(5+10*j+yy,6+10*j+yy,7+10*j+yy,8+10*j+yy, 9+10*j+yy, 10+10*j+yy);
 
-                    verticesViewerH.vertices.push(mamesh.vertices[5+10*j+yy], mamesh.vertices[6+10*j+yy],mamesh.vertices[7+10*j+yy],
-                        mamesh.vertices[8+10*j+yy], mamesh.vertices[9+10*j+yy], mamesh.vertices[10+10*j+yy]);
+                    verticesH.push(mamesh.vertices[5+10*j+yy]);
+                    verticesH.push(mamesh.vertices[6+10*j+yy]);
+                    verticesH.push(mamesh.vertices[7+10*j+yy]);
+                    verticesH.push(mamesh.vertices[8+10*j+yy]);
+                    verticesH.push(mamesh.vertices[9+10*j+yy]);
+                    verticesH.push(mamesh.vertices[10+10*j+yy]);
+
                 }
                 yy = yy+52;
             }
-
+            let verticesViewerH = new mathis.visu3d.VerticesViewer(verticesH, mathisFrame.scene); //H
+            verticesViewerH.color = new mathis.Color(mathis.Color.names.blue);
+            verticesViewerH.radiusAbsolute = 0.3;
             verticesViewerH.go();
 
 
-            let verticesViewerS = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene); //S
-            verticesViewerNon.vertices = [mamesh.vertices[260],mamesh.vertices[261],mamesh.vertices[262],mamesh.vertices[263],
-                mamesh.vertices[264],mamesh.vertices[265],mamesh.vertices[266],mamesh.vertices[267],
+            let verticesS = [mamesh.vertices[265],mamesh.vertices[266],mamesh.vertices[267],
                 mamesh.vertices[268],mamesh.vertices[269],mamesh.vertices[270],mamesh.vertices[271],
                 mamesh.vertices[272],mamesh.vertices[273],
                 mamesh.vertices[274],mamesh.vertices[275],mamesh.vertices[276],mamesh.vertices[277],
@@ -284,16 +296,12 @@ module mathis {
                 mamesh.vertices[291],mamesh.vertices[292],mamesh.vertices[293],
                 mamesh.vertices[294],mamesh.vertices[295],mamesh.vertices[296]
 
-
-
-
-
-
-
-
-
             ];
+
+
+            let verticesViewerS = new mathis.visu3d.VerticesViewer(verticesS, mathisFrame.scene); //S
             verticesViewerS.color = new mathis.Color(mathis.Color.names.yellow);
+            verticesViewerS.radiusAbsolute = 0.6;
             verticesViewerS.go();
 
 

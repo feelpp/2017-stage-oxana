@@ -131,7 +131,7 @@ module mathis {
             }
             */
 
-            let epidemy = true;
+            let notEpidemy = true;
             let newlyInfected=0;
             let I_test: XYZ[]=[];
             I_test[0]=new XYZ(0,0,0);
@@ -145,7 +145,7 @@ module mathis {
 
 
 
-            while (epidemy){
+            while (notEpidemy){
 
                 for (let j=0; j<I_test.length;j++) {
                    for (let i = 0; i < allJumps.length; i++) {
@@ -168,7 +168,7 @@ module mathis {
 
                 }
                 cc('New LOOP');
-                epidemy = (newlyInfected < 35 )
+                notEpidemy = (newlyInfected < 55 )
                 I_test=I_delta_step;
                 shuffle(I_test);
 
@@ -179,7 +179,7 @@ module mathis {
             }
 
 
-            cc('epidemy !!',newlyInfected);
+            cc('notEpidemy !!',newlyInfected);
             cc('vertices !!',mamesh.vertices.length);
 
 

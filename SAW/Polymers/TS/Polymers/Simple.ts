@@ -1,5 +1,97 @@
 module mathis {
     export module polymer {
+
+
+        export class SAW_Creator_static{
+
+
+            chainSize=10
+
+            constructor(){
+
+            }
+
+
+            /**check if a raw belongs to a matrix*/
+            private  contains(points: XYZ[], onePoint: XYZ) :boolean{
+            for (let point of points){
+                if (geo.distance(point,onePoint)<0.0001) {
+                    return true
+                }
+            }
+            return false
+        }
+
+            go():Mamesh{
+
+                let NOTfinished = true;
+                let security=100;
+                let attempts = 0;
+                let min = -1;
+                let max = 2;
+
+
+
+                let mamesh = new mathis.Mamesh();
+
+                while (NOTfinished && attempts<security){
+                    var x = 0;
+                    var y = 0;
+                    var z = 0;
+
+                    var ALLcoordinates: XYZ[]=[];
+                    ALLcoordinates[0]=new XYZ(x,y,z);
+
+                    for (var i = 1; i < this.chainSize; i++) {
+
+                        let alea1 = Math.floor(Math.random() * (max - min)) + min;
+                        let alea2 = Math.floor(Math.random() * (max - min)) + min;
+                        let alea3 = Math.floor(Math.random() * (max - min)) + min;
+
+                        cc('aleas:', alea1,alea2,alea3);
+                        x=alea1+x;
+                        y=alea2+y;
+                        z=alea3+z;
+                        //initialisation?
+                        var coordinates : XYZ = new XYZ(x,y,z);
+                        cc('coordinates',coordinates);
+
+                        if (!this.contains(ALLcoordinates, coordinates) ) {
+                            var vertex = new mathis.Vertex();
+                            vertex.position=coordinates;
+                            ALLcoordinates.push(coordinates);
+                            mamesh.vertices.push(vertex);
+                        }
+
+                        else {
+                            cc('This one is already taken!', coordinates);
+                            attempts++;
+                            while (mamesh.vertices.length > 0 ) {
+                                mamesh.vertices.pop();
+                            }
+
+                            break;
+                        }
+                    }
+
+                    NOTfinished=(ALLcoordinates.length<this.chainSize);
+                }
+
+                for (let  i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+
+
+
+                return mamesh
+            }
+
+
+        }
+
+
         export function static1() {
 
             var mathisFrame = new mathis.MathisFrame();
@@ -8,14 +100,6 @@ module mathis {
             var dims = 3;
             var mamesh = new mathis.Mamesh();
 
-
-            //
-            // for (var i = 0; i < dims; i++) {
-            //     ALLcoordinates[i] = [];
-            //     for (var j = 0; j < chainSize; j++) {
-            //         ALLcoordinates[i][j] = 0;
-            //     }
-            // }
 
 
             /**check if a raw belongs to a matrix*/
@@ -96,8 +180,8 @@ module mathis {
             console.log(mamesh.toString());
             cc('ALLcoordinates',ALLcoordinates);
 
-            mathisFrame.messageDiv.append("Chain size:" + chainSize);
-            mathisFrame.messageDiv.append("Attempts before success:" + (attempts));
+            //mathisFrame.messageDiv.append("Chain size:" + chainSize);
+            //mathisFrame.messageDiv.append("Attempts before success:" + (attempts));
 
 
 
