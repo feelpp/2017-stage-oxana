@@ -1,104 +1,48 @@
 module mathis {
     export module polymer {
-        //import GrabberCamera = mathis.macamera.GrabberCamera;
+        import GrabberCamera = mathis.macamera.GrabberCamera;
         export function vulcaSimple() {
 
 
-
             let mathisFrame = new mathis.MathisFrame();
-
-
-
             let mamesh = new mathis.Mamesh();
 
-            //Atomes de carbone de type -CH_2-CH_2-
-            let C_unitaire: XYZ[]=[];
-
-            //Atomes de carbone de type -CH=CH-
-            let C_double: XYZ[]=[];
-
-            //Atome de carbone de type -CHS-CHS- (ancien C_double)
-            let C_affecte: XYZ[]=[];
-
-            //Atomes de soufre
-            let S: XYZ[]=[];
-
-            //Places possilbes pour la soufre
-            let S0: XYZ[]=[];
+            let camera=mathisFrame.getGrabberCamera()
+            camera.changePosition(new XYZ(0,0,-150))
 
 
+            //*****************USEFULL FUNCTIONS************************//
 
 
-
-            let w1 = 20;
-            let h1 = 20;
-            let n = 3;
-            let m = 5;
-
-
-
-            /**check if a raw belongs to a matrix*/
-            function contains(points: XYZ[], onePoint: XYZ) :boolean{
-                for (let point of points){
-                    if (geo.distance(point,onePoint)<0.0001) {
+            /**check if a raw belongs to a matrix for XYZ*/
+            function contains(points: XYZ[], onePoint: XYZ): boolean {
+                for (let point of points) {
+                    if (geo.distance(point, onePoint) < 0.0001) {
                         return true
                     }
                 }
                 return false
             }
 
-
-            function containsN(points: number[], onePoint: number) :boolean{
-                    if (onePoint in points) {
-                        return true
-                    }
+            /**check if a raw belongs to a matrix for number*/
+            function containsN(points: number[], onePoint: number): boolean {
+                if (onePoint in points) {
+                    return true
+                }
 
                 return false
             }
 
 
-
-
-
-            // function that find index of a given value in a given array
-            function findIndex (array: Vertex[], value: Vertex ): number{
-                for (let i = 0; i< array.length; i++) {
+            /**function that find index of a given value in a given array*/
+            function findIndex(array: Vertex[], value: Vertex): number {
+                for (let i = 0; i < array.length; i++) {
                     if (array[i] == value) {
                         var res = i;
                     }
                 }
                 return res;
             }
-
-
-            function findValue (array: XYZ[], index: number ): XYZ{
-                let res
-                for (let i = 0; i< array.length; i++) {
-                    if (i=index){
-                        res = array[index]
-
-                    }
-
-                }
-                return res;
-            }
-
-            function findNeighbours (array: number[], value: number ) {
-                for ( let possibles of array){
-
-                    
-
-
-
-                }
-        }
-
-
-
-
-
-
-
 
 
             /**shuffles an array */
@@ -119,260 +63,329 @@ module mathis {
             }
 
 
-            let verticesS = [];
-            let verticesS_done = [];
-
-            let verticesC = [];
-            let verticesCS = [];
-            let verticesNon = [];
-
-
-            // reseau initial (3 marcomolécule à 5 monomère)
-            for (let j=0; j<n; j++) {
-                let v_1_in = new mathis.Vertex().setPosition(1,3+ h1 * j, 0); //not visible
-                mamesh.vertices.push(v_1_in);
-                verticesNon.push(v_1_in);
-
-                for (let i = 0; i < m; i++) {
-
-                    let v_1_C1 = new mathis.Vertex().setPosition(3 + w1 * i, 3 + h1 * j, 0);
-                    let v_1_C2 = new mathis.Vertex().setPosition(6 + w1 * i, 3 + h1 * j, 0);
-                    let v_1_C3 = new mathis.Vertex().setPosition(9 + w1 * i, 3 + h1 * j, 0);
-                    let v_1_C4 = new mathis.Vertex().setPosition(12 + w1 * i, 3 + h1 * j, 0);
-
-
-                    //C_unitaire.push(v_1_C1,v_1_C2);
-                    //C_double.push(v_1_C3,v_1_C4);
-                    mamesh.vertices.push(
-                        v_1_C1, v_1_C2, v_1_C3, v_1_C4
-                    );
-
-                    verticesC.push(v_1_C1, v_1_C2)
-                    verticesCS.push(v_1_C3, v_1_C4)
+            /**Deletes a certain value from array */
+            function rm(array: XYZ[], toDelete: XYZ) {
+                for (let i = array.length - 1; i >= 0; i--) {
+                    if (array[i] === toDelete) {
+                        array.splice(i, 1)
+                    }
                 }
-                let v_1_out = new mathis.Vertex().setPosition(15 + w1*4, 3 + h1 * j, 0); //not visible
-                mamesh.vertices.push(v_1_out);
-
-                verticesNon.push(v_1_out);
+                return array;
             }
 
 
+            /**Find a random neighbour */
+            function possibleNeighbours_f(me: XYZ) {
+
+                let me_x1 = me.x + 3;
+                let me_x2 = me.x - 3;
+
+                let me_y1 = me.y + 2;
+                let me_y2 = me.y - 2;
+
+                let me_y11 = me.y + 3;
+                let me_y22 = me.y - 3;
+
+                let coordinates1: XYZ = new XYZ(me_x1, me_y1, 0);
+                let coordinates2: XYZ = new XYZ(me_x1, me_y2, 0);
+                let coordinates3: XYZ = new XYZ(me_x2, me_y1, 0);
+                let coordinates4: XYZ = new XYZ(me_x2, me_y2, 0);
+
+                let coordinates5: XYZ = new XYZ(me_x1, me.y, 0);
+                let coordinates6: XYZ = new XYZ(me_x2, me.y, 0);
+                let coordinates7: XYZ = new XYZ(me.x, me_y1, 0);
+                let coordinates8: XYZ = new XYZ(me.x, me_y2, 0);
+
+                let coordinates9: XYZ = new XYZ(me_x1, me_y11, 0);
+                let coordinates10: XYZ = new XYZ(me_x1, me_y22, 0);
+                let coordinates11: XYZ = new XYZ(me_x2, me_y11, 0);
+                let coordinates12: XYZ = new XYZ(me_x2, me_y22, 0);
+
+                let coordinates13: XYZ = new XYZ(me.x, me_y11, 0);
+                let coordinates14: XYZ = new XYZ(me.x, me_y22, 0);
 
 
 
-            //Soufre Grille
-
-            let hS = 2;
-            let nS = 8;
-            let mS = 5;
 
 
 
+                let coordinates: XYZ[] = [];
+                coordinates.push(coordinates1, coordinates2, coordinates3, coordinates4,
+                    coordinates5, coordinates6, coordinates7, coordinates8,
+                    coordinates9, coordinates10, coordinates11, coordinates12,
+                    coordinates13, coordinates14
+
+                );
 
 
-            for (let j=0; j<nS; j++) {
-                for (let i = 0; i < mS; i++) {
+                let possibleNeighbours: XYZ[] = [];
 
-                    let S1 = new mathis.Vertex().setPosition(3 + w1 * i, 6 + hS * j, 0);
-                    let S2 = new mathis.Vertex().setPosition(6 + w1 * i, 6 + hS * j, 0);
-                    let S3 = new mathis.Vertex().setPosition(9 + w1 * i, 6 + hS * j, 0);
-                    let S4 = new mathis.Vertex().setPosition(12 + w1 * i, 6 + hS * j, 0);
-                    mamesh.vertices.push(S1,S2,S3,S4);
-                    verticesS.push(S1,S2,S3,S4);
+                for (let i = 0; i < coordinates.length; i++) {
+
+                        if (contains(grilleS_XYZ, coordinates[i])) {
+                            possibleNeighbours.push(coordinates[i]);
+                            cc('coordinates  ok', coordinates[i])
+                        }
+
+                        else {
+                            cc('coordinates not ok', coordinates[i])
+                        }
+
 
                 }
+
+                return possibleNeighbours
             }
 
 
-            for (let j=0; j<nS; j++) {
-                for (let i = 0; i < mS; i++) {
-
-                    let S1 = new mathis.Vertex().setPosition(3 + w1 * i, 26 + hS * j, 0);
-                    let S2 = new mathis.Vertex().setPosition(6 + w1 * i, 26 + hS * j, 0);
-                    let S3 = new mathis.Vertex().setPosition(9 + w1 * i, 26 + hS * j, 0);
-                    let S4 = new mathis.Vertex().setPosition(12 + w1 * i, 26 + hS * j, 0);
-                    mamesh.vertices.push(S1,S2,S3,S4);
-                    verticesS.push(S1,S2,S3,S4);
+                //Atomes de carbone de type -CH_2-CH_2-
+                let C_unitaire_XYZ: XYZ[] = []; //C_unitaire
+                let C_unitaire = [];
 
 
+                //Atomes de carbone de type -CH=CH-
+                let C_double_XYZ: XYZ[] = []; //C_double
+                let C_double = [];
+
+
+                //Atome de carbone de type -CHS-CHS- (ancien C_double)
+                let C_affecte_XYZ: XYZ[] = [];
+                let C_affecte = [];
+
+
+                //Atomes de soufre
+                let S_XYZ: XYZ[] = []; //verticesS
+                let S = [];
+
+
+                //Places possilbes pour la soufre
+                let grilleS_XYZ: XYZ[] = []; //grilleS
+                let grilleS = [];
+
+
+                let verticesNon = [];
+
+
+                let w1 = 20;
+                let h1 = 20;
+                let n = 5;
+                let m = 5;
+
+
+                //****************Building a grill************************//
+
+
+                // reseau initial (3 marcomolécule à 5 monomère)
+
+                for (let j = 0; j < n; j++) {
+                    let v_1_in = new mathis.Vertex().setPosition(1, 3 + h1 * j, 0); //not visible
+                    mamesh.vertices.push(v_1_in);
+                    verticesNon.push(v_1_in);
+
+                    for (let i = 0; i < m; i++) {
+
+                        let v_1_C1 = new mathis.Vertex().setPosition(3 + w1 * i, 3 + h1 * j, 0);
+                        let v_1_C2 = new mathis.Vertex().setPosition(6 + w1 * i, 3 + h1 * j, 0);
+                        let v_1_C3 = new mathis.Vertex().setPosition(9 + w1 * i, 3 + h1 * j, 0);
+                        let v_1_C4 = new mathis.Vertex().setPosition(12 + w1 * i, 3 + h1 * j, 0);
+
+
+                        //C_unitaire.push(v_1_C1,v_1_C2);
+                        //C_double.push(v_1_C3,v_1_C4);
+                        mamesh.vertices.push(
+                            v_1_C1, v_1_C2, v_1_C3, v_1_C4
+                        );
+
+                        C_unitaire.push(v_1_C1, v_1_C2)
+                        C_double.push(v_1_C3, v_1_C4)
+                    }
+                    let v_1_out = new mathis.Vertex().setPosition(15 + w1 * 4, 3 + h1 * j, 0); //not visible
+                    mamesh.vertices.push(v_1_out);
+
+                    verticesNon.push(v_1_out);
                 }
-            }
+
+                //Soufre Grille
+
+                let hS = 2;
+                let nS = 8;
+                let mS = 5;
+                let p=0
+                for (let k=0; k<n-1; k++){
+
+
+                        for (let j = 0; j < nS; j++) {
+                            for (let i = 0; i < mS; i++) {
+
+                                let S1 = new mathis.Vertex().setPosition(3 + w1 * i, 6+p + hS * j, 0);
+                                let S2 = new mathis.Vertex().setPosition(6 + w1 * i, 6+p + hS * j, 0);
+                                let S3 = new mathis.Vertex().setPosition(9 + w1 * i, 6+p + hS * j, 0);
+                                let S4 = new mathis.Vertex().setPosition(12 + w1 * i, 6+p + hS * j, 0);
+
+                                mamesh.vertices.push(S1, S2, S3, S4);
+                                grilleS.push(S1, S2, S3, S4);
+                                grilleS_XYZ.push(S1.position, S2.position, S3.position, S4.position);
+
+                            }
+                        }
+
+                    p =p+20
+                }
 
 
 
-            /** Algo:
-             0. creat a soufre grille?
-             1. Choose randomly 2 odd vertexes in C_double
-             2. Link them with a bridge of S of random lenght
-             3. Take their left neighbours (which are pair) and [go (1)]
 
-            */
+                let test = [];
+                for (let i=0; i<C_double.length; i++){
+                    test.push(C_double[i])
+                }
 
 
-            ///                let indexOfVertex = ALLc_new.indexOf( ALLc_new[randomVertex] );
 
 
-            let min = -4;
-            let max = 5;
+                let nbOfChains = 5;
 
-            for (let i=0; i<3;i++){
-                let indexesS = [];
-                let values: XYZ[]=[];
-
-
-                //Choose S chain lenght
-                let bridgeS = Math.floor(Math.random() * (9 - 1)) + 1;
-
-                //Choose a random vertex in CS by index
-                let indexOfRandomVertex1inCS = Math.floor(Math.random() * (verticesCS.length-1 - 0)) + 0;
-
-                let RandomVertex1inCS=  verticesCS[indexOfRandomVertex1inCS]
-                cc('RandomVertex1inCS',RandomVertex1inCS)
+                for (let i = 0; i < nbOfChains; i++) {
+                    let indexesInMamesh = [];
+                    //Actual chain at i
 
 
-               // let indexofRandomVertex1inMamesh=mamesh.vertices.indexOf(verticesCS[indexOfRandomVertex1inCS])
-               // cc('indexofRandomVertex1inMamesh',indexofRandomVertex1inMamesh)
+                    let thisChain = [];
+                    let thisChain_XYZ: XYZ[] = [];
 
 
-               // indexesS.push(indexofRandomVertex1inMamesh)
+                    //Choose S chain lenght
+                    let bridgeS = Math.floor(Math.random() * (9 - 1)) + 1;
 
-                let x0=RandomVertex1inCS.position.x
-                let y0=RandomVertex1inCS.position.y
-                let z0=RandomVertex1inCS.position.z
+                    //Choose a random vertex in CS by index
+                    let indexOfRandomVertex1 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                    let RandomVertex1inCS = test[indexOfRandomVertex1];
+                    cc('RandomVertex1inCS', RandomVertex1inCS);
 
-
-                let coordinates0 : XYZ = new XYZ(x0,y0,z0);
-                let vertex0 = new mathis.Vertex();
-                vertex0.position=coordinates0;
-
-                values.push(coordinates0)
-                mamesh.vertices.push(vertex0);
-
-
-                let indexM = findIndex(mamesh.vertices, vertex0);
-
-                indexesS.push(indexM)
-                cc('indexM',indexM)
-
-                cc('values',values)
-
-                let Security:Vertex[] = mamesh.vertices;
-
-                let ALLc_new:Vertex[]= mamesh.vertices;
-
-                for (let j=1; j<bridgeS; j++){
+                    //add it to C_affected
+                    C_affecte.push(RandomVertex1inCS);
+                    //delete it from C_double
+                    rm(test, RandomVertex1inCS);
+                    //add it to thisChain
+                    thisChain_XYZ.push(RandomVertex1inCS.position);
 
 
-                    let alea1 = Math.floor(Math.random() * (max - min)) + min;
-                    let alea2 = Math.floor(Math.random() * (max - min)) + min;
-                    let x = values[j-1].x+alea1;
-                    let y = values[j-1].y+alea2;
+                    let indexRandomVertex1 = mamesh.vertices.indexOf(test[indexOfRandomVertex1]);
+                    indexesInMamesh.push(indexRandomVertex1);
 
-                    let coordinates : XYZ = new XYZ(x,y,0);
-                    let vertex = new mathis.Vertex();
-                    vertex.position=coordinates;
-                    cc('coordinates',coordinates);
+                    let Security: Vertex[] = mamesh.vertices;
+
+                    for (let j = 1; j < bridgeS; j++) {
 
 
-                    //let randomS = Math.floor(Math.random() * (verticesS.length-1 - 0)) + 0;
-                    //cc('RandomS',randomS );
+                        cc('thisChain_XYZ[j-1]', thisChain_XYZ[j - 1]);
+                        let possible_Neighbours_list: XYZ[] = [];
+                        possible_Neighbours_list = possibleNeighbours_f(thisChain_XYZ[j - 1]);
+                        cc('possible_Neighbours_list', possible_Neighbours_list);
 
-                    if (!contains(S,coordinates)){
-                       // mamesh.vertices.push(vertex)
-                        S.push(coordinates)
-                        verticesS_done.push(vertex)
-                        values.push(coordinates)
-                        ALLc_new.push(vertex)
-                        mamesh.vertices.push(vertex)
 
-                        let indexMM = findIndex(ALLc_new,vertex )
-                        indexesS.push(indexMM)
-                        cc('indexesS',indexesS);
+                        let randomNeighbour_index = Math.floor(Math.random() * (possible_Neighbours_list.length - 1 - 0)) + 0;
+                        let random_Neighbour = possible_Neighbours_list[randomNeighbour_index];
+                        cc('random_Neighbour', random_Neighbour);
+
+                        if (!random_Neighbour) {
+                            cc('thisChain_XYZ', thisChain_XYZ)
+                            break;
+                        }
+
+
+                        if (!contains(S_XYZ, random_Neighbour)) {
+
+                            S_XYZ.push(random_Neighbour);
+                            let coordinates: XYZ = new XYZ(random_Neighbour.x, random_Neighbour.y, 0);
+                            let vertex = new mathis.Vertex();
+                            vertex.position = coordinates;
+                            S.push(vertex)
+                            mamesh.vertices.push(vertex);
+                            cc('S added', coordinates);
+                            let index = mamesh.vertices.indexOf(vertex);
+                            indexesInMamesh.push(index);
+                            thisChain_XYZ.push(random_Neighbour)
+                            cc('grille', grilleS_XYZ)
+                        }
+
+                        else {
+                            cc('Doublons! New chain');
+
+                            mamesh.vertices = Security;
+                            break;
+
+                        }
+
                     }
 
 
-                    else{
-                        cc('Doublons! Start over:', coordinates);
-                        mamesh.vertices = Security;
+                    cc('indexesS', indexesInMamesh);
 
-                        break;
+                    let randomVertex2 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                    let indexRandomVertex2 = mamesh.vertices.indexOf(test[randomVertex2]);
+                    C_affecte.push(test[randomVertex2]);
+                    rm(test, test[randomVertex2]);
 
+
+
+                    indexesInMamesh.push(indexRandomVertex2);
+
+                    for (let i = 1; i < indexesInMamesh.length - 1; i++) {
+                        mamesh.vertices[indexesInMamesh[i]].setTwoOppositeLinks(mamesh.vertices[indexesInMamesh[i - 1]], mamesh.vertices[indexesInMamesh[i + 1]]);
                     }
 
-                }
-                cc('indexesS',indexesS );
+                    mamesh.vertices[indexesInMamesh[0]].setOneLink(mamesh.vertices[indexesInMamesh[1]]);
+                    mamesh.vertices[indexesInMamesh.length - 1].setOneLink(mamesh.vertices[indexesInMamesh.length - 2]);
 
-                let randomVertex2 = Math.floor(Math.random() * (verticesCS.length-1 - 0)) + 0;
-                let indexRandomVertex2=mamesh.vertices.indexOf(verticesCS[randomVertex2]);
-                indexesS.push(indexRandomVertex2);
-                cc('indexesS',indexesS );
-
-                for (let i=1; i<indexesS.length-1; i++){
-                        mamesh.vertices[indexesS[i]].setTwoOppositeLinks(mamesh.vertices[indexesS[i-1]], mamesh.vertices[indexesS[i+1]]);
                 }
 
-                mamesh.vertices[indexesS[0]].setOneLink(mamesh.vertices[indexesS[1]]);
-                mamesh.vertices[indexesS.length - 1].setOneLink(mamesh.vertices[indexesS.length - 2]);
+
+
+                let x = 0;
+                for (let k = 0; k < n; k++) {
+                    mamesh.vertices[0 + x].setOneLink(mamesh.vertices[x + 1]);
+
+
+                    for (let j = 0; j < m; j++) {
+                        mamesh.vertices[x + 0 + 4 * j].setOneLink(mamesh.vertices[x + 1 + 4 * j]);
+                        mamesh.vertices[x + 1 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 0 + 4 * j], mamesh.vertices[x + 2 + 4 * j]);
+                        mamesh.vertices[x + 2 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 1 + 4 * j], mamesh.vertices[x + 3 + 4 * j]);
+                        mamesh.vertices[x + 3 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 2 + 4 * j], mamesh.vertices[x + 4 + 4 * j]);
+                    }
+                    x = x + 22;
+                }
+
+
+                let verticesViewerS = new visu3d.VerticesViewer(grilleS, mathisFrame.scene);
+                verticesViewerS.color = new mathis.Color(mathis.Color.names.lightyellow);
+                verticesViewerS.radiusAbsolute = 0.3;
+                verticesViewerS.go();
+
+                let verticesViewerC = new visu3d.VerticesViewer(C_unitaire, mathisFrame.scene);
+                verticesViewerC.color = new mathis.Color(mathis.Color.names.darkviolet);
+                verticesViewerC.radiusAbsolute = 0.7;
+                verticesViewerC.go();
+
+                let verticesViewerCS = new visu3d.VerticesViewer(C_double, mathisFrame.scene);
+                verticesViewerCS.color = new mathis.Color(mathis.Color.names.red);
+                verticesViewerCS.radiusAbsolute = 0.9;
+                verticesViewerCS.go();
+
+
+                let verticesViewerSS = new visu3d.VerticesViewer(S, mathisFrame.scene);
+                verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
+                verticesViewerSS.radiusAbsolute = 0.9;
+                verticesViewerSS.go();
+
+
+                let verticesViewerNon = new visu3d.VerticesViewer(verticesNon, mathisFrame.scene);
+                //verticesViewerNon.go();
+
+
+                let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
+                linkViewer.go();
 
             }
-
-
-            let x = 0;
-            for (let k = 0; k<n; k++){
-                mamesh.vertices[0+x].setOneLink(mamesh.vertices[x+1]);
-
-
-                for (let j=0; j<m; j++) {
-                    mamesh.vertices[x + 0 + 4 * j].setOneLink(mamesh.vertices[x + 1 + 4 * j]);
-                    mamesh.vertices[x + 1 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 0 + 4 * j], mamesh.vertices[x + 2 + 4 * j]);
-                    mamesh.vertices[x + 2 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 1 + 4 * j], mamesh.vertices[x + 3 + 4 * j]);
-                    mamesh.vertices[x + 3 + 4 * j].setTwoOppositeLinks( mamesh.vertices[x + 2 + 4 * j],mamesh.vertices[x + 4 + 4 * j]);
-                }
-                x = x+22;
-            }
-
-
-
-
-
-
-
-
-
-            let verticesViewerS = new visu3d.VerticesViewer(verticesS, mathisFrame.scene);
-            verticesViewerS.color = new mathis.Color(mathis.Color.names.lightyellow);
-            verticesViewerS.radiusAbsolute = 0.3;
-            verticesViewerS.go();
-
-            let verticesViewerC = new visu3d.VerticesViewer(verticesC, mathisFrame.scene);
-            verticesViewerC.color = new mathis.Color(mathis.Color.names.darkviolet);
-            verticesViewerC.radiusAbsolute = 0.7;
-            verticesViewerC.go();
-
-            let verticesViewerCS = new visu3d.VerticesViewer(verticesCS, mathisFrame.scene);
-            verticesViewerCS.color = new mathis.Color(mathis.Color.names.red);
-            verticesViewerCS.radiusAbsolute = 0.9;
-            verticesViewerCS.go();
-
-
-            let verticesViewerSS = new visu3d.VerticesViewer(verticesS_done, mathisFrame.scene);
-            verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
-            verticesViewerSS.radiusAbsolute = 0.9;
-            verticesViewerSS.go();
-
-
-            let verticesViewerNon = new visu3d.VerticesViewer(verticesNon, mathisFrame.scene);
-            //verticesViewerNon.go();
-
-
-
-
-
-
-
-            let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.go();
-
         }
     }
-}
