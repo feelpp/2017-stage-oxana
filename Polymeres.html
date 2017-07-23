@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
 <meta name="author" content="Oxana USHAKOVA">
-<title>Applications de marches auto-évitantes et des équations differentielles dans l&#8217;étude des polymères et de l&#8217;épidémiologie</title>
+<title>Modélisation moléculaire des polymères avec SAW</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -421,59 +421,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Applications de marches auto-évitantes et des équations differentielles dans l&#8217;étude des polymères et de l&#8217;épidémiologie</h1>
+<h1>Modélisation moléculaire des polymères avec SAW</h1>
 <div class="details">
 <span id="author" class="author">Oxana USHAKOVA</span><br>
 </div>
-<div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_polymères">Polymères</a></li>
-<li><a href="#_vulcanisation">Vulcanisation</a>
-<ul class="sectlevel2">
-<li><a href="#_self_avoiding_walks_saw_et_chaînes_de_markov">Self-avoiding walks (SAW) et Chaînes de Markov</a></li>
-<li><a href="#_objectifs_et_méthodes">Objectifs et méthodes</a></li>
-<li><a href="#_bibliographie_et_outils_informatiques">Bibliographie et Outils Informatiques</a></li>
-<li><a href="#_algorithmes_statiques_saw">Algorithmes statiques (SAW)</a></li>
-<li><a href="#_algorithmes_dynamiques_chaînes_de_markov">Algorithmes dynamiques (Chaînes de Markov)</a></li>
-</ul>
-</li>
-<li><a href="#_intro">Intro</a></li>
-<li><a href="#_la_méthode_des_caractéristiques">La méthode des caractéristiques</a>
-<ul class="sectlevel2">
-<li><a href="#_si">SI</a></li>
-</ul>
-</li>
-<li><a href="#_sir">SIR</a>
-<ul class="sectlevel2">
-<li><a href="#_odes">ODEs</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_introduction">Introduction</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>marches auto-évitantes</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="saw.png" alt="saw">
-</div>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_polymères">Polymères</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm.
-La forme géometrique est aussi importante que les propriétes chimiques.
-Le développement industriel de la science macromoléculaire a été accéléré par la Seconde Guerre mondiale.</p>
+La forme géometrique est aussi important que les propriétes chimiques.</p>
 </div>
 </div>
 </div>
@@ -516,44 +475,13 @@ Le développement industriel de la science macromoléculaire a été accéléré
 </div>
 </div>
 <div class="paragraph">
-<p>L&#8217;idée:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vulca2D.png" alt="vulca2D">
-</div>
-</div>
-<div class="paragraph">
-<p>La mienne:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="VulcaMine.png" alt="VulcaMine">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vilcaMine2.png" alt="vilcaMine2">
-</div>
-</div>
-<div class="paragraph">
 <p>Donc, quand on rajoute du soufre il prend un des doubles liens chez des polymères voisins et fait un espèce du pont. La longeur du pont, càd le nombre des atoms du soufre, varie aléatoirement de 1 à 8.</p>
 </div>
 <div class="paragraph">
 <p>Le soufre n&#8217;affect pas tous les monomères d&#8217;une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augementant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n&#8217;excède 2 atomes : le matériau résultant est ébonite. La longeurs réduite des ponts s&#8217;explique par les condition de cuisson : aux temperatures exrtrêmes ( \(&gt; 800°\) ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2.</p>
 </div>
 <div class="paragraph">
-<p>Pour simuler la vulcanisation en Mathis on va prendre 10 polymères de caoutchouc synthétique de longeur de 30 monomères. Donc ces polymères représentent les lignes horizontals sur une lattice de 80x30 (10*8=80, où 8 - la longeur du pont max). Le taux des doubles liens affectés va dépendre de la concenration du soufre. Les liens à affecter seront choisis aléatoirement, la longeur des ponts sera aussi aléatoire pour chaque pont. Un pont peut aller à 1 de 30 monomères du polymère voisin. Les atomes du soufre font marches aléatoires sans intersection entre les macromolécules, ce qu&#8217;on va simuler avec méthodes statiques.</p>
-</div>
-<div class="paragraph">
-<p>Création grille d&#8217;affichage:</p>
-</div>
-<div class="paragraph">
-<p>x-atome C stable (ne peut pas interagir avec soufre)
-o-atome C à double lien (peut être affecté par soufre)</p>
-</div>
-<div class="paragraph">
-<p>xxoo - xxoo - xxoo</p>
+<p>Pour simuler la vulcanisation en Mathis on va prendre 10 polymères de caoutchouc synthétique de longeur de 30 monomères. Donc ces polymères représentent les lignes horizontals sur une lattice de 80x30 (10*8=80, où 8 - la longeur du pont max). Le taux des doubles liens affectés va dépendre de la concenration du soufre. Les liens à affecter seront choisis aléatoirement, la longeur des ponts sera aussi aléatoire pour chaque pont. Un pont peut aller à 1 de 30 monomères du polymère voisin.</p>
 </div>
 <div class="sect2">
 <h3 id="_self_avoiding_walks_saw_et_chaînes_de_markov">Self-avoiding walks (SAW) et Chaînes de Markov</h3>
@@ -783,6 +711,35 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 <div class="sect3">
+<h4 id="_algorithme_kink_jump">Algorithme Kink-Jump</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Générer ou chisir un SAW à n pas</p>
+</li>
+<li>
+<p>Choisir un monomère aléatoirement et le tourner sur le cerle obtenu par le vecteur [\(i-1\), \(i+1\) ]</p>
+</li>
+<li>
+<p>???</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="kj.png" alt="kj">
+</div>
+</div>
+<div class="sect4">
+<h5 id="__em_avantages_em_4"><em>Avantages</em></h5>
+
+</div>
+<div class="sect4">
+<h5 id="__em_disavantages_em_4"><em>Disavantages</em></h5>
+
+</div>
+</div>
+<div class="sect3">
 <h4 id="_algorithme_de_pivot">Algorithme de pivot</h4>
 <div class="olist arabic">
 <ol class="arabic">
@@ -810,7 +767,7 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </ol>
 </div>
 <div class="sect4">
-<h5 id="__em_avantages_em_4"><em>Avantages</em></h5>
+<h5 id="__em_avantages_em_5"><em>Avantages</em></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -823,7 +780,7 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 <div class="sect4">
-<h5 id="__em_disavantages_em_4"><em>Disavantages</em></h5>
+<h5 id="__em_disavantages_em_5"><em>Disavantages</em></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -842,198 +799,10 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_intro">Intro</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d&#8217;être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l&#8217;étude de la science des réseaux.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules.</p>
-</div>
-<div class="paragraph">
-<p>Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l&#8217;équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l&#8217;équation différentielle ordinaire le long d&#8217;une caractéristique permet de retrouver la solution du problème original.</p>
-</div>
-<div class="sect2">
-<h3 id="_si">SI</h3>
-<div class="imageblock">
-<div class="content">
-<img src="SIscheme.png" alt="SIscheme">
-</div>
-</div>
-<div class="paragraph">
-<p>Modèle SI en mathis</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<video src="SI.mp4" controls>
-Your browser does not support the video tag.
-</video>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_sir">SIR</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>SIR : susceptible, infected, recovered - est un modèle très simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="SIRscheme.png" alt="SIRscheme">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="SIRdynamique.png" alt="SIRdynamique">
-</div>
-</div>
-<div class="sect2">
-<h3 id="_odes">ODEs</h3>
-<div class="paragraph">
-<p>Problème initial:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(S'= \gamma R - \alpha IS\)</p>
-</li>
-<li>
-<p>\(I'= \alpha IS - \beta I\)</p>
-</li>
-<li>
-<p>\(R'= \beta I - \gamma R\)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>where \(S+I+R=1\)</p>
-</div>
-<div class="paragraph">
-<p>Et si l&#8217;immunauté n&#8217;est pas permanent? (la grippe)</p>
-</div>
-<div class="paragraph">
-<p>Stochastique SIR: on fait le choix aléatoire entre S,I,R:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Si on choisi S, donc on le change pour I avec la probabilité \( \frac{\alpha NI(t)}{N-1}\)</p>
-</li>
-<li>
-<p>Si on choisi I, donc on le change pour R avec la probabilité \(\beta\)</p>
-</li>
-<li>
-<p>Si on choisi R, donc on le change pour S avec la probabilité \(\gamma\)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Sous les hypothèses:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(A(\Delta t) \approx A_0 \Delta t\)</p>
-</li>
-<li>
-<p>\(B(\Delta t) \approx B_0 \Delta t\)</p>
-</li>
-<li>
-<p>\(C(\Delta t) \approx C_0 \Delta t\)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>On obtient la discretization Euler du problème initial:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(S(t+\Delta t)=S(t)(1-A(\Delta t)I(t))+R(t)C(\Delta t)\)</p>
-</li>
-<li>
-<p>\(I(t+\Delta t)=I(t)(1-B(\Delta t))+A(\Delta t) I(t) S(t)\)</p>
-</li>
-<li>
-<p>\(R(t+\Delta t)=R(t)(1-C(\Delta t))+B(\Delta t)I(t)\)</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_dérivation_de_edp_hyperbolique_de_kolmogorov_pour_un_modèle_stochastique_discrèt">Dérivation de EDP hyperbolique de Kolmogorov pour un modèle stochastique discrèt:</h4>
-<div class="paragraph">
-<p>Supposons \(P_{N, \Delta t} (t,n,m)\) - la probabilité au moment \(t\) d&#8217;avoir \(n\) personnes susceptibles, \(m\) personnes infectées et \(N-n-m\) personnes immunisées dans population constante \(N\).</p>
-</div>
-<div class="paragraph">
-<p>Les constantes \(\alpha, \beta, \gamma\) au limite</p>
-</div>
-<div class="paragraph">
-<p>\(P_{N, \Delta t} (t+\Delta t,n,m) = \alpha \frac{(n+1)(m-1)}{N(N-1)} P_{N, \Delta t}(t,n+1,m-1)\)
-\( + \beta \frac{m+1}{N} P_{N, \Delta t} (t,n,m+1) + \gamma \frac{N-n-m+1}{N}P_{N, \Delta t}(t,n-1,m) \)
-\( + (\frac{n}{N} (1-\alpha \frac{m}{N-1}) +\frac{m}{N}(1-\beta) + \frac {N-n-m}{N}(1-\gamma)  ) P_{N, \Delta t}(t,n,m)\)</p>
-</div>
-<div class="paragraph">
-<p>Maintenant, on pose \(x=n/N\), \(y=m/N\) et \(p(t,x,y)=NP_{N, \Delta t}(t,xN,yN)\).</p>
-</div>
-<div class="paragraph">
-<p>\(t+\Delta t,x,y)= \alpha \frac{(x+1/N)(y-1/N)}{1-1/N} p(t,x+1/N,y-1/N)\)
-\(+ \beta (y+\frac{1}{N}) p(t,x,y+1/N) + \gamma (1-x-y+\frac{1}{N}) p(t,x-1/N,y)\)
-\( + (x(1-\frac{\alpha y}{1-1/N}) y(1-\beta)(1-x-y)(1-\gamma)  p(t,x,y)\)
-\( \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) \)</p>
-</div>
-<div class="paragraph">
-<p>Enfin, on obtient EDP hyperbolique de Kolmogorov \(\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) \) avec la probabilité
-\( \frac{d}{dt} \int_S p(t,x,y)dxdy=0\) où S est un triangle.</p>
-</div>
-<div class="paragraph">
-<p>Dans le cas où on suppose qu&#8217;on sait la proportion exacte de \(S,I\) et \( R\) au moment \(t\), donc on peut trouver la solution pour tout \(t\).  Dans notre cas, on ne sait que la loi de  = probabilité, donc l&#8217;équation de Kolmogorov transport cette probabilité dans le temps.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_sir_comme_edp_de_transport">SIR comme EDP de transport</h4>
-<div class="paragraph">
-<p><strong>x</strong> = (x,y) , \(\Phi_t(\textbf{x})\)
-* X =c(1-X-Y)-\(\alpha\) XY
-* Y =(aX-b)Y</p>
-</div>
-<div class="paragraph">
-<p>Let \(p_0(\textbf{x}) \in C^1 (R^2)\)
-\( F * \nabla Q = - \nabla * F \) (F is rhs)</p>
-</div>
-<div class="paragraph">
-<p>\(p(t,x,y) = e^{Q(\textbf x)-Q(\Phi_{-t}(\textbf{x}))}p_0(\Phi_{-t}(\textbf{x}))\) avec \(\textbf{x}=(x,y)\).</p>
-</div>
-<div class="paragraph">
-<p>\(e^{-Q(\phi_t( \textbf{x}_0))}p(t,\phi_t(\textbf{x}_0)) =e^{Q(\textbf{x}_0)} p_0(\textbf{x}_0) \)</p>
-</div>
-<div class="paragraph">
-<p>Donc au final:</p>
-</div>
-<div class="paragraph">
-<p>\(0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= \)
-\(=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))]
-stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
-\(=\partial_t p + \nabla *(pF)\)</p>
-</div>
-<div class="paragraph">
-<p>Les equations du modèle SIR  forment les caractéristiques pour l&#8217;EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-22 16:09:59 CEST
+Last updated 2017-06-23 14:26:12 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">

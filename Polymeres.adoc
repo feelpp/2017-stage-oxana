@@ -1,21 +1,13 @@
-= Applications de marches auto-évitantes et des équations differentielles dans l'étude des polymères et de l'épidémiologie
+= Modélisation moléculaire des polymères avec SAW
 Oxana USHAKOVA
 :feelpp: Feel++
 :stem: latexmath
-:toc:
 
-
-== Introduction
-
-marches auto-évitantes 
-
-image::saw.png[]
 
 == Polymères
 
 Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement stem:[10^3-10^5] monomères, et a la longeur de stem:[10^{-5} - 10^{-2}] cm.
-La forme géometrique est aussi importante que les propriétes chimiques.
-Le développement industriel de la science macromoléculaire a été accéléré par la Seconde Guerre mondiale.
+La forme géometrique est aussi important que les propriétes chimiques.
 
 
 == Vulcanisation 
@@ -39,16 +31,6 @@ Et après la cuisson on obtient le même réseau des atoms que avant:
 image::m2.png[]
 
 
-L'idée:
-
-image::vulca2D.png[]
-
-La mienne:
-
-image::VulcaMine.png[]
-
-image::vilcaMine2.png[]
-
 Donc, quand on rajoute du soufre il prend un des doubles liens chez des polymères voisins et fait un espèce du pont. La longeur du pont, càd le nombre des atoms du soufre, varie aléatoirement de 1 à 8. 
 
 
@@ -64,12 +46,27 @@ Création grille d'affichage:
 x-atome C stable (ne peut pas interagir avec soufre)
 o-atome C à double lien (peut être affecté par soufre)
 
-xxoo - xxoo - xxoo
+Exemple de 4 polymères:
 
+xxooxxooxxoo
+xooxxooxxoox
+ooxxooxxooxx
+oxxooxxooxxo
 
+Partie constant : xxoo
 
+Il existe 4 débuts des chaines possibles:
 
+. xxoo_n
+. oo + xxoo_n
+. o + xxoo_n
+. x + oo + xxoo_n
 
+Donc, morceau xxoo est un "incrément constant", et oo,o,x sont utilisés qu'au début.
+
+Puis, on crée ces 4 types des chaines et on les met en ordre aléatoire, l'une après l'autre,  en fonction de la hauteur du grille qu'on veut (4,8,12, etc) 
+
+COORDONNEES VERTICES:
  
 
 
@@ -190,126 +187,4 @@ Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l'
 * Chaque itération demande beaucoup de calcul
 * Difficile à implémenter à l'ordinateur : nombres des symétries augement très vite
 * Pas trop efficace pour des chaînes longues, mais converge toujours aussi vite 
-
-
-
-
-== Intro 
-
-Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d'être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l'étude de la science des réseaux.
-
-== La méthode des caractéristiques
-
-La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules. 
-
-Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l'équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l'équation différentielle ordinaire le long d'une caractéristique permet de retrouver la solution du problème original.
-
-
-=== SI
-
-image::SIscheme.png[]
-
-Modèle SI en mathis
-
-video::SI.mp4[]
-
-== SIR
-
-SIR : susceptible, infected, recovered - est un modèle très simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n'est ni née, ni décédée.
-
-image::SIRscheme.png[]
-
-image::SIRdynamique.png[]
-
-=== ODEs
-
-Problème initial:
-
-* stem:[S'= \gamma R - \alpha IS] 
-* stem:[I'= \alpha IS - \beta I]
-* stem:[R'= \beta I - \gamma R] 
-
-where stem:[S+I+R=1]
-
-Et si l'immunauté n'est pas permanent? (la grippe)
-
-Stochastique SIR: on fait le choix aléatoire entre S,I,R:
-
-* Si on choisi S, donc on le change pour I avec la probabilité stem:[ \frac{\alpha NI(t)}{N-1}]
-* Si on choisi I, donc on le change pour R avec la probabilité stem:[\beta]
-* Si on choisi R, donc on le change pour S avec la probabilité stem:[\gamma]
-
-Sous les hypothèses:
-
-* stem:[A(\Delta t) \approx A_0 \Delta t]
-* stem:[B(\Delta t) \approx B_0 \Delta t]
-* stem:[C(\Delta t) \approx C_0 \Delta t]
-
-On obtient la discretization Euler du problème initial:
-
-* stem:[S(t+\Delta t)=S(t)(1-A(\Delta t)I(t))+R(t)C(\Delta t)]
-* stem:[I(t+\Delta t)=I(t)(1-B(\Delta t))+A(\Delta t) I(t) S(t)]
-* stem:[R(t+\Delta t)=R(t)(1-C(\Delta t))+B(\Delta t)I(t)]
-
-==== Dérivation de EDP hyperbolique de Kolmogorov pour un modèle stochastique discrèt:
-
-Supposons stem:[P_{N, \Delta t} (t,n,m)] - la probabilité au moment stem:[t] d'avoir stem:[n] personnes susceptibles, stem:[m] personnes infectées et stem:[N-n-m] personnes immunisées dans population constante stem:[N].
-
-Les constantes stem:[\alpha, \beta, \gamma] au limite 
-
-
-stem:[P_{N, \Delta t} (t+\Delta t,n,m) = \alpha \frac{(n+1)(m-1)}{N(N-1)} P_{N, \Delta t}(t,n+1,m-1)] 
-stem:[ + \beta \frac{m+1}{N} P_{N, \Delta t} (t,n,m+1) + \gamma \frac{N-n-m+1}{N}P_{N, \Delta t}(t,n-1,m) ] 
-stem:[ + (\frac{n}{N} (1-\alpha \frac{m}{N-1}) +\frac{m}{N}(1-\beta) + \frac {N-n-m}{N}(1-\gamma)  ) P_{N, \Delta t}(t,n,m)]
-
-Maintenant, on pose stem:[x=n/N], stem:[y=m/N] et stem:[p(t,x,y)=NP_{N, \Delta t}(t,xN,yN)].
-
-stem:[t+\Delta t,x,y)= \alpha \frac{(x+1/N)(y-1/N)}{1-1/N} p(t,x+1/N,y-1/N)]
-stem:[+ \beta (y+\frac{1}{N}) p(t,x,y+1/N) + \gamma (1-x-y+\frac{1}{N}) p(t,x-1/N,y)] 
-stem:[ + (x(1-\frac{\alpha y}{1-1/N}) +y(1-\beta)+(1-x-y)(1-\gamma)  p(t,x,y)]
-stem:[ \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) ]
-
-Enfin, on obtient EDP hyperbolique de Kolmogorov stem:[\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) ] avec la probabilité
-stem:[ \frac{d}{dt} \int_S p(t,x,y)dxdy=0] où S est un triangle.
-
-Dans le cas où on suppose qu'on sait la proportion exacte de stem:[S,I] et stem:[ R] au moment stem:[t], donc on peut trouver la solution pour tout stem:[t].  Dans notre cas, on ne sait que la loi de  = probabilité, donc l'équation de Kolmogorov transport cette probabilité dans le temps.
-
-==== SIR comme EDP de transport
-
-**x** = (x,y) , stem:[\Phi_t(\textbf{x})]
-* X =c(1-X-Y)-stem:[\alpha] XY
-* Y =(aX-b)Y
-
-Let stem:[p_0(\textbf{x}) \in C^1 (R^2)]
-stem:[ F * \nabla Q = - \nabla * F ] (F is rhs)
-
-stem:[p(t,x,y) = e^{Q(\textbf x)-Q(\Phi_{-t}(\textbf{x}))}p_0(\Phi_{-t}(\textbf{x}))] avec stem:[\textbf{x}=(x,y)].
-
-stem:[e^{-Q(\phi_t( \textbf{x}_0))}p(t,\phi_t(\textbf{x}_0)) =e^{Q(\textbf{x}_0)} p_0(\textbf{x}_0) ]
-
-Donc au final:
-
-stem:[0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= ]
-stem:[=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))+\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))]
-stem:[=\nabla * Fp+ F\nabla p+ \partial_t p]
-stem:[=\partial_t p + \nabla *(pF)]
-
-Les equations du modèle SIR  forment les caractéristiques pour l'EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
