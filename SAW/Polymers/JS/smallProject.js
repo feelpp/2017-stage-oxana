@@ -2,13 +2,11 @@ var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        function static2() {
-            var mathisFrame = new mathis.MathisFrame();
-            var interpolationStyle = mathis.geometry.InterpolationStyle.none;
-            var chainSize = 10;
-            var mamesh = new mathis.Mamesh();
-            /**check if a raw belongs to a matrix*/
-            function contains(points, onePoint) {
+        var SAW_Creator_static_Biased = (function () {
+            function SAW_Creator_static_Biased() {
+                this.chainSize = 10;
+            }
+            SAW_Creator_static_Biased.prototype.contains = function (points, onePoint) {
                 for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
                     var point = points_1[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
@@ -16,95 +14,101 @@ var mathis;
                     }
                 }
                 return false;
-            }
-            var security = 10;
-            var NOTfinished = true;
-            var attempts = 0;
-            var min = -1;
-            var max = 2;
-            // allJumps stores all possibles steps in 3D on [-1;1]- 0,0,0 ; 0,1,1; -1,0,1; etc
-            var allJumps = [];
-            var none = new mathis.XYZ(0, 0, 0);
-            allJumps.push(none);
-            while (allJumps.length < 27) {
-                var alea1 = Math.floor(Math.random() * (max - min)) + min;
-                var alea2 = Math.floor(Math.random() * (max - min)) + min;
-                var alea3 = Math.floor(Math.random() * (max - min)) + min;
-                var coordinates = new mathis.XYZ(alea1, alea2, alea3);
-                if (!contains(allJumps, coordinates)) {
-                    allJumps.push(coordinates);
+            };
+            SAW_Creator_static_Biased.prototype.go = function () {
+                var start = new Date().getTime();
+                cc('BIASED STATIC METHOD');
+                var security = 10;
+                var NOTfinished = true;
+                var attempts = 0;
+                var min = -1;
+                var max = 2;
+                var mamesh = new mathis.Mamesh();
+                /**check if a raw belongs to a matrix*/
+                // allJumps stores all possibles steps in 3D on [-1;1]- 0,0,0 ; 0,1,1; -1,0,1; etc
+                var allJumps = [];
+                var none = new mathis.XYZ(0, 0, 0);
+                allJumps.push(none);
+                while (allJumps.length < 27) {
+                    var alea1 = Math.floor(Math.random() * (max - min)) + min;
+                    var alea2 = Math.floor(Math.random() * (max - min)) + min;
+                    var alea3 = Math.floor(Math.random() * (max - min)) + min;
+                    var coordinates = new mathis.XYZ(alea1, alea2, alea3);
+                    if (!this.contains(allJumps, coordinates)) {
+                        allJumps.push(coordinates);
+                    }
                 }
-            }
-            //cc('allJumps', allJumps)
-            //cc('allJumps length', allJumps.length)
-            //first vertex
-            var x = 0;
-            var y = 0;
-            var z = 0;
-            var origin = new mathis.XYZ(x, y, z);
-            //Updating mamesh.vertices
-            var vertex0 = new mathis.Vertex();
-            vertex0.position = origin;
-            mamesh.vertices.push(vertex0);
-            // validatedVertexes stores all the validated vertexes
-            var validatedVertexes = [];
-            validatedVertexes[0] = new mathis.XYZ(x, y, z);
-            cc('validatedVertexes[0]', validatedVertexes[0]);
-            while (NOTfinished && attempts < security) {
-                for (var j = 1; j < chainSize - 1; j++) {
-                    //First, we must sort allJumps and choose those, that will not lead to intersection
-                    //We'll keep them in availableJumps
-                    var availableJumps = [];
-                    for (var i = 0; i < allJumps.length; i++) {
-                        //Get the last validated vertex  , check if this vertex is really new; if so - add to availableJumps
-                        var testJump = new mathis.XYZ(validatedVertexes[j - 1].x + allJumps[i].x, validatedVertexes[j - 1].y + allJumps[i].y, validatedVertexes[j - 1].z + allJumps[i].z);
-                        if (!contains(validatedVertexes, testJump)) {
-                            availableJumps.push(allJumps[i]);
+                //cc('allJumps', allJumps)
+                //cc('allJumps length', allJumps.length)
+                //first vertex
+                var x = 0;
+                var y = 0;
+                var z = 0;
+                var origin = new mathis.XYZ(x, y, z);
+                //Updating mamesh.vertices
+                var vertex0 = new mathis.Vertex();
+                vertex0.position = origin;
+                mamesh.vertices.push(vertex0);
+                // validatedVertexes stores all the validated vertexes
+                var validatedVertexes = [];
+                validatedVertexes[0] = new mathis.XYZ(x, y, z);
+                cc('validatedVertexes[0]', validatedVertexes[0]);
+                while (NOTfinished && attempts < security) {
+                    for (var j = 1; j < this.chainSize - 1; j++) {
+                        //First, we must sort allJumps and choose those, that will not lead to intersection
+                        //We'll keep them in availableJumps
+                        var availableJumps = [];
+                        for (var i = 0; i < allJumps.length; i++) {
+                            //Get the last validated vertex  , check if this vertex is really new; if so - add to availableJumps
+                            var testJump = new mathis.XYZ(validatedVertexes[j - 1].x + allJumps[i].x, validatedVertexes[j - 1].y + allJumps[i].y, validatedVertexes[j - 1].z + allJumps[i].z);
+                            if (!this.contains(validatedVertexes, testJump)) {
+                                availableJumps.push(allJumps[i]);
+                            }
+                            else {
+                                cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
+                            }
+                        }
+                        cc('availableJumps', availableJumps);
+                        //Now we have a list of available jumps at step i that won't lead to self intersection.
+                        if (availableJumps.length > 0) {
+                            var randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
+                            cc('validatedVertexes[j-1]', validatedVertexes[j - 1]);
+                            cc('randomStep', randomStep);
+                            var newVertex = new mathis.XYZ(validatedVertexes[j - 1].x + randomStep.x, validatedVertexes[j - 1].y + randomStep.y, validatedVertexes[j - 1].z + randomStep.z);
+                            validatedVertexes.push(newVertex);
+                            var vertex = new mathis.Vertex();
+                            vertex.position = newVertex;
+                            mamesh.vertices.push(vertex);
+                            cc('We add ', newVertex);
+                            if (validatedVertexes.length > this.chainSize) {
+                                break;
+                            }
                         }
                         else {
-                            cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
-                        }
-                    }
-                    cc('availableJumps', availableJumps);
-                    //Now we have a list of available jumps at step i that won't lead to self intersection.
-                    if (availableJumps.length > 0) {
-                        var randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
-                        cc('validatedVertexes[j-1]', validatedVertexes[j - 1]);
-                        cc('randomStep', randomStep);
-                        var newVertex = new mathis.XYZ(validatedVertexes[j - 1].x + randomStep.x, validatedVertexes[j - 1].y + randomStep.y, validatedVertexes[j - 1].z + randomStep.z);
-                        validatedVertexes.push(newVertex);
-                        var vertex = new mathis.Vertex();
-                        vertex.position = newVertex;
-                        mamesh.vertices.push(vertex);
-                        cc('We add ', newVertex);
-                        if (validatedVertexes.length > chainSize) {
+                            attempts++;
+                            cc('Cul de sac!');
+                            while (mamesh.vertices.length > 0) {
+                                mamesh.vertices.pop();
+                            }
                             break;
                         }
                     }
-                    else {
-                        attempts++;
-                        cc('Cul de sac!');
-                        while (mamesh.vertices.length > 0) {
-                            mamesh.vertices.pop();
-                        }
-                        break;
-                    }
+                    NOTfinished = (validatedVertexes.length < this.chainSize);
                 }
-                NOTfinished = (validatedVertexes.length < chainSize);
-            }
-            cc('validatedVertexes', validatedVertexes);
-            cc('Attempts', attempts);
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.go();
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.go();
-        }
-        polymer.static2 = static2;
+                cc('validatedVertexes', validatedVertexes);
+                cc('Attempts', attempts);
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                var end = new Date().getTime();
+                cc('Execution Time in sec', (end - start) * 1000);
+                return mamesh;
+            };
+            return SAW_Creator_static_Biased;
+        }());
+        polymer.SAW_Creator_static_Biased = SAW_Creator_static_Biased;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 var mathis;
@@ -165,6 +169,8 @@ var mathis;
             var mamesh = new mathis.Mamesh();
             // We consider a domain W=NxN, where all not taken spots are healthy people */
             var N = 10;
+            var camera = mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(5, 0, -30));
             //Initial SIR
             var S = [];
             var I = [];
@@ -172,14 +178,15 @@ var mathis;
             //First infected person
             I[0] = new mathis.XYZ(0, 0, 0);
             I[1] = new mathis.XYZ(10, 10, 10);
+            I[2] = new mathis.XYZ(10, -10, 10);
             //I[2]=new XYZ(-4,6,-3);
             var vertex0 = new mathis.Vertex();
             vertex0.position = I[0];
             var vertex1 = new mathis.Vertex();
             vertex1.position = I[1];
-            //var vertex2 = new mathis.Vertex();
-            //vertex2.position=I[2];
-            mamesh.vertices.push(vertex0, vertex1);
+            var vertex2 = new mathis.Vertex();
+            vertex2.position = I[2];
+            mamesh.vertices.push(vertex0, vertex1, vertex2);
             //All jumps  (3^3=27)
             var allJumps = [];
             var allJumpsCheck = true;
@@ -196,6 +203,28 @@ var mathis;
                 allJumpsCheck = (allJumps.length < 27);
             }
             cc('allJumps', allJumps);
+            function outbreak(N, b) {
+                var max_t = 20;
+                var I = 1;
+                var S = N - 1;
+                var incidence = [];
+                for (var t_1 = 1; t_1 < max_t; t_1++) {
+                    var p_inf = 1.0 - Math.exp(-b * I / N);
+                    var new_I = 0;
+                    for (var i = 0; i < S; i++) {
+                        if (Math.random() < p_inf) {
+                            new_I++;
+                        }
+                    }
+                    if (new_I == 0) {
+                        break;
+                    }
+                    incidence.push({ t: t_1, I: new_I });
+                    S -= new_I;
+                    I = new_I;
+                }
+                return (incidence);
+            }
             /*
             for (let j=0; j<I.length;j++){
                 for (let i=0; i< allJumps.length; i++){
@@ -215,11 +244,16 @@ var mathis;
             var newlyInfected = 0;
             var I_test = [];
             I_test[0] = new mathis.XYZ(0, 0, 0);
-            I_test[1] = new mathis.XYZ(7, 6, 7);
+            I_test[1] = new mathis.XYZ(10, 10, 10);
+            I_test[2] = new mathis.XYZ(10, -10, 10);
             var I_delta_step = [];
             I_delta_step[0] = new mathis.XYZ(0, 0, 0);
-            I_delta_step[1] = new mathis.XYZ(7, 6, 7);
-            while (notEpidemy) {
+            I_delta_step[1] = new mathis.XYZ(10, 10, 10);
+            I_delta_step[2] = new mathis.XYZ(10, -10, 10);
+            var t = 0;
+            var action = new mathis.PeriodicAction(function () {
+                t += 1;
+                //while (notEpidemy) {
                 for (var j = 0; j < I_test.length; j++) {
                     for (var i = 0; i < allJumps.length; i++) {
                         var test = new mathis.XYZ(I_test[j].x + allJumps[i].x, I_test[j].y + allJumps[i].y, I_test[j].z + allJumps[i].z);
@@ -238,30 +272,35 @@ var mathis;
                     }
                 }
                 cc('New LOOP');
-                notEpidemy = (newlyInfected < 55);
+                notEpidemy = (newlyInfected < 150);
                 I_test = I_delta_step;
                 shuffle(I_test);
-                //*******HERE COMES THE BUG****if more than 5/
-            }
-            cc('notEpidemy !!', newlyInfected);
-            cc('vertices !!', mamesh.vertices.length);
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.silver);
-            //linkViewer.go();
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.vertices = [mamesh.vertices[0], mamesh.vertices[1]];
-            verticesViewer.color = new mathis.Color(mathis.Color.names.red);
-            verticesViewer.radiusAbsolute = 1;
-            verticesViewer.go();
-            var verticesViewer1 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer1.color = new mathis.Color(mathis.Color.names.black);
-            verticesViewer1.radiusAbsolute = 0.3;
-            verticesViewer1.go();
+                //}
+                cc('notEpidemy !!', newlyInfected);
+                cc('vertices !!', mamesh.vertices.length);
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
+                linkViewer.color = new mathis.Color(mathis.Color.names.silver);
+                //linkViewer.go();
+                //INFECTED
+                var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                verticesViewer.vertices = [mamesh.vertices[0], mamesh.vertices[1], mamesh.vertices[2]];
+                verticesViewer.color = new mathis.Color(mathis.Color.names.red);
+                verticesViewer.radiusAbsolute = 1;
+                verticesViewer.go();
+                var verticesViewer1 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                verticesViewer1.color = new mathis.Color(mathis.Color.names.black);
+                verticesViewer1.radiusAbsolute = 0.3;
+                verticesViewer1.go();
+            });
+            //action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 50;
+            // mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
         }
         epi.epi1 = epi1;
     })(epi = mathis.epi || (mathis.epi = {}));
@@ -587,6 +626,9 @@ var mathis;
             var mamesh = new mathis.Mamesh();
             var y = 10;
             var x = 14;
+            var camera = mathisFrame.getGrabberCamera();
+            //camera.setFreeDisplacementMode()
+            camera.changePosition(new mathis.XYZ(0, 0, -20));
             //bottom
             var vertexH0 = new mathis.Vertex().setPosition(2, 1, 0); //0
             var vertexH1 = new mathis.Vertex().setPosition(2, 3, 0); //1
@@ -634,13 +676,15 @@ var mathis;
             var vertex2C3i = new mathis.Vertex().setPosition(9 + x, 4 + y, 0); //42
             var vertex2OUT2 = new mathis.Vertex().setPosition(14 + x, 2 + y, 0); //43
             //soufre
-            var s1 = new mathis.Vertex().setPosition(5, 7, 0); //44
-            var s2 = new mathis.Vertex().setPosition(5, 11, 0); //45
-            var s3 = new mathis.Vertex().setPosition(19, 9, 0); //46
-            var s11 = new mathis.Vertex().setPosition(9, 1, 0); //47
-            var s22 = new mathis.Vertex().setPosition(9, 17, 0); //48
-            var s33 = new mathis.Vertex().setPosition(19, 1, 0); //49
-            var s44 = new mathis.Vertex().setPosition(23, 17, 0); //50
+            /*
+                        let s1 =  new mathis.Vertex().setPosition(5,7,0); //44
+                        let s2 =  new mathis.Vertex().setPosition(5,11,0); //45
+                        let s3 =  new mathis.Vertex().setPosition(19,9,0); //46
+                        let s11 =  new mathis.Vertex().setPosition(9,1,0); //47
+                        let s22 =  new mathis.Vertex().setPosition(9,17,0); //48
+                        let s33 =  new mathis.Vertex().setPosition(19,1,0); //49
+                        let s44 =  new mathis.Vertex().setPosition(23,17,0); //50
+            */
             /*
                         var v1 = new mathis.Vertex().setPosition(2,1,0); //0
                         var v2= new mathis.Vertex().setPosition(2,3,0); //1
@@ -654,7 +698,7 @@ var mathis;
                         var v10 = new mathis.Vertex().setPosition(9,4,0); //9
             
             */
-            mamesh.vertices.push(vertexH0, vertexH1, vertexH2, vertexH3, vertexH4, vertexH5, vertexC0, vertexC1, vertexC2, vertexC3, vertexOUT1, vertexH0i, vertexH1i, vertexH2i, vertexH3i, vertexH4i, vertexH5i, vertexC0i, vertexC1i, vertexC2i, vertexC3i, vertexOUT2, vertex2H0, vertex2H1, vertex2H2, vertex2H3, vertex2H4, vertex2H5, vertex2C0, vertex2C1, vertex2C2, vertex2C3, vertex2OUT1, vertex2H0i, vertex2H1i, vertex2H2i, vertex2H3i, vertex2H4i, vertex2H5i, vertex2C0i, vertex2C1i, vertex2C2i, vertex2C3i, vertex2OUT2, s1, s2, s3, s11, s22, s33, s44);
+            mamesh.vertices.push(vertexH0, vertexH1, vertexH2, vertexH3, vertexH4, vertexH5, vertexC0, vertexC1, vertexC2, vertexC3, vertexOUT1, vertexH0i, vertexH1i, vertexH2i, vertexH3i, vertexH4i, vertexH5i, vertexC0i, vertexC1i, vertexC2i, vertexC3i, vertexOUT2, vertex2H0, vertex2H1, vertex2H2, vertex2H3, vertex2H4, vertex2H5, vertex2C0, vertex2C1, vertex2C2, vertex2C3, vertex2OUT1, vertex2H0i, vertex2H1i, vertex2H2i, vertex2H3i, vertex2H4i, vertex2H5i, vertex2C0i, vertex2C1i, vertex2C2i, vertex2C3i, vertex2OUT2);
             //mamesh.vertices.push(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10);
             // pour Carbone
             mamesh.vertices[0].setOneLink(mamesh.vertices[6]);
@@ -703,13 +747,14 @@ var mathis;
             mamesh.vertices[7 + a].setOneLink(mamesh.vertices[3 + a]);
             mamesh.vertices[10 + a].setOneLink(mamesh.vertices[7 + a]);
             //pour Soufre
-            mamesh.vertices[44].setTwoOppositeLinks(mamesh.vertices[8], mamesh.vertices[45]);
-            mamesh.vertices[45].setTwoOppositeLinks(mamesh.vertices[44], mamesh.vertices[30]);
-            mamesh.vertices[46].setTwoOppositeLinks(mamesh.vertices[19], mamesh.vertices[42]);
-            mamesh.vertices[47].setOneLink(mamesh.vertices[9]);
-            mamesh.vertices[48].setOneLink(mamesh.vertices[31]);
-            mamesh.vertices[49].setOneLink(mamesh.vertices[20]);
-            mamesh.vertices[50].setOneLink(mamesh.vertices[41]);
+            /*
+                        mamesh.vertices[44].setTwoOppositeLinks(mamesh.vertices[8],mamesh.vertices[45]);
+                        mamesh.vertices[45].setTwoOppositeLinks(mamesh.vertices[44],mamesh.vertices[30]);
+                        mamesh.vertices[46].setTwoOppositeLinks(mamesh.vertices[19],mamesh.vertices[42]);
+                        mamesh.vertices[47].setOneLink(mamesh.vertices[9]);
+                        mamesh.vertices[48].setOneLink(mamesh.vertices[31]);
+                        mamesh.vertices[49].setOneLink(mamesh.vertices[20]);
+                        mamesh.vertices[50].setOneLink(mamesh.vertices[41]);  */
             /*
              let verticesViewer2 = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //C
              verticesViewer2.vertices= [mamesh.vertices[6], mamesh.vertices[7], mamesh.vertices[8], mamesh.vertices[9]]
@@ -737,11 +782,12 @@ var mathis;
             verticesViewer.radiusAbsolute = 0.6;
             verticesViewer.color = new mathis.Color(mathis.Color.names.blue);
             verticesViewer.go();
-            var verticesViewerS = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene); //S visible
-            verticesViewerS.vertices = [mamesh.vertices[44], mamesh.vertices[45], mamesh.vertices[46]];
-            verticesViewerS.color = new mathis.Color(mathis.Color.names.yellow);
-            verticesViewerS.radiusAbsolute = 0.8;
-            verticesViewerS.go();
+            /*            let verticesViewerS = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //S visible
+                        verticesViewerS.vertices= [mamesh.vertices[44],mamesh.vertices[45], mamesh.vertices[46]];
+                        verticesViewerS.color = new mathis.Color(mathis.Color.names.yellow);
+                        verticesViewerS.radiusAbsolute = 0.8;
+                        verticesViewerS.go();
+            */
             var verticesViewerS2 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene); //S non visible
             verticesViewerS2.vertices = [mamesh.vertices[47], mamesh.vertices[48], mamesh.vertices[49], mamesh.vertices[50]];
             verticesViewerS2.color = new mathis.Color(mathis.Color.names.yellow);
@@ -750,6 +796,15 @@ var mathis;
             verticesViewer1.vertices = [mamesh.vertices[10], mamesh.vertices[21], mamesh.vertices[32], mamesh.vertices[43]];
             verticesViewer1.color = new mathis.Color(mathis.Color.names.black);
             //verticesViewer1.go();
+            function contains(oneVertex, listOfVertexes) {
+                for (var _i = 0, listOfVertexes_1 = listOfVertexes; _i < listOfVertexes_1.length; _i++) {
+                    var v = listOfVertexes_1[_i];
+                    if (mathis.geo.distance(v.position, oneVertex.position) < 0.0001) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             /*
                         let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //H
                         verticesViewer.vertices= [mamesh.vertices[0], mamesh.vertices[1], mamesh.vertices[2], mamesh.vertices[3], mamesh.vertices[4],mamesh.vertices[5]];
@@ -757,82 +812,46 @@ var mathis;
                         verticesViewer.color = new mathis.Color(mathis.Color.names.blue);
                         verticesViewer.go();
             */
-            /*            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-                        let model;
-                        let model1 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
-                        model1.position.x +=1;
-                        model1.bakeCurrentTransformIntoVertices();
-                        let model2 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
-                        model2.position.x -=1;
-                        model2.bakeCurrentTransformIntoVertices();
-                        model = BABYLON.Mesh.MergeMeshes([model1, model2]);
-                        linkViewer.color = new mathis.Color(mathis.Color.names.green);
-                        linkViewer.meshModel= model;
-                        let segmentOrientationFunction;
-            
-                        function contains(oneVertex: Vertex, listOfVertexes: Vertex[]){
-                            for (let v of listOfVertexes){
-                                if (geo.distance(v.position,oneVertex.position)<0.0001) {
-                                    return true
-                                }
-                            }
-                            return false
-                        }
-            
-                        let doubles: Vertex[]= [];
-                        doubles=[mamesh.vertices[8],mamesh.vertices[9],mamesh.vertices[19],mamesh.vertices[20], mamesh.vertices[30],mamesh.vertices[31],mamesh.vertices[41],mamesh.vertices[42]];
-            
-                        //let doubles1: Vertex[]= [];
-                        //let doubles2: Vertex[]= [];
-                        //doubles1=[mamesh.vertices[6],mamesh.vertices[7]];
-                        //doubles2 = [mamesh.vertices[8],mamesh.vertices[9]];
-            
-            
-            
-            
-                        segmentOrientationFunction =  (v1:Vertex, v2: Vertex)=> {
-            
-                            if ((!contains(v1, doubles)) || (!(contains(v2, doubles))))   {
-                                return 0;
-                            }
-            
-                            else {
-                                return 1;
-                            }
-            
-                        };
-            
-                        linkViewer.segmentOrientationFunction = segmentOrientationFunction;
-                        //linkViewer.go();
-            
-            
-            
-            
-                        let linkViewer1 =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            
-            
-            
-                        segmentOrientationFunction =  (v1:Vertex, v2: Vertex)=> {
-            
-                            if ((contains(v1, doubles)) && ((contains(v2, doubles))))  {
-            
-                                return 0;
-                            }
-            
-                            else {
-            
-                                return 1;
-                            }
-            
-                        };
-            
-                        linkViewer1.segmentOrientationFunction = segmentOrientationFunction;
-                        linkViewer1.color = new mathis.Color(mathis.Color.names.black);
-                        //linkViewer1.go();
-            */
-            var linkViewer0 = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer0.color = new mathis.Color(mathis.Color.names.black);
-            linkViewer0.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
+            var model;
+            var model1 = BABYLON.Mesh.CreateCylinder("", 1, 1, 1, 12, 12, mathisFrame.scene);
+            model1.position.x += 1.5;
+            model1.bakeCurrentTransformIntoVertices();
+            var model2 = BABYLON.Mesh.CreateCylinder("", 1, 1, 1, 12, 12, mathisFrame.scene);
+            model2.position.x -= 1.5;
+            model2.bakeCurrentTransformIntoVertices();
+            model = BABYLON.Mesh.MergeMeshes([model1, model2]);
+            linkViewer.meshModel = model;
+            linkViewer.color = new mathis.Color(mathis.Color.names.blue);
+            var segmentOrientationFunction;
+            linkViewer.color = new mathis.Color(mathis.Color.names.blue);
+            var material = new BABYLON.StandardMaterial("", mathisFrame.scene);
+            material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            model.material = material;
+            var doubles = [];
+            doubles = [mamesh.vertices[8], mamesh.vertices[9], mamesh.vertices[19], mamesh.vertices[20], mamesh.vertices[30], mamesh.vertices[31], mamesh.vertices[41], mamesh.vertices[42]];
+            segmentOrientationFunction = function (v1, v2) {
+                if ((!contains(v1, doubles)) || (!(contains(v2, doubles)))) {
+                    return 0;
+                }
+                else {
+                    return 1;
+                }
+            };
+            linkViewer.segmentOrientationFunction = segmentOrientationFunction;
+            linkViewer.go();
+            var linkViewer1 = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
+            segmentOrientationFunction = function (v1, v2) {
+                if ((contains(v1, doubles)) && ((contains(v2, doubles)))) {
+                    return 0;
+                }
+                else {
+                    return 1;
+                }
+            };
+            linkViewer1.segmentOrientationFunction = segmentOrientationFunction;
+            linkViewer1.color = new mathis.Color(mathis.Color.names.black);
+            linkViewer1.go();
         }
         display.show = show;
     })(display = mathis.display || (mathis.display = {}));
@@ -841,12 +860,12 @@ var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        var SAW_Creator_static = (function () {
-            function SAW_Creator_static() {
+        var SAW_Creator_static_Simple = (function () {
+            function SAW_Creator_static_Simple() {
                 this.chainSize = 10;
             }
             /**check if a raw belongs to a matrix*/
-            SAW_Creator_static.prototype.contains = function (points, onePoint) {
+            SAW_Creator_static_Simple.prototype.contains = function (points, onePoint) {
                 for (var _i = 0, points_4 = points; _i < points_4.length; _i++) {
                     var point = points_4[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
@@ -855,7 +874,9 @@ var mathis;
                 }
                 return false;
             };
-            SAW_Creator_static.prototype.go = function () {
+            SAW_Creator_static_Simple.prototype.go = function () {
+                var start = new Date().getTime();
+                cc('SIMPLE STATIC METHOD');
                 var NOTfinished = true;
                 var security = 100;
                 var attempts = 0;
@@ -896,116 +917,18 @@ var mathis;
                     }
                     NOTfinished = (ALLcoordinates.length < this.chainSize);
                 }
-                for (var i_1 = 1; i_1 < mamesh.vertices.length - 1; i_1++) {
-                    mamesh.vertices[i_1].setTwoOppositeLinks(mamesh.vertices[i_1 - 1], mamesh.vertices[i_1 + 1]);
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
                 }
                 mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
                 mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                var end = new Date().getTime();
+                cc('Execution Time in sec', (end - start) * 1000);
                 return mamesh;
             };
-            return SAW_Creator_static;
+            return SAW_Creator_static_Simple;
         }());
-        polymer.SAW_Creator_static = SAW_Creator_static;
-        function static1() {
-            var mathisFrame = new mathis.MathisFrame();
-            var interpolationStyle = mathis.geometry.InterpolationStyle.none;
-            var chainSize = 10;
-            var dims = 3;
-            var mamesh = new mathis.Mamesh();
-            /**check if a raw belongs to a matrix*/
-            function contains(points, onePoint) {
-                for (var _i = 0, points_5 = points; _i < points_5.length; _i++) {
-                    var point = points_5[_i];
-                    if (mathis.geo.distance(point, onePoint) < 0.0001) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            var min = -1;
-            var max = 2;
-            var security = 100;
-            var NOTfinished = true;
-            var attempts = 0;
-            while (NOTfinished && attempts < security) {
-                var x = 0;
-                var y = 0;
-                var z = 0;
-                var ALLcoordinates = [];
-                ALLcoordinates[0] = new mathis.XYZ(x, y, z);
-                for (var i = 1; i < chainSize; i++) {
-                    var alea1 = Math.floor(Math.random() * (max - min)) + min;
-                    var alea2 = Math.floor(Math.random() * (max - min)) + min;
-                    var alea3 = Math.floor(Math.random() * (max - min)) + min;
-                    cc('aleas:', alea1, alea2, alea3);
-                    x = alea1 + x;
-                    y = alea2 + y;
-                    z = alea3 + z;
-                    //initialisation?
-                    var coordinates = new mathis.XYZ(x, y, z);
-                    cc('coordinates', coordinates);
-                    if (!contains(ALLcoordinates, coordinates)) {
-                        var vertex = new mathis.Vertex();
-                        vertex.position = coordinates;
-                        ALLcoordinates.push(coordinates);
-                        mamesh.vertices.push(vertex);
-                    }
-                    else {
-                        cc('This one is already taken!', coordinates);
-                        attempts++;
-                        while (mamesh.vertices.length > 0) {
-                            mamesh.vertices.pop();
-                        }
-                        break;
-                    }
-                }
-                NOTfinished = (ALLcoordinates.length < chainSize);
-            }
-            if (attempts == security) {
-                mathisFrame.messageDiv.append("Chain IS NOT FINISHED)");
-                mathis.logger.c('CHAIN IS NOT FINISHED');
-            }
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-            console.log(mamesh.toString());
-            cc('ALLcoordinates', ALLcoordinates);
-            //mathisFrame.messageDiv.append("Chain size:" + chainSize);
-            //mathisFrame.messageDiv.append("Attempts before success:" + (attempts));
-            /*
-                         var distances = new mathis.graph.DistancesBetweenAllVertices(mamesh.vertices);
-                         distances.go();
-                         mathisFrame.messageDiv.append("Chain size:" + chainSize);
-                         mathisFrame.messageDiv.append("Nb vertexes:" + mamesh.vertices.length);
-
-                        //distance en pas
-                         mathisFrame.messageDiv.append("distance between origin and end(steps):" + distances.OUT_distance(mamesh.vertices[0], mamesh.vertices[mamesh.vertices.length - 1]));
-                         //distance absolut
-                         mathisFrame.messageDiv.append("distance between origin and end(real):" + (geo.distance(mamesh.vertices[mamesh.vertices.length - 1].position, mamesh.vertices[0].position)));
-
-
-                         mathisFrame.messageDiv.append("Attempts before success:" + (attempts));
-                         //mathisFrame.messageDiv.append("Coordinates :"+(ALLcoordinates[i]) );
-            */
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.silver);
-            linkViewer.go();
-            //let vertexViewer=new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            //vertexViewer.go();
-            cc('Attempts before success:', attempts);
-            //first vertex
-            var verticesViewer0 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer0.vertices = [mamesh.vertices[0]];
-            verticesViewer0.color = new mathis.Color(mathis.Color.names.blueviolet);
-            verticesViewer0.go();
-            //others
-            var verticesViewer1 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            //             verticesViewer1.vertices = [];
-            verticesViewer1.go();
-        }
-        polymer.static1 = static1;
+        polymer.SAW_Creator_static_Simple = SAW_Creator_static_Simple;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 var mathis;
@@ -1015,6 +938,8 @@ var mathis;
         function snake() {
             var mathisFrame = new mathis.MathisFrame();
             var mamesh = new mathis.Mamesh();
+            var camera = mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -35));
             //A given SAW
             var vertex0 = new mathis.Vertex().setPosition(0, 0, 0); //0
             var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
@@ -1029,8 +954,8 @@ var mathis;
             mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
             // function that checks thes list of used coordinates
             function contains(points, onePoint) {
-                for (var _i = 0, points_6 = points; _i < points_6.length; _i++) {
-                    var point = points_6[_i];
+                for (var _i = 0, points_5 = points; _i < points_5.length; _i++) {
+                    var point = points_5[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
                         return true;
                     }
@@ -1046,82 +971,96 @@ var mathis;
             var attempts = 0;
             //Nb of generated chains  (=nb of operations)
             var chain = 0;
-            var NOTfinished = true;
-            var max = 2;
-            var min = 0;
-            while (NOTfinished) {
+            var t = 0;
+            var test = mamesh.vertices;
+            var action = new mathis.PeriodicAction(function () {
+                //   let NOTfinished = true;
+                var max = 2;
+                var min = 0;
+                //for (let y=0; y<chain; y++){
+                //while (NOTfinished) {
+                t += 0.1;
                 // Choose randomly the end to delete:
                 var choice = Math.floor(Math.random() * (max - min)) + min;
-                //delete head, go to tail
-                if (choice == 0) {
-                    var x = mamesh.vertices[mamesh.vertices.length - 1].position.x;
-                    var y = mamesh.vertices[mamesh.vertices.length - 1].position.y;
-                    var z = mamesh.vertices[mamesh.vertices.length - 1].position.z;
-                    var alea_x = Math.floor(Math.random() * (max - min)) + min;
-                    var alea_y = Math.floor(Math.random() * (max - min)) + min;
-                    var alea_z = Math.floor(Math.random() * (max - min)) + min;
-                    cc('TAIL-xyz old:', x, y, z);
-                    var xN = alea_x + x;
-                    var yN = alea_y + y;
-                    var zN = alea_z + z;
-                    cc('TAIL-xyz new:', xN, yN, zN);
-                    var coordinate = new mathis.XYZ(xN, yN, zN);
-                    if (!contains(ALLc, coordinate)) {
-                        mamesh.vertices.shift();
-                        ALLc.shift();
-                        var vertex = new mathis.Vertex();
-                        vertex.position = coordinate;
-                        mamesh.vertices.push(vertex);
-                        ALLc.push(coordinate);
-                        chain++;
+                {
+                    //delete head, go to tail
+                    if (choice == 0) {
+                        var x = test[test.length - 1].position.x;
+                        var y = test[test.length - 1].position.y;
+                        var z = test[test.length - 1].position.z;
+                        var alea_x = Math.floor(Math.random() * (max - min)) + min;
+                        var alea_y = Math.floor(Math.random() * (max - min)) + min;
+                        var alea_z = Math.floor(Math.random() * (max - min)) + min;
+                        cc('TAIL-xyz old:', x, y, z);
+                        var xN = alea_x + x;
+                        var yN = alea_y + y;
+                        var zN = alea_z + z;
+                        cc('TAIL-xyz new:', xN, yN, zN);
+                        var coordinate = new mathis.XYZ(xN, yN, zN);
+                        if (!contains(ALLc, coordinate)) {
+                            test.shift();
+                            ALLc.shift();
+                            var vertex = new mathis.Vertex();
+                            vertex.position = coordinate;
+                            test.push(vertex);
+                            ALLc.push(coordinate);
+                            chain++;
+                        }
+                        else {
+                            cc('This one is already taken- go back!', coordinate);
+                            attempts++;
+                        }
                     }
                     else {
-                        cc('This one is already taken- go back!', coordinate);
-                        attempts++;
+                        var x = test[0].position.x;
+                        var y = test[0].position.y;
+                        var z = test[0].position.z;
+                        var alea_x = Math.floor(Math.random() * (max - min)) + min;
+                        var alea_y = Math.floor(Math.random() * (max - min)) + min;
+                        var alea_z = Math.floor(Math.random() * (max - min)) + min;
+                        cc('HEAD-xyz old:', x, y, z);
+                        var xN = alea_x + x;
+                        var yN = alea_y + y;
+                        var zN = alea_z + z;
+                        cc('HEAD xyz new:', xN, yN, zN);
+                        var coordinate = new mathis.XYZ(xN, yN, zN);
+                        if (!contains(ALLc, coordinate)) {
+                            var vertex = new mathis.Vertex();
+                            test.pop();
+                            ALLc.pop();
+                            vertex.position = coordinate;
+                            test.unshift(vertex);
+                            ALLc.unshift(coordinate);
+                            chain++;
+                        }
+                        else {
+                            cc('This one is already taken- go back!', coordinate);
+                            attempts++;
+                        }
                     }
                 }
-                else {
-                    var x = mamesh.vertices[0].position.x;
-                    var y = mamesh.vertices[0].position.y;
-                    var z = mamesh.vertices[0].position.z;
-                    var alea_x = Math.floor(Math.random() * (max - min)) + min;
-                    var alea_y = Math.floor(Math.random() * (max - min)) + min;
-                    var alea_z = Math.floor(Math.random() * (max - min)) + min;
-                    cc('HEAD-xyz old:', x, y, z);
-                    var xN = alea_x + x;
-                    var yN = alea_y + y;
-                    var zN = alea_z + z;
-                    cc('HEAD xyz new:', xN, yN, zN);
-                    var coordinate = new mathis.XYZ(xN, yN, zN);
-                    if (!contains(ALLc, coordinate)) {
-                        var vertex = new mathis.Vertex();
-                        mamesh.vertices.pop();
-                        ALLc.pop();
-                        vertex.position = coordinate;
-                        mamesh.vertices.unshift(vertex);
-                        ALLc.unshift(coordinate);
-                        chain++;
-                    }
-                    else {
-                        cc('This one is already taken- go back!', coordinate);
-                        attempts++;
-                    }
+                //NOTfinished = (chain < 10);
+                // }
+                mamesh.vertices = test;
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
                 }
-                NOTfinished = (chain < 10);
-            }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
+                linkViewer.radiusAbsolute = 0.01;
+                linkViewer.go();
+                var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                verticesViewer.radiusAbsolute = 0.1;
+                verticesViewer.go();
+                cc('t', t);
+            });
+            action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 20;
+            // mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
             cc('atempts:', attempts);
             cc('How many chains are generated?:', chain);
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.radiusAbsolute = 0.01;
-            linkViewer.go();
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.radiusAbsolute = 0.1;
-            verticesViewer.go();
         }
         polymer.snake = snake;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
@@ -1132,27 +1071,59 @@ var mathis;
     (function (display) {
         function tests() {
             var mathisFrame = new mathis.MathisFrame();
-            var interpolationStyle = mathis.geometry.InterpolationStyle.none;
-            var nb = 8;
             var mamesh = new mathis.Mamesh();
-            for (var i = 0; i < nb; i++) {
+            function outbreak(N, b) {
+                var max_t = 20;
+                var I = 1;
+                var S = N - 1;
+                var incidence = [{ t: 0, I: I }];
+                for (var t_2 = 1; t_2 < max_t; t_2++) {
+                    var p_inf = 1.0 - Math.exp(-b * I / N);
+                    var new_I = 0;
+                    for (var i = 0; i < S; i++) {
+                        if (Math.random() < p_inf) {
+                            new_I++;
+                        }
+                    }
+                    if (new_I == 0) {
+                        break;
+                    }
+                    incidence.push({ t: t_2, I: new_I });
+                    S -= new_I;
+                    I = new_I;
+                }
+                return (incidence);
+            }
+            var N = 20;
+            var b = 0.01;
+            var t = 1;
+            var max_t = 20;
+            var I = 1;
+            var S = N - 1;
+            var incidence = [];
+            var action = new mathis.PeriodicAction(function () {
+                t += 0.1;
+                var p_inf = 1.0 - Math.exp(-b * I / N);
+                var new_I = 0;
+                for (var i = 0; i < S; i++) {
+                    if (Math.random() < p_inf) {
+                        new_I++;
+                    }
+                }
+                incidence.push(new_I);
+                for (var i = 0; i < new_I; i++) {
+                }
+                S -= new_I;
+                I = new_I;
                 var vertex = new mathis.Vertex();
-                var angle = 2 * Math.PI * i / (nb);
-                vertex.position = new mathis.XYZ(Math.cos(angle), Math.sin(angle), 0);
+                vertex.position = test;
                 mamesh.vertices.push(vertex);
-            }
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setTwoOppositeLinks(mamesh.vertices[1], mamesh.vertices[mamesh.vertices.length - 1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setTwoOppositeLinks(mamesh.vertices[mamesh.vertices.length - 2], mamesh.vertices[0]);
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.black);
-            linkViewer.go();
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.color = new mathis.Color(mathis.Color.names.yellow);
-            verticesViewer.radiusAbsolute = 0.2;
-            verticesViewer.go();
+                cc('I', I);
+            });
+            action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 20;
+            mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
         }
         display.tests = tests;
     })(display = mathis.display || (mathis.display = {}));
@@ -1165,7 +1136,7 @@ var mathis;
             var mathisFrame = new mathis.MathisFrame();
             var camera = mathisFrame.getGrabberCamera();
             camera.setFreeDisplacementMode();
-            camera.changePosition(new mathis.XYZ(0, 0, -35));
+            camera.changePosition(new mathis.XYZ(0, 0, -100));
             var mamesh = new mathis.Mamesh();
             var w1 = 12;
             var h1 = 20;
@@ -1181,12 +1152,12 @@ var mathis;
                     var v_1_C3 = new mathis.Vertex().setPosition(9 + w1 * i, 3 + h1 * j, 0);
                     var v_1_C4 = new mathis.Vertex().setPosition(12 + w1 * i, 3 + h1 * j, 0);
                     //H
-                    var v_1_H1 = new mathis.Vertex().setPosition(3 + w1 * i, 1 + h1 * j, 0); //4
-                    var v_1_H2 = new mathis.Vertex().setPosition(3 + w1 * i, 5 + h1 * j, 0);
-                    var v_1_H3 = new mathis.Vertex().setPosition(6 + w1 * i, 1 + h1 * j, 0);
-                    var v_1_H4 = new mathis.Vertex().setPosition(6 + w1 * i, 5 + h1 * j, 0);
-                    var v_1_H5 = new mathis.Vertex().setPosition(9 + w1 * i, 5 + h1 * j, 0);
-                    var v_1_H6 = new mathis.Vertex().setPosition(12 + w1 * i, 1 + h1 * j, 0);
+                    var v_1_H1 = new mathis.Vertex().setPosition(3 + w1 * i, 2 + h1 * j, 0); //4
+                    var v_1_H2 = new mathis.Vertex().setPosition(3 + w1 * i, 4 + h1 * j, 0);
+                    var v_1_H3 = new mathis.Vertex().setPosition(6 + w1 * i, 2 + h1 * j, 0);
+                    var v_1_H4 = new mathis.Vertex().setPosition(6 + w1 * i, 4 + h1 * j, 0);
+                    var v_1_H5 = new mathis.Vertex().setPosition(9 + w1 * i, 4 + h1 * j, 0);
+                    var v_1_H6 = new mathis.Vertex().setPosition(12 + w1 * i, 2 + h1 * j, 0);
                     mamesh.vertices.push(v_1_C1, v_1_C2, v_1_C3, v_1_C4, v_1_H1, v_1_H2, v_1_H3, v_1_H4, v_1_H5, v_1_H6);
                 }
                 var v_1_out = new mathis.Vertex().setPosition(15 + w1 * 4, 3 + h1 * j, 0); //not visible
@@ -1238,10 +1209,21 @@ var mathis;
             var s85_128_a = new mathis.Vertex().setPosition(44, 29, 0);
             var s85_128_b = new mathis.Vertex().setPosition(41, 33, 0);
             var s85_128_c = new mathis.Vertex().setPosition(38, 35, 0);
-            //291-293
+            //294-296
             var s95_147_a = new mathis.Vertex().setPosition(61, 29, 0);
             var s95_147_b = new mathis.Vertex().setPosition(59, 33, 0);
             var s95_147_c = new mathis.Vertex().setPosition(60, 35, 0);
+            //nonVisible
+            //297-301
+            var sN6 = new mathis.Vertex().setPosition(10, 45, 0);
+            var sN7 = new mathis.Vertex().setPosition(26, 45, 0);
+            var sN8 = new mathis.Vertex().setPosition(35, 45, 0);
+            var sN9 = new mathis.Vertex().setPosition(48, 45, 0);
+            var sN10 = new mathis.Vertex().setPosition(50, 45, 0);
+            //302-304
+            var s33_86_a = new mathis.Vertex().setPosition(45, 7, 0);
+            var s33_86_b = new mathis.Vertex().setPosition(51, 12, 0);
+            var s33_86_c = new mathis.Vertex().setPosition(48, 17, 0);
             mamesh.vertices.push(sN1, sN2, sN3, sN4, sN5);
             mamesh.vertices[4].setOneLink(mamesh.vertices[260]);
             mamesh.vertices[14].setOneLink(mamesh.vertices[261]);
@@ -1289,6 +1271,16 @@ var mathis;
             mamesh.vertices[294].setTwoOppositeLinks(mamesh.vertices[95], mamesh.vertices[295]);
             mamesh.vertices[295].setTwoOppositeLinks(mamesh.vertices[294], mamesh.vertices[296]);
             mamesh.vertices[296].setTwoOppositeLinks(mamesh.vertices[295], mamesh.vertices[147]);
+            mamesh.vertices.push(sN6, sN7, sN8, sN9, sN10);
+            mamesh.vertices[108].setOneLink(mamesh.vertices[297]);
+            mamesh.vertices[118].setOneLink(mamesh.vertices[298]);
+            mamesh.vertices[127].setOneLink(mamesh.vertices[299]);
+            mamesh.vertices[138].setOneLink(mamesh.vertices[300]);
+            mamesh.vertices[148].setOneLink(mamesh.vertices[301]);
+            mamesh.vertices.push(s33_86_a, s33_86_b, s33_86_c);
+            mamesh.vertices[302].setTwoOppositeLinks(mamesh.vertices[33], mamesh.vertices[303]);
+            mamesh.vertices[303].setTwoOppositeLinks(mamesh.vertices[302], mamesh.vertices[304]);
+            mamesh.vertices[304].setTwoOppositeLinks(mamesh.vertices[303], mamesh.vertices[86]);
             var x = 0;
             for (var k = 0; k < n; k++) {
                 mamesh.vertices[0 + x].setOneLink(mamesh.vertices[x + 1]);
@@ -1308,7 +1300,8 @@ var mathis;
             var verticesNon = [mamesh.vertices[0], mamesh.vertices[51], mamesh.vertices[52], mamesh.vertices[103],
                 mamesh.vertices[104], mamesh.vertices[155], mamesh.vertices[156], mamesh.vertices[207], mamesh.vertices[208],
                 mamesh.vertices[259],
-                mamesh.vertices[260], mamesh.vertices[261], mamesh.vertices[262], mamesh.vertices[263], mamesh.vertices[264]
+                mamesh.vertices[260], mamesh.vertices[261], mamesh.vertices[262], mamesh.vertices[263], mamesh.vertices[264],
+                mamesh.vertices[297], mamesh.vertices[298], mamesh.vertices[299], mamesh.vertices[300], mamesh.vertices[301]
             ];
             var verticesViewerNon = new mathis.visu3d.VerticesViewer(verticesNon, mathisFrame.scene); //Not visible
             //verticesViewerNon.go();
@@ -1347,7 +1340,7 @@ var mathis;
             }
             var verticesViewerH = new mathis.visu3d.VerticesViewer(verticesH, mathisFrame.scene); //H
             verticesViewerH.color = new mathis.Color(mathis.Color.names.blue);
-            verticesViewerH.radiusAbsolute = 0.3;
+            verticesViewerH.radiusAbsolute = 0.4;
             verticesViewerH.go();
             var verticesS = [mamesh.vertices[265], mamesh.vertices[266], mamesh.vertices[267],
                 mamesh.vertices[268], mamesh.vertices[269], mamesh.vertices[270], mamesh.vertices[271],
@@ -1359,7 +1352,8 @@ var mathis;
                 mamesh.vertices[286], mamesh.vertices[287], mamesh.vertices[288], mamesh.vertices[289],
                 mamesh.vertices[290],
                 mamesh.vertices[291], mamesh.vertices[292], mamesh.vertices[293],
-                mamesh.vertices[294], mamesh.vertices[295], mamesh.vertices[296]
+                mamesh.vertices[294], mamesh.vertices[295], mamesh.vertices[296],
+                mamesh.vertices[302], mamesh.vertices[303], mamesh.vertices[304]
             ];
             var verticesViewerS = new mathis.visu3d.VerticesViewer(verticesS, mathisFrame.scene); //S
             verticesViewerS.color = new mathis.Color(mathis.Color.names.yellow);
@@ -1369,6 +1363,7 @@ var mathis;
             cc('mine', mine);
             cc('vertices', mamesh.vertices);
             var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
+            linkViewer.color = new mathis.Color(mathis.Color.names.black);
             linkViewer.go();
         }
         polymer.vulca2D = vulca2D;
@@ -1378,41 +1373,30 @@ var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        //import GrabberCamera = mathis.macamera.GrabberCamera;
         function vulcaSimple() {
             var mathisFrame = new mathis.MathisFrame();
             var mamesh = new mathis.Mamesh();
-            //Atomes de carbone de type -CH_2-CH_2-
-            var C_unitaire = [];
-            //Atomes de carbone de type -CH=CH-
-            var C_double = [];
-            //Atome de carbone de type -CHS-CHS- (ancien C_double)
-            var C_affecte = [];
-            //Atomes de soufre
-            var S = [];
-            //Places possilbes pour la soufre
-            var S0 = [];
-            var w1 = 20;
-            var h1 = 20;
-            var n = 3;
-            var m = 5;
-            /**check if a raw belongs to a matrix*/
+            var camera = mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -150));
+            //*****************USEFULL FUNCTIONS************************//
+            /**check if a raw belongs to a matrix for XYZ*/
             function contains(points, onePoint) {
-                for (var _i = 0, points_7 = points; _i < points_7.length; _i++) {
-                    var point = points_7[_i];
+                for (var _i = 0, points_6 = points; _i < points_6.length; _i++) {
+                    var point = points_6[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
                         return true;
                     }
                 }
                 return false;
             }
+            /**check if a raw belongs to a matrix for number*/
             function containsN(points, onePoint) {
                 if (onePoint in points) {
                     return true;
                 }
                 return false;
             }
-            // function that find index of a given value in a given array
+            /**function that find index of a given value in a given array*/
             function findIndex(array, value) {
                 for (var i = 0; i < array.length; i++) {
                     if (array[i] == value) {
@@ -1420,20 +1404,6 @@ var mathis;
                     }
                 }
                 return res;
-            }
-            function findValue(array, index) {
-                var res;
-                for (var i = 0; i < array.length; i++) {
-                    if (i = index) {
-                        res = array[index];
-                    }
-                }
-                return res;
-            }
-            function findNeighbours(array, value) {
-                for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
-                    var possibles = array_1[_i];
-                }
             }
             /**shuffles an array */
             function shuffle(array) {
@@ -1447,11 +1417,72 @@ var mathis;
                 }
                 return array;
             }
-            var verticesS = [];
-            var verticesS_done = [];
-            var verticesC = [];
-            var verticesCS = [];
+            /**Deletes a certain value from array */
+            function rm(array, toDelete) {
+                for (var i = array.length - 1; i >= 0; i--) {
+                    if (array[i] === toDelete) {
+                        array.splice(i, 1);
+                    }
+                }
+                return array;
+            }
+            /**Find a random neighbour */
+            function possibleNeighbours_f(me) {
+                var me_x1 = me.x + 3;
+                var me_x2 = me.x - 3;
+                var me_y1 = me.y + 2;
+                var me_y2 = me.y - 2;
+                var me_y11 = me.y + 3;
+                var me_y22 = me.y - 3;
+                var coordinates1 = new mathis.XYZ(me_x1, me_y1, 0);
+                var coordinates2 = new mathis.XYZ(me_x1, me_y2, 0);
+                var coordinates3 = new mathis.XYZ(me_x2, me_y1, 0);
+                var coordinates4 = new mathis.XYZ(me_x2, me_y2, 0);
+                var coordinates5 = new mathis.XYZ(me_x1, me.y, 0);
+                var coordinates6 = new mathis.XYZ(me_x2, me.y, 0);
+                var coordinates7 = new mathis.XYZ(me.x, me_y1, 0);
+                var coordinates8 = new mathis.XYZ(me.x, me_y2, 0);
+                var coordinates9 = new mathis.XYZ(me_x1, me_y11, 0);
+                var coordinates10 = new mathis.XYZ(me_x1, me_y22, 0);
+                var coordinates11 = new mathis.XYZ(me_x2, me_y11, 0);
+                var coordinates12 = new mathis.XYZ(me_x2, me_y22, 0);
+                var coordinates13 = new mathis.XYZ(me.x, me_y11, 0);
+                var coordinates14 = new mathis.XYZ(me.x, me_y22, 0);
+                var coordinates = [];
+                coordinates.push(coordinates1, coordinates2, coordinates3, coordinates4, coordinates5, coordinates6, coordinates7, coordinates8, coordinates9, coordinates10, coordinates11, coordinates12, coordinates13, coordinates14);
+                var possibleNeighbours = [];
+                for (var i = 0; i < coordinates.length; i++) {
+                    if (contains(grilleS_XYZ, coordinates[i])) {
+                        possibleNeighbours.push(coordinates[i]);
+                        cc('coordinates  ok', coordinates[i]);
+                    }
+                    else {
+                        cc('coordinates not ok', coordinates[i]);
+                    }
+                }
+                return possibleNeighbours;
+            }
+            //Atomes de carbone de type -CH_2-CH_2-
+            var C_unitaire_XYZ = []; //C_unitaire
+            var C_unitaire = [];
+            //Atomes de carbone de type -CH=CH-
+            var C_double_XYZ = []; //C_double
+            var C_double = [];
+            //Atome de carbone de type -CHS-CHS- (ancien C_double)
+            var C_affecte_XYZ = [];
+            var C_affecte = [];
+            //Atomes de soufre
+            var S_XYZ = []; //verticesS
+            var S = [];
+            //Places possilbes pour la soufre
+            var grilleS_XYZ = []; //grilleS
+            var grilleS = [];
             var verticesNon = [];
+            var w1 = 20;
+            var h1 = 20;
+            var n = 3;
+            var m = 5;
+            //****************Building a grill************************//
             // reseau initial (3 marcomolécule à 5 monomère)
             for (var j = 0; j < n; j++) {
                 var v_1_in = new mathis.Vertex().setPosition(1, 3 + h1 * j, 0); //not visible
@@ -1465,8 +1496,8 @@ var mathis;
                     //C_unitaire.push(v_1_C1,v_1_C2);
                     //C_double.push(v_1_C3,v_1_C4);
                     mamesh.vertices.push(v_1_C1, v_1_C2, v_1_C3, v_1_C4);
-                    verticesC.push(v_1_C1, v_1_C2);
-                    verticesCS.push(v_1_C3, v_1_C4);
+                    C_unitaire.push(v_1_C1, v_1_C2);
+                    C_double.push(v_1_C3, v_1_C4);
                 }
                 var v_1_out = new mathis.Vertex().setPosition(15 + w1 * 4, 3 + h1 * j, 0); //not visible
                 mamesh.vertices.push(v_1_out);
@@ -1476,100 +1507,88 @@ var mathis;
             var hS = 2;
             var nS = 8;
             var mS = 5;
-            for (var j = 0; j < nS; j++) {
-                for (var i = 0; i < mS; i++) {
-                    var S1 = new mathis.Vertex().setPosition(3 + w1 * i, 6 + hS * j, 0);
-                    var S2 = new mathis.Vertex().setPosition(6 + w1 * i, 6 + hS * j, 0);
-                    var S3 = new mathis.Vertex().setPosition(9 + w1 * i, 6 + hS * j, 0);
-                    var S4 = new mathis.Vertex().setPosition(12 + w1 * i, 6 + hS * j, 0);
-                    mamesh.vertices.push(S1, S2, S3, S4);
-                    verticesS.push(S1, S2, S3, S4);
+            var p = 0;
+            for (var k = 0; k < n - 1; k++) {
+                for (var j = 0; j < nS; j++) {
+                    for (var i = 0; i < mS; i++) {
+                        var S1 = new mathis.Vertex().setPosition(3 + w1 * i, 6 + p + hS * j, 0);
+                        var S2 = new mathis.Vertex().setPosition(6 + w1 * i, 6 + p + hS * j, 0);
+                        var S3 = new mathis.Vertex().setPosition(9 + w1 * i, 6 + p + hS * j, 0);
+                        var S4 = new mathis.Vertex().setPosition(12 + w1 * i, 6 + p + hS * j, 0);
+                        mamesh.vertices.push(S1, S2, S3, S4);
+                        grilleS.push(S1, S2, S3, S4);
+                        grilleS_XYZ.push(S1.position, S2.position, S3.position, S4.position);
+                    }
                 }
+                p = p + 20;
             }
-            for (var j = 0; j < nS; j++) {
-                for (var i = 0; i < mS; i++) {
-                    var S1 = new mathis.Vertex().setPosition(3 + w1 * i, 26 + hS * j, 0);
-                    var S2 = new mathis.Vertex().setPosition(6 + w1 * i, 26 + hS * j, 0);
-                    var S3 = new mathis.Vertex().setPosition(9 + w1 * i, 26 + hS * j, 0);
-                    var S4 = new mathis.Vertex().setPosition(12 + w1 * i, 26 + hS * j, 0);
-                    mamesh.vertices.push(S1, S2, S3, S4);
-                    verticesS.push(S1, S2, S3, S4);
-                }
+            var test = [];
+            for (var i = 0; i < C_double.length; i++) {
+                test.push(C_double[i]);
             }
-            /** Algo:
-             0. creat a soufre grille?
-             1. Choose randomly 2 odd vertexes in C_double
-             2. Link them with a bridge of S of random lenght
-             3. Take their left neighbours (which are pair) and [go (1)]
-
-            */
-            ///                let indexOfVertex = ALLc_new.indexOf( ALLc_new[randomVertex] );
-            var min = -4;
-            var max = 5;
-            for (var i = 0; i < 3; i++) {
-                var indexesS = [];
-                var values = [];
+            var nbOfChains = 9;
+            for (var i = 0; i < nbOfChains; i++) {
+                var indexesInMamesh = [];
+                //Actual chain at i
+                var thisChain = [];
+                var thisChain_XYZ = [];
                 //Choose S chain lenght
-                var bridgeS = Math.floor(Math.random() * (9 - 1)) + 1;
+                var bridgeS = Math.floor(Math.random() * (10 - 1)) + 1;
                 //Choose a random vertex in CS by index
-                var indexOfRandomVertex1inCS = Math.floor(Math.random() * (verticesCS.length - 1 - 0)) + 0;
-                var RandomVertex1inCS = verticesCS[indexOfRandomVertex1inCS];
+                var indexOfRandomVertex1 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                var RandomVertex1inCS = test[indexOfRandomVertex1];
                 cc('RandomVertex1inCS', RandomVertex1inCS);
-                // let indexofRandomVertex1inMamesh=mamesh.vertices.indexOf(verticesCS[indexOfRandomVertex1inCS])
-                // cc('indexofRandomVertex1inMamesh',indexofRandomVertex1inMamesh)
-                // indexesS.push(indexofRandomVertex1inMamesh)
-                var x0 = RandomVertex1inCS.position.x;
-                var y0 = RandomVertex1inCS.position.y;
-                var z0 = RandomVertex1inCS.position.z;
-                var coordinates0 = new mathis.XYZ(x0, y0, z0);
-                var vertex0 = new mathis.Vertex();
-                vertex0.position = coordinates0;
-                values.push(coordinates0);
-                mamesh.vertices.push(vertex0);
-                var indexM = findIndex(mamesh.vertices, vertex0);
-                indexesS.push(indexM);
-                cc('indexM', indexM);
-                cc('values', values);
+                //add it to C_affected
+                C_affecte.push(RandomVertex1inCS);
+                //delete it from C_double
+                rm(test, RandomVertex1inCS);
+                //add it to thisChain
+                thisChain_XYZ.push(RandomVertex1inCS.position);
+                var indexRandomVertex1 = mamesh.vertices.indexOf(test[indexOfRandomVertex1]);
+                indexesInMamesh.push(indexRandomVertex1);
                 var Security = mamesh.vertices;
-                var ALLc_new = mamesh.vertices;
                 for (var j = 1; j < bridgeS; j++) {
-                    var alea1 = Math.floor(Math.random() * (max - min)) + min;
-                    var alea2 = Math.floor(Math.random() * (max - min)) + min;
-                    var x_1 = values[j - 1].x + alea1;
-                    var y = values[j - 1].y + alea2;
-                    var coordinates = new mathis.XYZ(x_1, y, 0);
-                    var vertex = new mathis.Vertex();
-                    vertex.position = coordinates;
-                    cc('coordinates', coordinates);
-                    //let randomS = Math.floor(Math.random() * (verticesS.length-1 - 0)) + 0;
-                    //cc('RandomS',randomS );
-                    if (!contains(S, coordinates)) {
-                        // mamesh.vertices.push(vertex)
-                        S.push(coordinates);
-                        verticesS_done.push(vertex);
-                        values.push(coordinates);
-                        ALLc_new.push(vertex);
+                    cc('thisChain_XYZ[j-1]', thisChain_XYZ[j - 1]);
+                    var possible_Neighbours_list = [];
+                    possible_Neighbours_list = possibleNeighbours_f(thisChain_XYZ[j - 1]);
+                    cc('possible_Neighbours_list', possible_Neighbours_list);
+                    var randomNeighbour_index = Math.floor(Math.random() * (possible_Neighbours_list.length - 1 - 0)) + 0;
+                    var random_Neighbour = possible_Neighbours_list[randomNeighbour_index];
+                    cc('random_Neighbour', random_Neighbour);
+                    if (!random_Neighbour) {
+                        cc('thisChain_XYZ', thisChain_XYZ);
+                        break;
+                    }
+                    if (!contains(S_XYZ, random_Neighbour)) {
+                        S_XYZ.push(random_Neighbour);
+                        var coordinates = new mathis.XYZ(random_Neighbour.x, random_Neighbour.y, 0);
+                        var vertex = new mathis.Vertex();
+                        vertex.position = coordinates;
+                        S.push(vertex);
                         mamesh.vertices.push(vertex);
-                        var indexMM = findIndex(ALLc_new, vertex);
-                        indexesS.push(indexMM);
-                        cc('indexesS', indexesS);
+                        cc('S added', coordinates);
+                        var index = mamesh.vertices.indexOf(vertex);
+                        indexesInMamesh.push(index);
+                        thisChain_XYZ.push(random_Neighbour);
+                        cc('grille', grilleS_XYZ);
                     }
                     else {
-                        cc('Doublons! Start over:', coordinates);
+                        cc('Doublons! New chain');
                         mamesh.vertices = Security;
                         break;
                     }
                 }
-                cc('indexesS', indexesS);
-                var randomVertex2 = Math.floor(Math.random() * (verticesCS.length - 1 - 0)) + 0;
-                var indexRandomVertex2 = mamesh.vertices.indexOf(verticesCS[randomVertex2]);
-                indexesS.push(indexRandomVertex2);
-                cc('indexesS', indexesS);
-                for (var i_2 = 1; i_2 < indexesS.length - 1; i_2++) {
-                    mamesh.vertices[indexesS[i_2]].setTwoOppositeLinks(mamesh.vertices[indexesS[i_2 - 1]], mamesh.vertices[indexesS[i_2 + 1]]);
+                cc('indexesS', indexesInMamesh);
+                var randomVertex2 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                var indexRandomVertex2 = mamesh.vertices.indexOf(test[randomVertex2]);
+                C_affecte.push(test[randomVertex2]);
+                rm(test, test[randomVertex2]);
+                indexesInMamesh.push(indexRandomVertex2);
+                for (var i_1 = 1; i_1 < indexesInMamesh.length - 1; i_1++) {
+                    mamesh.vertices[indexesInMamesh[i_1]].setTwoOppositeLinks(mamesh.vertices[indexesInMamesh[i_1 - 1]], mamesh.vertices[indexesInMamesh[i_1 + 1]]);
                 }
-                mamesh.vertices[indexesS[0]].setOneLink(mamesh.vertices[indexesS[1]]);
-                mamesh.vertices[indexesS.length - 1].setOneLink(mamesh.vertices[indexesS.length - 2]);
+                mamesh.vertices[indexesInMamesh[0]].setOneLink(mamesh.vertices[indexesInMamesh[1]]);
+                mamesh.vertices[indexesInMamesh.length - 1].setOneLink(mamesh.vertices[indexesInMamesh.length - 2]);
             }
             var x = 0;
             for (var k = 0; k < n; k++) {
@@ -1582,19 +1601,31 @@ var mathis;
                 }
                 x = x + 22;
             }
-            var verticesViewerS = new mathis.visu3d.VerticesViewer(verticesS, mathisFrame.scene);
+            var verticesViewerS = new mathis.visu3d.VerticesViewer(grilleS, mathisFrame.scene);
             verticesViewerS.color = new mathis.Color(mathis.Color.names.lightyellow);
             verticesViewerS.radiusAbsolute = 0.3;
             verticesViewerS.go();
-            var verticesViewerC = new mathis.visu3d.VerticesViewer(verticesC, mathisFrame.scene);
+            var verticesViewerC = new mathis.visu3d.VerticesViewer(C_unitaire, mathisFrame.scene);
             verticesViewerC.color = new mathis.Color(mathis.Color.names.darkviolet);
             verticesViewerC.radiusAbsolute = 0.7;
             verticesViewerC.go();
-            var verticesViewerCS = new mathis.visu3d.VerticesViewer(verticesCS, mathisFrame.scene);
+            var verticesViewerCS = new mathis.visu3d.VerticesViewer(C_double, mathisFrame.scene);
             verticesViewerCS.color = new mathis.Color(mathis.Color.names.red);
             verticesViewerCS.radiusAbsolute = 0.9;
             verticesViewerCS.go();
-            var verticesViewerSS = new mathis.visu3d.VerticesViewer(verticesS_done, mathisFrame.scene);
+            /*
+                            let verticesViewerT= new visu3d.VerticesViewer(test, mathisFrame.scene);
+                            verticesViewerT.color = new mathis.Color(mathis.Color.names.red);
+                            verticesViewerT.radiusAbsolute = 0.9;
+                            verticesViewerT.go();
+            
+            
+                            let verticesViewerA= new visu3d.VerticesViewer(C_affecte, mathisFrame.scene);
+                            verticesViewerA.color = new mathis.Color(mathis.Color.names.black);
+                            verticesViewerA.radiusAbsolute = 0.9;
+                            verticesViewerA.go();
+            */
+            var verticesViewerSS = new mathis.visu3d.VerticesViewer(S, mathisFrame.scene);
             verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
             verticesViewerSS.radiusAbsolute = 0.9;
             verticesViewerSS.go();
@@ -1606,17 +1637,11 @@ var mathis;
         polymer.vulcaSimple = vulcaSimple;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
-/**
- * Created by vigon on 17/07/2017.
- */
-/**
- * Created by vigon on 09/05/2017.
- */
 var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        function start_Chain() {
+        function start_Chain_Simple() {
             {
                 var mathisFrame = new mathis.MathisFrame();
                 var aPieceOfCode = new mathis.ChainPresentation(mathisFrame);
@@ -1625,7 +1650,17 @@ var mathis;
                 aPieceOfCode.goForTheFirstTime();
             }
         }
-        polymer.start_Chain = start_Chain;
+        polymer.start_Chain_Simple = start_Chain_Simple;
+        function start_Chain_Biased() {
+            {
+                var mathisFrame = new mathis.MathisFrame();
+                var aPieceOfCode = new mathis.ChainPresentation_B(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+        }
+        polymer.start_Chain_Biased = start_Chain_Biased;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 /**
@@ -1645,11 +1680,13 @@ var mathis;
             this.mathisFrame.clearScene();
             this.mathisFrame.addDefaultCamera();
             this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
             this.go();
         };
         ChainPresentation.prototype.go = function () {
             this.mathisFrame.clearScene(false, false);
-            var creator = new mathis.polymer.SAW_Creator_static();
+            var creator = new mathis.polymer.SAW_Creator_static_Simple();
             creator.chainSize = this.chainSize;
             var mamesh = creator.go();
             cc(mamesh.toString());
@@ -1658,23 +1695,46 @@ var mathis;
             verticeViewer.go();
             var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
             linkViewer.go();
-            // let creator = new reseau.Regular2d()
-            //
-            // creator.nbU = this.nbI
-            // creator.nbV = 4
-            // creator.dirU = new XYZ(0.2, 0, 0)
-            // creator.dirV = this.Vj
-            // creator.origine = new XYZ(-0.7, -0.7, 0)
-            // creator.squareVersusTriangleMaille = this.squareMaille
-            //
-            // let mamesh = creator.go()
-            //
-            // new visu3d.VerticesViewer(mamesh, this.mathisFrame.scene).go()
-            // new visu3d.LinksViewer(mamesh, this.mathisFrame.scene).go()
-            // new visu3d.SurfaceViewer(mamesh, this.mathisFrame.scene).go()
         };
         return ChainPresentation;
     }());
     mathis.ChainPresentation = ChainPresentation;
+})(mathis || (mathis = {}));
+/**
+ * Created by vigon on 17/07/2017.
+ */
+var mathis;
+(function (mathis) {
+    var ChainPresentation_B = (function () {
+        function ChainPresentation_B(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "VariableReseau";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_B.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_B.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_Creator_static_Biased();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            cc(mamesh.toString());
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_B;
+    }());
+    mathis.ChainPresentation_B = ChainPresentation_B;
 })(mathis || (mathis = {}));
 //# sourceMappingURL=smallProject.js.map

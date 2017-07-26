@@ -345,9 +345,11 @@ Les equations du modèle SIR  forment les caractéristiques pour l'EDP hyperboli
 
 
 
+== Gantt
 
 
 
+image::gantt.png[]
 
 
 

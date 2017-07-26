@@ -1,5 +1,6 @@
 module mathis {
     export module epi {
+        import GrabberCamera = mathis.macamera.GrabberCamera;
         export function epi1() {
 
 
@@ -64,6 +65,8 @@ module mathis {
             let mamesh = new mathis.Mamesh();
             // We consider a domain W=NxN, where all not taken spots are healthy people */
             let N=10;
+            let camera=mathisFrame.getGrabberCamera()
+            camera.changePosition(new XYZ(5,0,-30))
 
             //Initial SIR
             let S: XYZ[]=[];
@@ -73,19 +76,19 @@ module mathis {
             //First infected person
             I[0]=new XYZ(0,0,0);
             I[1]=new XYZ(10,10,10);
+            I[2]=new XYZ(10,-10,10);
+
             //I[2]=new XYZ(-4,6,-3);
 
             let vertex0 = new mathis.Vertex();
             vertex0.position=I[0];
             let vertex1 = new mathis.Vertex();
             vertex1.position=I[1];
-            //var vertex2 = new mathis.Vertex();
-            //vertex2.position=I[2];
+            let vertex2 = new mathis.Vertex();
+            vertex2.position=I[2];
 
 
-            mamesh.vertices.push(vertex0,vertex1);
-
-
+            mamesh.vertices.push(vertex0,vertex1,vertex2);
 
 
             //All jumps  (3^3=27)
@@ -113,6 +116,30 @@ module mathis {
             cc('allJumps',allJumps);
 
 
+            function outbreak(N,b) {
+                let max_t = 20;
+                let I = 1;
+                let S = N-1;
+                let incidence = [];
+                for (let t = 1; t < max_t; t++) {
+                    let p_inf = 1.0-Math.exp(-b*I/N);
+                    let new_I = 0;
+                    for (let i = 0; i < S; i++) {
+                        if (Math.random() < p_inf) {
+                            new_I++;
+                        }
+                    }
+                    if (new_I == 0) {
+                        break;
+                    }
+                    incidence.push({t:t, I:new_I});
+                    S -= new_I;
+                    I = new_I;
+                }
+                return(incidence);
+            }
+
+
 
 
             /*
@@ -131,81 +158,98 @@ module mathis {
             }
             */
 
+
+
             let notEpidemy = true;
             let newlyInfected=0;
             let I_test: XYZ[]=[];
             I_test[0]=new XYZ(0,0,0);
-            I_test[1]=new XYZ(7,6,7);
+            I_test[1]=new XYZ(10,10,10);
+            I_test[2]=new XYZ(10,-10,10);
+
 
 
             let I_delta_step: XYZ[]=[];
             I_delta_step[0]=new XYZ(0,0,0);
-            I_delta_step[1]=new XYZ(7,6,7);
+            I_delta_step[1]=new XYZ(10,10,10);
+            I_delta_step[2]=new XYZ(10,-10,10);
 
 
 
 
-            while (notEpidemy){
 
-                for (let j=0; j<I_test.length;j++) {
-                   for (let i = 0; i < allJumps.length; i++) {
-                      let test = new XYZ(I_test[j].x + allJumps[i].x, I_test[j].y + allJumps[i].y, I_test[j].z + allJumps[i].z);
-                      let personsToInfect = Math.floor(Math.random() * (100 - 1)) + 1;
-                      if (!(contains(I_delta_step, test)) && (personsToInfect==3) ) {
-                          I_delta_step.push(test);
-                          let vertex = new mathis.Vertex();
-                          vertex.position = test;
-                          mamesh.vertices.push(vertex);
-                          newlyInfected++;
-                          cc('one more infected', personsToInfect);
-                      }
+            let t = 0;
 
-                      else{
-                          cc('already infected',test);
-                      }
 
-                   }
+            let action = new mathis.PeriodicAction(function () {
 
+                t += 1;
+
+                //while (notEpidemy) {
+
+                    for (let j = 0; j < I_test.length; j++) {
+                        for (let i = 0; i < allJumps.length; i++) {
+                            let test = new XYZ(I_test[j].x + allJumps[i].x, I_test[j].y + allJumps[i].y, I_test[j].z + allJumps[i].z);
+                            let personsToInfect = Math.floor(Math.random() * (100 - 1)) + 1;
+                            if (!(contains(I_delta_step, test)) && (personsToInfect == 3)) {
+                                I_delta_step.push(test);
+                                let vertex = new mathis.Vertex();
+                                vertex.position = test;
+                                mamesh.vertices.push(vertex);
+                                newlyInfected++;
+                                cc('one more infected', personsToInfect);
+                            }
+
+                            else {
+                                cc('already infected', test);
+                            }
+
+                        }
+
+                    }
+                    cc('New LOOP');
+                    notEpidemy = (newlyInfected < 150 )
+                    I_test = I_delta_step;
+                    shuffle(I_test);
+
+                //}
+
+
+                cc('notEpidemy !!', newlyInfected);
+                cc('vertices !!', mamesh.vertices.length);
+
+
+                for (let i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
                 }
-                cc('New LOOP');
-                notEpidemy = (newlyInfected < 55 )
-                I_test=I_delta_step;
-                shuffle(I_test);
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+
+                let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
+                linkViewer.color = new mathis.Color(mathis.Color.names.silver);
+                //linkViewer.go();
+
+                //INFECTED
+                let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                verticesViewer.vertices = [mamesh.vertices[0], mamesh.vertices[1], mamesh.vertices[2]];
+                verticesViewer.color = new mathis.Color(mathis.Color.names.red);
+                verticesViewer.radiusAbsolute = 1;
+                verticesViewer.go();
+
+                let verticesViewer1 = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                verticesViewer1.color = new mathis.Color(mathis.Color.names.black);
+                verticesViewer1.radiusAbsolute = 0.3;
+                verticesViewer1.go();
 
 
-                //*******HERE COMES THE BUG****if more than 5/
 
+            });
 
-            }
+            //action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 50;
 
-
-            cc('notEpidemy !!',newlyInfected);
-            cc('vertices !!',mamesh.vertices.length);
-
-
-
-
-
-            for (let i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-
-            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.silver);
-            //linkViewer.go();
-
-            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
-            verticesViewer.vertices = [mamesh.vertices[0],mamesh.vertices[1]];
-            verticesViewer.color = new mathis.Color(mathis.Color.names.red);
-            verticesViewer.radiusAbsolute=1;
-            verticesViewer.go();
-
-            let verticesViewer1 = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
-            verticesViewer1.color = new mathis.Color(mathis.Color.names.black);
-            verticesViewer1.radiusAbsolute=0.3;
-            verticesViewer1.go();
+            // mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
         }
     }
 }

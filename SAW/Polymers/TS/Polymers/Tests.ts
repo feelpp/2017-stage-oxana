@@ -5,35 +5,85 @@ module mathis {
 
 
             let mathisFrame = new mathis.MathisFrame();
-            let interpolationStyle = geometry.InterpolationStyle.none;
-            let nb = 8;
+
             let mamesh = new mathis.Mamesh();
 
-            for (let i=0; i<nb; i++){
+            function outbreak(N,b) {
+                let max_t = 20;
+                let I = 1;
+                let S = N-1;
+                let incidence = [{t:0, I:I}];
+                for (let t = 1; t < max_t; t++) {
+                    let p_inf = 1.0-Math.exp(-b*I/N);
+                    let new_I = 0;
+                    for (let i = 0; i < S; i++) {
+                        if (Math.random() < p_inf) {
+                            new_I++;
+                        }
+                    }
+                    if (new_I == 0) {
+                        break;
+                    }
+                    incidence.push({t:t, I:new_I});
+                    S -= new_I;
+                    I = new_I;
+                }
+                return(incidence);
+            }
+
+
+
+
+
+
+
+
+            let N=20;
+            let b = 0.01;
+            let t = 1;
+            let max_t = 20;
+            let I = 1;
+            let S = N-1;
+            let incidence = [];
+            let action = new mathis.PeriodicAction(function () {
+                t += 0.1;
+                let p_inf = 1.0-Math.exp(-b*I/N);
+                let new_I = 0;
+
+                for (let i = 0; i < S; i++) {
+                    if (Math.random() < p_inf) {
+                            new_I++;
+                    }
+                }
+
+                incidence.push(new_I);
+
+                for (let i=0; i<new_I;i++){
+
+                }
+
+
+
+
+                S -= new_I;
+                I = new_I;
+
                 let vertex = new mathis.Vertex();
-                let angle = 2*Math.PI * i/ (nb);
-                vertex.position = new mathis.XYZ(Math.cos(angle), Math.sin(angle),0);
+                vertex.position = test;
                 mamesh.vertices.push(vertex);
-            }
 
 
-            for (let i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setTwoOppositeLinks(mamesh.vertices[1],mamesh.vertices[mamesh.vertices.length - 1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setTwoOppositeLinks(mamesh.vertices[mamesh.vertices.length - 2],mamesh.vertices[0]);
+                cc('I',I)
+
+            });
 
 
+            action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 20;
 
-            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.black);
-            linkViewer.go();
+            mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
 
-
-            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
-            verticesViewer.color = new mathis.Color(mathis.Color.names.yellow);
-            verticesViewer.radiusAbsolute = 0.2;
-            verticesViewer.go();
 
         }
     }

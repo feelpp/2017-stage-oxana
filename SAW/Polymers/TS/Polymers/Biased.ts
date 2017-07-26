@@ -1,128 +1,133 @@
 module mathis {
     export module polymer {
-        export function static2() {
+        export class SAW_Creator_static_Biased{
+            chainSize = 10;
 
-            let mathisFrame = new mathis.MathisFrame();
-            let interpolationStyle = geometry.InterpolationStyle.none;
-            let chainSize = 10;
-            let mamesh = new mathis.Mamesh();
+            constructor(){
+            }
 
-
-            /**check if a raw belongs to a matrix*/
-            function contains(points: XYZ[], onePoint: XYZ): boolean {
-                for (let point of points) {
-                    if (geo.distance(point, onePoint) < 0.0001) {
-                        return true
-                    }
+            private contains(points: XYZ[], onePoint: XYZ): boolean {
+            for (let point of points) {
+                if (geo.distance(point, onePoint) < 0.0001) {
+                    return true
                 }
-                return false
+            }
+            return false
             }
 
 
-            let security = 10;
-            let NOTfinished = true;
-            let attempts = 0;
-            let min = -1;
-            let max = 2;
+            go():Mamesh {
+                let start = new Date().getTime();
+                cc('BIASED STATIC METHOD');
+
+                let security = 10;
+                let NOTfinished = true;
+                let attempts = 0;
+                let min = -1;
+                let max = 2;
 
 
-            // allJumps stores all possibles steps in 3D on [-1;1]- 0,0,0 ; 0,1,1; -1,0,1; etc
-            let allJumps: XYZ[] = [];
-            let none: XYZ = new XYZ(0, 0, 0);
-            allJumps.push(none);
+                let mamesh = new mathis.Mamesh();
 
-            while (allJumps.length<27) {
 
-                let alea1 = Math.floor(Math.random() * (max - min)) + min;
-                let alea2 = Math.floor(Math.random() * (max - min)) + min;
-                let alea3 = Math.floor(Math.random() * (max - min)) + min;
+                /**check if a raw belongs to a matrix*/
 
-                let coordinates: XYZ = new XYZ(alea1, alea2, alea3);
 
-                if (!contains(allJumps, coordinates)) {
-                    allJumps.push(coordinates)
+
+                    // allJumps stores all possibles steps in 3D on [-1;1]- 0,0,0 ; 0,1,1; -1,0,1; etc
+                let allJumps: XYZ[] = [];
+                let none: XYZ = new XYZ(0, 0, 0);
+                allJumps.push(none);
+
+                while (allJumps.length < 27) {
+
+                    let alea1 = Math.floor(Math.random() * (max - min)) + min;
+                    let alea2 = Math.floor(Math.random() * (max - min)) + min;
+                    let alea3 = Math.floor(Math.random() * (max - min)) + min;
+
+                    let coordinates: XYZ = new XYZ(alea1, alea2, alea3);
+
+                    if (!this.contains(allJumps, coordinates)) {
+                        allJumps.push(coordinates)
+                    }
+
+
                 }
 
 
-            }
+                //cc('allJumps', allJumps)
+                //cc('allJumps length', allJumps.length)
+
+                //first vertex
+                let x = 0;
+                let y = 0;
+                let z = 0;
+                let origin: XYZ = new XYZ(x, y, z);
+
+                //Updating mamesh.vertices
+                let vertex0 = new mathis.Vertex();
+                vertex0.position = origin;
+                mamesh.vertices.push(vertex0);
 
 
-            //cc('allJumps', allJumps)
-            //cc('allJumps length', allJumps.length)
-
-            //first vertex
-            let x = 0;
-            let y = 0;
-            let z = 0;
-            let origin : XYZ = new XYZ(x,y,z);
-
-            //Updating mamesh.vertices
-            let vertex0 = new mathis.Vertex();
-            vertex0.position=origin;
-            mamesh.vertices.push(vertex0);
+                // validatedVertexes stores all the validated vertexes
+                let validatedVertexes: XYZ[] = [];
 
 
-            // validatedVertexes stores all the validated vertexes
-            let validatedVertexes: XYZ[] = [];
+                validatedVertexes[0] = new XYZ(x, y, z);
+                cc('validatedVertexes[0]', validatedVertexes[0]);
 
+                while (NOTfinished && attempts < security) {
 
+                    for (let j = 1; j < this.chainSize - 1; j++) {
 
-            validatedVertexes[0] = new XYZ(x,y,z);
-            cc('validatedVertexes[0]', validatedVertexes[0]);
+                        //First, we must sort allJumps and choose those, that will not lead to intersection
+                        //We'll keep them in availableJumps
+                        let availableJumps: XYZ[] = [];
 
-            while (NOTfinished && attempts < security) {
+                        for (let i = 0; i < allJumps.length; i++) {
+                            //Get the last validated vertex  , check if this vertex is really new; if so - add to availableJumps
 
-                for (let j = 1; j < chainSize-1; j++) {
+                            let testJump = new XYZ(validatedVertexes[j - 1].x + allJumps[i].x, validatedVertexes[j - 1].y + allJumps[i].y, validatedVertexes[j - 1].z + allJumps[i].z);
 
-                    //First, we must sort allJumps and choose those, that will not lead to intersection
-                    //We'll keep them in availableJumps
-                    let availableJumps: XYZ[] = [];
+                            if (!this.contains(validatedVertexes, testJump)) {
+                                availableJumps.push(allJumps[i]);
+                            }
 
-                    for (let i = 0; i < allJumps.length; i++) {
-                        //Get the last validated vertex  , check if this vertex is really new; if so - add to availableJumps
+                            else {
+                                cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
+                            }
 
-                        let testJump = new XYZ(validatedVertexes[j-1].x + allJumps[i].x, validatedVertexes[j-1].y + allJumps[i].y, validatedVertexes[j-1].z + allJumps[i].z);
-
-                        if (!contains(validatedVertexes, testJump)) {
-                            availableJumps.push(allJumps[i]);
                         }
+                        cc('availableJumps', availableJumps);
 
-                        else{
-                            cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
+
+                        //Now we have a list of available jumps at step i that won't lead to self intersection.
+                        if (availableJumps.length > 0) {
+
+                            let randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
+
+                            cc('validatedVertexes[j-1]', validatedVertexes[j - 1]);
+                            cc('randomStep', randomStep);
+
+
+                            let newVertex = new XYZ(validatedVertexes[j - 1].x + randomStep.x, validatedVertexes[j - 1].y + randomStep.y, validatedVertexes[j - 1].z + randomStep.z);
+
+
+                            validatedVertexes.push(newVertex);
+                            let vertex = new mathis.Vertex();
+                            vertex.position = newVertex;
+                            mamesh.vertices.push(vertex);
+                            cc('We add ', newVertex);
+
+                            if (validatedVertexes.length > this.chainSize) {
+                                break;
+                            }
+
+
                         }
-
-                    }
-                    cc('availableJumps', availableJumps);
-
-
-
-                    //Now we have a list of available jumps at step i that won't lead to self intersection.
-                    if (availableJumps.length > 0) {
-
-                        let randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
-
-                        cc('validatedVertexes[j-1]', validatedVertexes[j-1]);
-                        cc('randomStep', randomStep);
-
-
-                        let newVertex = new XYZ(validatedVertexes[j-1].x + randomStep.x, validatedVertexes[j-1].y + randomStep.y, validatedVertexes[j-1].z + randomStep.z);
-
-
-                        validatedVertexes.push(newVertex);
-                        let vertex = new mathis.Vertex();
-                        vertex.position = newVertex;
-                        mamesh.vertices.push(vertex);
-                        cc('We add ', newVertex);
-
-                        if (validatedVertexes.length>chainSize){
-                            break;
-                        }
-
-
-
-                    }
                         //So if availableJumps is empty, then any jump will give intersection => Start over!
-                    else {
+                        else {
                             attempts++;
                             cc('Cul de sac!');
 
@@ -130,37 +135,30 @@ module mathis {
                                 mamesh.vertices.pop();
                             }
                             break
+                        }
+
                     }
 
+                    NOTfinished = (validatedVertexes.length < this.chainSize);
+
+
                 }
+                cc('validatedVertexes', validatedVertexes);
+                cc('Attempts', attempts)
 
-                NOTfinished=(validatedVertexes.length<chainSize);
+
+                for (let i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
 
 
+                let end = new Date().getTime();
+                cc('Execution Time in sec', (end-start)*1000)
+
+                return mamesh
             }
-            cc('validatedVertexes', validatedVertexes);
-            cc('Attempts', attempts)
-
-
-
-
-
-            for (let i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-
-
-            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            linkViewer.go();
-
-            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene);
-            verticesViewer.go();
-
-
-
-
         }
     }
 }

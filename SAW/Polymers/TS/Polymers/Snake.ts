@@ -1,9 +1,12 @@
 module mathis {
     export module polymer {
+        import GrabberCamera = mathis.macamera.GrabberCamera;
         export function snake() {
 
             let mathisFrame = new mathis.MathisFrame();
             let mamesh = new mathis.Mamesh();
+            let camera:GrabberCamera=mathisFrame.getGrabberCamera();
+            camera.changePosition(new XYZ(0,0,-35));
 
             //A given SAW
 
@@ -46,21 +49,28 @@ module mathis {
             //Nb of generated chains  (=nb of operations)
             let chain = 0;
 
-            let NOTfinished = true;
 
-            let max = 2;
-            let min = 0;
+            let t = 0;
 
+            let test = mamesh.vertices;
+            let action = new mathis.PeriodicAction(function () {
+                 //   let NOTfinished = true;
 
-                while (NOTfinished) {
+                    let max = 2;
+                    let min = 0;
+                //for (let y=0; y<chain; y++){
+                //while (NOTfinished) {
+                    t += 0.1;
+
                     // Choose randomly the end to delete:
                     let choice = Math.floor(Math.random() * (max - min)) + min;
+                {
                     //delete head, go to tail
                     if (choice == 0) {
 
-                        let x = mamesh.vertices[mamesh.vertices.length - 1].position.x;
-                        let y = mamesh.vertices[mamesh.vertices.length - 1].position.y;
-                        let z = mamesh.vertices[mamesh.vertices.length - 1].position.z;
+                        let x = test[test.length - 1].position.x;
+                        let y = test[test.length - 1].position.y;
+                        let z = test[test.length - 1].position.z;
                         let alea_x = Math.floor(Math.random() * (max - min)) + min;
                         let alea_y = Math.floor(Math.random() * (max - min)) + min;
                         let alea_z = Math.floor(Math.random() * (max - min)) + min;
@@ -72,11 +82,11 @@ module mathis {
                         let coordinate: XYZ = new XYZ(xN, yN, zN);
 
                         if (!contains(ALLc, coordinate)) {
-                            mamesh.vertices.shift();
+                            test.shift();
                             ALLc.shift();
                             let vertex = new mathis.Vertex();
                             vertex.position = coordinate;
-                            mamesh.vertices.push(vertex);
+                            test.push(vertex);
                             ALLc.push(coordinate);
                             chain++;
                         }
@@ -92,9 +102,9 @@ module mathis {
                     //delete tail, go head
                     else {
 
-                        let x = mamesh.vertices[0].position.x;
-                        let y = mamesh.vertices[0].position.y;
-                        let z = mamesh.vertices[0].position.z;
+                        let x = test[0].position.x;
+                        let y = test[0].position.y;
+                        let z = test[0].position.z;
                         let alea_x = Math.floor(Math.random() * (max - min)) + min;
                         let alea_y = Math.floor(Math.random() * (max - min)) + min;
                         let alea_z = Math.floor(Math.random() * (max - min)) + min;
@@ -106,10 +116,10 @@ module mathis {
                         let coordinate: XYZ = new XYZ(xN, yN, zN);
                         if (!contains(ALLc, coordinate)) {
                             let vertex = new mathis.Vertex();
-                            mamesh.vertices.pop();
-                            ALLc.pop()
+                            test.pop();
+                            ALLc.pop();
                             vertex.position = coordinate;
-                            mamesh.vertices.unshift(vertex);
+                            test.unshift(vertex);
                             ALLc.unshift(coordinate);
                             chain++;
                         }
@@ -123,30 +133,49 @@ module mathis {
 
                     }
 
-                    NOTfinished = (chain < 10);
+
                 }
+                    //NOTfinished = (chain < 10);
+               // }
+
+                    mamesh.vertices = test;
+
+
+                    for (let i = 1; i < mamesh.vertices.length - 1; i++) {
+                        mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                    }
+
+                    mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                    mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+
+
+                    let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
+                    linkViewer.radiusAbsolute=0.01;
+                    linkViewer.go();
+
+
+                    let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
+                    verticesViewer.radiusAbsolute = 0.1;
+                    verticesViewer.go();
+
+                cc('t',t);
+
+
+
+
+            });
+
+            action.frameInterval = 5;
+            action.nbTimesThisActionMustBeFired = 20;
+
+           // mathisFrame.cleanAllPeriodicActions();
+            mathisFrame.pushPeriodicAction(action);
+
 
 
             cc('atempts:',attempts);
             cc('How many chains are generated?:', chain);
 
-
-            for (let i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-
-
-            let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.radiusAbsolute=0.01;
-            linkViewer.go();
-
-
-            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.radiusAbsolute = 0.1;
-            verticesViewer.go();
 
 
 

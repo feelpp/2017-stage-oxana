@@ -168,7 +168,7 @@ module mathis {
 
                 let w1 = 20;
                 let h1 = 20;
-                let n = 5;
+                let n = 3;
                 let m = 5;
 
 
@@ -233,8 +233,6 @@ module mathis {
                 }
 
 
-
-
                 let test = [];
                 for (let i=0; i<C_double.length; i++){
                     test.push(C_double[i])
@@ -243,7 +241,7 @@ module mathis {
 
 
 
-                let nbOfChains = 5;
+                let nbOfChains = 9;
 
                 for (let i = 0; i < nbOfChains; i++) {
                     let indexesInMamesh = [];
@@ -255,7 +253,7 @@ module mathis {
 
 
                     //Choose S chain lenght
-                    let bridgeS = Math.floor(Math.random() * (9 - 1)) + 1;
+                    let bridgeS = Math.floor(Math.random() * (10 - 1)) + 1;
 
                     //Choose a random vertex in CS by index
                     let indexOfRandomVertex1 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
@@ -327,8 +325,6 @@ module mathis {
                     C_affecte.push(test[randomVertex2]);
                     rm(test, test[randomVertex2]);
 
-
-
                     indexesInMamesh.push(indexRandomVertex2);
 
                     for (let i = 1; i < indexesInMamesh.length - 1; i++) {
@@ -372,8 +368,22 @@ module mathis {
                 verticesViewerCS.radiusAbsolute = 0.9;
                 verticesViewerCS.go();
 
+/*
+                let verticesViewerT= new visu3d.VerticesViewer(test, mathisFrame.scene);
+                verticesViewerT.color = new mathis.Color(mathis.Color.names.red);
+                verticesViewerT.radiusAbsolute = 0.9;
+                verticesViewerT.go();
 
-                let verticesViewerSS = new visu3d.VerticesViewer(S, mathisFrame.scene);
+
+                let verticesViewerA= new visu3d.VerticesViewer(C_affecte, mathisFrame.scene);
+                verticesViewerA.color = new mathis.Color(mathis.Color.names.black);
+                verticesViewerA.radiusAbsolute = 0.9;
+                verticesViewerA.go();
+*/
+
+
+
+            let verticesViewerSS = new visu3d.VerticesViewer(S, mathisFrame.scene);
                 verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
                 verticesViewerSS.radiusAbsolute = 0.9;
                 verticesViewerSS.go();

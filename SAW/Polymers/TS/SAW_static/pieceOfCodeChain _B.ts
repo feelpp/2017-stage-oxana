@@ -7,7 +7,7 @@
 module mathis{
     import GrabberCamera = mathis.macamera.GrabberCamera;
 
-    export class ChainPresentation implements appli.PieceOfCode {
+    export class ChainPresentation_B implements appli.PieceOfCode {
         NAME = "VariableReseau"
         TITLE = ""
 
@@ -27,11 +27,12 @@ module mathis{
             this.go()
         }
 
+
         go() {
 
             this.mathisFrame.clearScene(false, false)
 
-            let creator = new polymer.SAW_Creator_static_Simple()
+            let creator = new polymer.SAW_Creator_static_Biased()
             creator.chainSize=this.chainSize
             let mamesh = creator.go()
             cc(mamesh.toString())
@@ -42,9 +43,6 @@ module mathis{
 
             let linkViewer=new visu3d.LinksViewer(mamesh,this.mathisFrame.scene)
             linkViewer.go()
-
         }
-
-
     }
 }

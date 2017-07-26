@@ -2,7 +2,7 @@ module mathis {
 
 
     export module display {
-
+        import GrabberCamera = mathis.macamera.GrabberCamera;
 
         export function show() {
 
@@ -12,7 +12,9 @@ module mathis {
             let mamesh = new mathis.Mamesh();
             let y = 10;
             let x=14;
-
+            let camera:GrabberCamera=mathisFrame.getGrabberCamera()
+            //camera.setFreeDisplacementMode()
+            camera.changePosition(new XYZ(0,0,-20))
 
 
             //bottom
@@ -67,7 +69,7 @@ module mathis {
             let vertex2OUT2 = new mathis.Vertex().setPosition(14+x,2+y,0); //43
 
             //soufre
-
+/*
             let s1 =  new mathis.Vertex().setPosition(5,7,0); //44
             let s2 =  new mathis.Vertex().setPosition(5,11,0); //45
             let s3 =  new mathis.Vertex().setPosition(19,9,0); //46
@@ -75,7 +77,7 @@ module mathis {
             let s22 =  new mathis.Vertex().setPosition(9,17,0); //48
             let s33 =  new mathis.Vertex().setPosition(19,1,0); //49
             let s44 =  new mathis.Vertex().setPosition(23,17,0); //50
-
+*/
 /*
             var v1 = new mathis.Vertex().setPosition(2,1,0); //0
             var v2= new mathis.Vertex().setPosition(2,3,0); //1
@@ -94,8 +96,9 @@ module mathis {
                vertexH0i,vertexH1i,vertexH2i,vertexH3i,vertexH4i,vertexH5i,vertexC0i,vertexC1i,vertexC2i,vertexC3i, vertexOUT2,
                vertex2H0,vertex2H1,vertex2H2,vertex2H3,vertex2H4,vertex2H5,vertex2C0,vertex2C1,vertex2C2,vertex2C3, vertex2OUT1,
                vertex2H0i,vertex2H1i,vertex2H2i,vertex2H3i,vertex2H4i,vertex2H5i,vertex2C0i,vertex2C1i,vertex2C2i,vertex2C3i, vertex2OUT2,
-                s1,s2,s3,s11,s22,s33,s44);
-            //mamesh.vertices.push(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10);
+              //  s1,s2,s3,s11,s22,s33,s44);
+            );
+                //mamesh.vertices.push(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10);
 
 
             // pour Carbone
@@ -157,14 +160,14 @@ module mathis {
             mamesh.vertices[10+a].setOneLink(mamesh.vertices[7+a]);
 
             //pour Soufre
-
+/*
             mamesh.vertices[44].setTwoOppositeLinks(mamesh.vertices[8],mamesh.vertices[45]);
             mamesh.vertices[45].setTwoOppositeLinks(mamesh.vertices[44],mamesh.vertices[30]);
             mamesh.vertices[46].setTwoOppositeLinks(mamesh.vertices[19],mamesh.vertices[42]);
             mamesh.vertices[47].setOneLink(mamesh.vertices[9]);
             mamesh.vertices[48].setOneLink(mamesh.vertices[31]);
             mamesh.vertices[49].setOneLink(mamesh.vertices[20]);
-            mamesh.vertices[50].setOneLink(mamesh.vertices[41]);
+            mamesh.vertices[50].setOneLink(mamesh.vertices[41]);  */
 
             /*
              let verticesViewer2 = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //C
@@ -194,12 +197,12 @@ module mathis {
             verticesViewer.color = new mathis.Color(mathis.Color.names.blue);
             verticesViewer.go();
 
-            let verticesViewerS = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //S visible
+/*            let verticesViewerS = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //S visible
             verticesViewerS.vertices= [mamesh.vertices[44],mamesh.vertices[45], mamesh.vertices[46]];
             verticesViewerS.color = new mathis.Color(mathis.Color.names.yellow);
             verticesViewerS.radiusAbsolute = 0.8;
             verticesViewerS.go();
-
+*/
             let verticesViewerS2 = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //S non visible
             verticesViewerS2.vertices= [mamesh.vertices[47], mamesh.vertices[48], mamesh.vertices[49], mamesh.vertices[50]];
             verticesViewerS2.color = new mathis.Color(mathis.Color.names.yellow);
@@ -212,28 +215,6 @@ module mathis {
             //verticesViewer1.go();
 
 
-
-/*
-            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //H
-            verticesViewer.vertices= [mamesh.vertices[0], mamesh.vertices[1], mamesh.vertices[2], mamesh.vertices[3], mamesh.vertices[4],mamesh.vertices[5]];
-            verticesViewer.radiusAbsolute = 0.6;
-            verticesViewer.color = new mathis.Color(mathis.Color.names.blue);
-            verticesViewer.go();
-*/
-
-/*            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            let model;
-            let model1 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
-            model1.position.x +=1;
-            model1.bakeCurrentTransformIntoVertices();
-            let model2 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
-            model2.position.x -=1;
-            model2.bakeCurrentTransformIntoVertices();
-            model = BABYLON.Mesh.MergeMeshes([model1, model2]);
-            linkViewer.color = new mathis.Color(mathis.Color.names.green);
-            linkViewer.meshModel= model;
-            let segmentOrientationFunction;
-
             function contains(oneVertex: Vertex, listOfVertexes: Vertex[]){
                 for (let v of listOfVertexes){
                     if (geo.distance(v.position,oneVertex.position)<0.0001) {
@@ -243,15 +224,41 @@ module mathis {
                 return false
             }
 
+
+/*
+            let verticesViewer = new mathis.visu3d.VerticesViewer(mamesh,mathisFrame.scene); //H
+            verticesViewer.vertices= [mamesh.vertices[0], mamesh.vertices[1], mamesh.vertices[2], mamesh.vertices[3], mamesh.vertices[4],mamesh.vertices[5]];
+            verticesViewer.radiusAbsolute = 0.6;
+            verticesViewer.color = new mathis.Color(mathis.Color.names.blue);
+            verticesViewer.go();
+*/
+
+            let linkViewer =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
+
+
+            let model;
+            let model1 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
+            model1.position.x +=1.5;
+            model1.bakeCurrentTransformIntoVertices();
+            let model2 = BABYLON.Mesh.CreateCylinder("", 1,1,1,12,12,mathisFrame.scene);
+            model2.position.x -=1.5;
+            model2.bakeCurrentTransformIntoVertices();
+            model = BABYLON.Mesh.MergeMeshes([model1, model2]);
+
+
+            linkViewer.meshModel= model;
+            linkViewer.color = new mathis.Color(mathis.Color.names.blue);
+
+            let segmentOrientationFunction;
+
+            linkViewer.color = new mathis.Color(mathis.Color.names.blue);
+            var material = new BABYLON.StandardMaterial("", mathisFrame.scene);
+            material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            model.material = material;
+
+
             let doubles: Vertex[]= [];
             doubles=[mamesh.vertices[8],mamesh.vertices[9],mamesh.vertices[19],mamesh.vertices[20], mamesh.vertices[30],mamesh.vertices[31],mamesh.vertices[41],mamesh.vertices[42]];
-
-            //let doubles1: Vertex[]= [];
-            //let doubles2: Vertex[]= [];
-            //doubles1=[mamesh.vertices[6],mamesh.vertices[7]];
-            //doubles2 = [mamesh.vertices[8],mamesh.vertices[9]];
-
-
 
 
             segmentOrientationFunction =  (v1:Vertex, v2: Vertex)=> {
@@ -267,7 +274,7 @@ module mathis {
             };
 
             linkViewer.segmentOrientationFunction = segmentOrientationFunction;
-            //linkViewer.go();
+            linkViewer.go();
 
 
 
@@ -292,12 +299,9 @@ module mathis {
 
             linkViewer1.segmentOrientationFunction = segmentOrientationFunction;
             linkViewer1.color = new mathis.Color(mathis.Color.names.black);
-            //linkViewer1.go();
-*/
+            linkViewer1.go();
 
-            let linkViewer0 =new visu3d.LinksViewer(mamesh,mathisFrame.scene);
-            linkViewer0.color = new mathis.Color(mathis.Color.names.black);
-            linkViewer0.go();
+
         }
     }
 }

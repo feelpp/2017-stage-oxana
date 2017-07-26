@@ -8,7 +8,7 @@ module mathis {
             let mathisFrame = new mathis.MathisFrame();
             let camera:GrabberCamera=mathisFrame.getGrabberCamera()
             camera.setFreeDisplacementMode()
-            camera.changePosition(new XYZ(0,0,-35))
+            camera.changePosition(new XYZ(0,0,-100))
 
 
             let mamesh = new mathis.Mamesh();
@@ -38,12 +38,12 @@ module mathis {
 
                     //H
 
-                    let v_1_H1 = new mathis.Vertex().setPosition(3 + w1 * i, 1 + h1 * j, 0); //4
-                    let v_1_H2 = new mathis.Vertex().setPosition(3 + w1 * i, 5 + h1 * j, 0);
-                    let v_1_H3 = new mathis.Vertex().setPosition(6 + w1 * i, 1 + h1 * j, 0);
-                    let v_1_H4 = new mathis.Vertex().setPosition(6 + w1 * i, 5 + h1 * j, 0);
-                    let v_1_H5 = new mathis.Vertex().setPosition(9 + w1 * i, 5 + h1 * j, 0);
-                    let v_1_H6 = new mathis.Vertex().setPosition(12 + w1 * i, 1 + h1 * j, 0);
+                    let v_1_H1 = new mathis.Vertex().setPosition(3 + w1 * i, 2 + h1 * j, 0); //4
+                    let v_1_H2 = new mathis.Vertex().setPosition(3 + w1 * i, 4 + h1 * j, 0);
+                    let v_1_H3 = new mathis.Vertex().setPosition(6 + w1 * i, 2 + h1 * j, 0);
+                    let v_1_H4 = new mathis.Vertex().setPosition(6 + w1 * i, 4 + h1 * j, 0);
+                    let v_1_H5 = new mathis.Vertex().setPosition(9 + w1 * i, 4 + h1 * j, 0);
+                    let v_1_H6 = new mathis.Vertex().setPosition(12 + w1 * i, 2 + h1 * j, 0);
 
 
                     mamesh.vertices.push(
@@ -96,6 +96,7 @@ module mathis {
             let s24_76_c = new mathis.Vertex().setPosition(36, 15, 0);
             let s24_76_d = new mathis.Vertex().setPosition(36, 18, 0);
 
+
             //278
             let s43_96_a = new mathis.Vertex().setPosition(59, 14, 0);
 
@@ -124,22 +125,35 @@ module mathis {
             let s85_128_b = new mathis.Vertex().setPosition(41, 33, 0);
             let s85_128_c = new mathis.Vertex().setPosition(38, 35, 0);
 
-            //291-293
+            //294-296
             let s95_147_a = new mathis.Vertex().setPosition(61, 29, 0);
             let s95_147_b = new mathis.Vertex().setPosition(59, 33, 0);
             let s95_147_c = new mathis.Vertex().setPosition(60, 35, 0);
 
 
+            //nonVisible
+            //297-301
+
+            let sN6 = new mathis.Vertex().setPosition(10, 45, 0);
+            let sN7 = new mathis.Vertex().setPosition(26, 45, 0);
+            let sN8 = new mathis.Vertex().setPosition(35, 45, 0);
+            let sN9 = new mathis.Vertex().setPosition(48, 45, 0);
+            let sN10 = new mathis.Vertex().setPosition(50, 45, 0);
+
+            //302-304
+
+            let s33_86_a = new mathis.Vertex().setPosition(45, 7, 0);
+            let s33_86_b = new mathis.Vertex().setPosition(51, 12, 0);
+            let s33_86_c = new mathis.Vertex().setPosition(48, 17, 0);
 
 
-            mamesh.vertices.push(sN1,sN2,sN3,sN4,sN5)
+
+            mamesh.vertices.push(sN1,sN2,sN3,sN4,sN5);
             mamesh.vertices[4].setOneLink(mamesh.vertices[260]);
             mamesh.vertices[14].setOneLink(mamesh.vertices[261]);
             mamesh.vertices[23].setOneLink(mamesh.vertices[262]);
             mamesh.vertices[34].setOneLink(mamesh.vertices[263]);
             mamesh.vertices[44].setOneLink(mamesh.vertices[264]);
-
-
 
 
 
@@ -162,6 +176,10 @@ module mathis {
             mamesh.vertices[275].setTwoOppositeLinks(mamesh.vertices[274], mamesh.vertices[276]);
             mamesh.vertices[276].setTwoOppositeLinks(mamesh.vertices[275], mamesh.vertices[277]);
             mamesh.vertices[277].setTwoOppositeLinks(mamesh.vertices[276], mamesh.vertices[76]);
+
+
+
+
 
 
             mamesh.vertices.push(s43_96_a);
@@ -200,6 +218,20 @@ module mathis {
             mamesh.vertices[296].setTwoOppositeLinks(mamesh.vertices[295], mamesh.vertices[147]);
 
 
+
+            mamesh.vertices.push(sN6,sN7,sN8,sN9,sN10);
+            mamesh.vertices[108].setOneLink(mamesh.vertices[297]);
+            mamesh.vertices[118].setOneLink(mamesh.vertices[298]);
+            mamesh.vertices[127].setOneLink(mamesh.vertices[299]);
+            mamesh.vertices[138].setOneLink(mamesh.vertices[300]);
+            mamesh.vertices[148].setOneLink(mamesh.vertices[301]);
+
+            mamesh.vertices.push(s33_86_a,s33_86_b,s33_86_c);
+
+            mamesh.vertices[302].setTwoOppositeLinks(mamesh.vertices[33], mamesh.vertices[303]);
+            mamesh.vertices[303].setTwoOppositeLinks(mamesh.vertices[302], mamesh.vertices[304]);
+            mamesh.vertices[304].setTwoOppositeLinks(mamesh.vertices[303], mamesh.vertices[86]);
+
             let x = 0;
             for (let k = 0; k<n; k++){
                 mamesh.vertices[0+x].setOneLink(mamesh.vertices[x+1]);
@@ -227,8 +259,8 @@ module mathis {
             let verticesNon = [mamesh.vertices[0],mamesh.vertices[51],mamesh.vertices[52],mamesh.vertices[103],
                 mamesh.vertices[104],mamesh.vertices[155],mamesh.vertices[156],mamesh.vertices[207],mamesh.vertices[208],
                 mamesh.vertices[259],
-                mamesh.vertices[260],mamesh.vertices[261],mamesh.vertices[262],mamesh.vertices[263],mamesh.vertices[264]
-
+                mamesh.vertices[260],mamesh.vertices[261],mamesh.vertices[262],mamesh.vertices[263],mamesh.vertices[264],
+                mamesh.vertices[297],mamesh.vertices[298],mamesh.vertices[299],mamesh.vertices[300],mamesh.vertices[301]
             ];
             let verticesViewerNon = new mathis.visu3d.VerticesViewer(verticesNon,mathisFrame.scene); //Not visible
             //verticesViewerNon.go();
@@ -280,7 +312,7 @@ module mathis {
             }
             let verticesViewerH = new mathis.visu3d.VerticesViewer(verticesH, mathisFrame.scene); //H
             verticesViewerH.color = new mathis.Color(mathis.Color.names.blue);
-            verticesViewerH.radiusAbsolute = 0.3;
+            verticesViewerH.radiusAbsolute = 0.4;
             verticesViewerH.go();
 
 
@@ -294,7 +326,8 @@ module mathis {
                 mamesh.vertices[286],mamesh.vertices[287],mamesh.vertices[288],mamesh.vertices[289],
                 mamesh.vertices[290],
                 mamesh.vertices[291],mamesh.vertices[292],mamesh.vertices[293],
-                mamesh.vertices[294],mamesh.vertices[295],mamesh.vertices[296]
+                mamesh.vertices[294],mamesh.vertices[295],mamesh.vertices[296],
+                mamesh.vertices[302],mamesh.vertices[303],mamesh.vertices[304]
 
             ];
 
@@ -315,6 +348,7 @@ module mathis {
 
 
             let linkViewer = new visu3d.LinksViewer(mamesh, mathisFrame.scene);
+            linkViewer.color = new mathis.Color(mathis.Color.names.black);
             linkViewer.go();
 
 
