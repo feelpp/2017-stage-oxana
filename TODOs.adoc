@@ -53,9 +53,17 @@ TODO List  Semaine 28:
 
 TODO List  Semaine 29:
 
+* Mathis: buttons - **to finish**
+* PDE : finish PDEs in Octave - **OK**
+* SAW : finish vulcanistation - **OK**
+* SAW : add animation to snake - **OK**
+* Put all in the same language - **to finish**
+* _Rapport_ : Put all together - **to finish**
+
+
+TODO List  Semaine 30:
+
 * Mathis: buttons
-* PDE : finish PDEs in Octave
-* SAW : finish vulcanistation
-* SAW : add animation to snake
-* Put all in the same language
-* _Rapport_ : Put all together
+* Put all in the same language 
+* _Rapport_ : Put all together 
+
