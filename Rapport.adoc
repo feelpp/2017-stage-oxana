@@ -51,8 +51,53 @@ image::vilcaMine2.png[]
 
 Donc, quand on rajoute du soufre il prend un des doubles liens chez des polymères voisins et fait un espèce du pont. La longeur du pont, càd le nombre des atoms du soufre, varie aléatoirement de 1 à 8. 
 
+|====
+image:d1_02.jpg[] | image:s1_02.jpg[]
+|====
 
-  
+
+|====
+image:d1_05.jpg[] | image:s1_05.jpg[]
+|====
+
+
+|====
+image:d1_08.jpg[] | image:s1_08.jpg[]
+|====
+
+
+
+|====
+image:d20_02.jpg[] | image:s20_02.jpg[]
+|====
+
+
+
+|====
+image:d20_05.jpg[] | image:s20_05.jpg[]
+|====
+
+
+
+|====
+image:d20_08.jpg[] | image:s20_08.jpg[]
+|====
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Le soufre n'affect pas tous les monomères d'une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augementant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n'excède 2 atomes : le matériau résultant est ébonite. La longeurs réduite des ponts s'explique par les condition de cuisson : aux temperatures exrtrêmes ( stem:[> 800°] ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2. 
 
