@@ -429,25 +429,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_polymères">Polymères</a></li>
-<li><a href="#_vulcanisation">Vulcanisation</a>
+<li><a href="#_chapitre_1_marches_auto_évitantes_et_les_polymères">Chapitre 1 : Marches auto-évitantes et les polymères</a>
 <ul class="sectlevel2">
-<li><a href="#_self_avoiding_walks_saw_et_chaînes_de_markov">Self-avoiding walks (SAW) et Chaînes de Markov</a></li>
-<li><a href="#_objectifs_et_méthodes">Objectifs et méthodes</a></li>
-<li><a href="#_bibliographie_et_outils_informatiques">Bibliographie et Outils Informatiques</a></li>
-<li><a href="#_algorithmes_statiques_saw">Algorithmes statiques (SAW)</a></li>
-<li><a href="#_algorithmes_dynamiques_chaînes_de_markov">Algorithmes dynamiques (Chaînes de Markov)</a></li>
+<li><a href="#_concept_mathématique">Concept mathématique</a></li>
+<li><a href="#_algorithmes">Algorithmes</a></li>
+<li><a href="#_autre_application_vulcanisation">Autre application : Vulcanisation</a></li>
 </ul>
 </li>
-<li><a href="#_intro">Intro</a></li>
-<li><a href="#_la_méthode_des_caractéristiques">La méthode des caractéristiques</a>
+<li><a href="#_chapitre_2_edo_edp_et_l_épidémiologie">Chapitre 2 : EDO/EDP et l&#8217;épidémiologie</a>
 <ul class="sectlevel2">
-<li><a href="#_si">SI</a></li>
+<li><a href="#_modèle_si">Modèle SI</a></li>
 </ul>
 </li>
-<li><a href="#_sir">SIR</a>
+<li><a href="#_modèle_sir">Modèle SIR</a>
 <ul class="sectlevel2">
 <li><a href="#_odes">ODEs</a></li>
+</ul>
+</li>
+<li><a href="#_la_méthode_des_caractéristiques">La méthode des caractéristiques</a>
+<ul class="sectlevel3">
+<li><a href="#_sir_comme_edp_de_transport">SIR comme EDP de transport</a></li>
 </ul>
 </li>
 <li><a href="#_gantt">Gantt</a></li>
@@ -459,183 +460,29 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>marches auto-évitantes</p>
+<p>Cette recherche concerne l&#8217;étude des processus aléatoires et contient deux parties :  marches auto-évitantes (dans le contexte du synthèse des polymères) et EDO stochastiques (dans le contexte de l&#8217;épidémiologie).</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="saw.png" alt="saw">
-</div>
+<div class="paragraph">
+<p>La science macromoléculaire est étroitement liée avec la chimie, la biochimie, la pharmacologie, etc. Le développement industriel de ces domaines explique la motivation de cette étude.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_polymères">Polymères</h2>
+<h2 id="_chapitre_1_marches_auto_évitantes_et_les_polymères">Chapitre 1 : Marches auto-évitantes et les polymères</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm.
-La forme géometrique est aussi importante que les propriétes chimiques.
-Le développement industriel de la science macromoléculaire a été accéléré par la Seconde Guerre mondiale.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_vulcanisation">Vulcanisation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Vulcanisation est un procédé chimique consistant à incorporer un agent vulcanisant (soufre) à un polymère pour former des ponts entre les chaînes molèculaires après la cuisson. Cette opération est largement utiliser dans le domaine de la production des pneu, car le polymère vulcanisé devient plus élastique et solide, moins plastique et moins dissoluble en dissolvants organiques.</p>
-</div>
-<div class="paragraph">
-<p>Considèrons un 2-méthylbuta-1,3-diène polymérisé, autrement dit le caoutchouc naturel. Si on rajoute du soufre, après cuisson, on obtient un nouveau matériau qu&#8217;on utilise quotidiennement aujourd&#8217;hui. A l&#8217;echelle moléculaire on voit un réseau des monomères liés entre eux directement (comme le polymère d&#8217;avant) et par les molécules d&#8217;agent vulcanisant.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vul2.png" alt="vul2">
-</div>
-</div>
-<div class="paragraph">
-<p>Voici un exemple avec le caoutchouc synthétique buta-1,3-diène polymérisé.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="m1.png" alt="m1">
-</div>
-</div>
-<div class="paragraph">
-<p>On rajoute du soufre:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="s.png" alt="s">
-</div>
-</div>
-<div class="paragraph">
-<p>Et après la cuisson on obtient le même réseau des atoms que avant:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="m2.png" alt="m2">
-</div>
-</div>
-<div class="paragraph">
-<p>L&#8217;idée:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vulca2D.png" alt="vulca2D">
-</div>
-</div>
-<div class="paragraph">
-<p>La mienne:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="VulcaMine.png" alt="VulcaMine">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vilcaMine2.png" alt="vilcaMine2">
-</div>
-</div>
-<div class="paragraph">
-<p>Donc, quand on rajoute du soufre il prend un des doubles liens chez des polymères voisins et fait un espèce du pont. La longeur du pont, càd le nombre des atoms du soufre, varie aléatoirement de 1 à 8.</p>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_02.jpg" alt="d1 02"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_02.jpg" alt="s1 02"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_05.jpg" alt="d1 05"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_05.jpg" alt="s1 05"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_08.jpg" alt="d1 08"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_08.jpg" alt="s1 08"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_02.jpg" alt="d20 02"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_02.jpg" alt="s20 02"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_05.jpg" alt="d20 05"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_05.jpg" alt="s20 05"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_08.jpg" alt="d20 08"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_08.jpg" alt="s20 08"></span></p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Le soufre n&#8217;affect pas tous les monomères d&#8217;une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augementant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n&#8217;excède 2 atomes : le matériau résultant est ébonite. La longeurs réduite des ponts s&#8217;explique par les condition de cuisson : aux temperatures exrtrêmes ( \(&gt; 800°\) ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2.</p>
-</div>
-<div class="paragraph">
-<p>Pour simuler la vulcanisation en Mathis on va prendre 10 polymères de caoutchouc synthétique de longeur de 30 monomères. Donc ces polymères représentent les lignes horizontals sur une lattice de 80x30 (10*8=80, où 8 - la longeur du pont max). Le taux des doubles liens affectés va dépendre de la concenration du soufre. Les liens à affecter seront choisis aléatoirement, la longeur des ponts sera aussi aléatoire pour chaque pont. Un pont peut aller à 1 de 30 monomères du polymère voisin. Les atomes du soufre font marches aléatoires sans intersection entre les macromolécules, ce qu&#8217;on va simuler avec méthodes statiques.</p>
-</div>
-<div class="paragraph">
-<p>Création grille d&#8217;affichage:</p>
-</div>
-<div class="paragraph">
-<p>x-atome C stable (ne peut pas interagir avec soufre)
-o-atome C à double lien (peut être affecté par soufre)</p>
-</div>
-<div class="paragraph">
-<p>xxoo - xxoo - xxoo</p>
+<p>Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
 </div>
 <div class="sect2">
-<h3 id="_self_avoiding_walks_saw_et_chaînes_de_markov">Self-avoiding walks (SAW) et Chaînes de Markov</h3>
+<h3 id="_concept_mathématique">Concept mathématique</h3>
 <div class="paragraph">
-<p>On appele une SAW ("Self-avoiding walk") une marche des points toutes distincts dans une lattice à dimension \(d\). Ce modèle a été créé spécialement pour simuler des polymères linéaires dans un dissolvant il y 50 ans.
-Sous la condition que la distance entre les points voisins est constante, on a \(2d\) pas possibles à chaque étape. Si de plus on suppose, que la marche ne peut pas revenir en arrière, on a \(2d-1\) pas possible à chaque étape sauf le premier (\(2d\)).</p>
+<p>On appele une SAW ("Self-avoiding walk") une marche des points toutes distincts dans une lattice à dimension \(d\). Ce modèle a été créé spécialement pour simuler des polymères linéaires dans un dissolvant il y 50 ans.</p>
 </div>
 <div class="paragraph">
-<p>La fonction de partition qui donne l&#8217;iformation su l&#8217;efficacité des marches générées de longeur \(N\) peut être écrite comme :</p>
+<p>Sous la condition que la distance entre les points voisins est constante, on a \(2d\) pas possibles à chaque étape. Si de plus on suppose, que la marche ne peut pas revenir en arrière, on a \(2d-1\) pas possible à chaque étape sauf le premier (\(2d\)).</p>
+</div>
+<div class="paragraph">
+<p>La fonction de partition qui donne l&#8217;information su l&#8217;efficacité des marches générées de longeur \(N\) peut être écrite comme :</p>
 </div>
 <div class="ulist">
 <ul>
@@ -672,29 +519,19 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 <p>\(\lambda\) - attrition constant</p>
 </li>
 <li>
-<p>\(\gamma\) - critical exponent (ne dépend pas du modèle)</p>
+<p>\(\gamma\) - critical exponent (ne dépend pas du modèle)
+image::saw.png[]</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_objectifs_et_méthodes">Objectifs et méthodes</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_bibliographie_et_outils_informatiques">Bibliographie et Outils Informatiques</h3>
+<h3 id="_algorithmes">Algorithmes</h3>
 <div class="paragraph">
-<p>%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== Algorithmes</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_algorithmes_statiques_saw">Algorithmes statiques (SAW)</h3>
-<div class="paragraph">
-<p>Les algorithmes dynamiques se basent sur SAW, autrement dit l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
+<p>Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\). Les algorithmes dynamiques se basent sur SAW, autrement dit l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
 </div>
 <div class="sect3">
-<h4 id="_simple_sampling">Simple Sampling</h4>
+<h4 id="_algorithmes_statiques_simple_sampling">Algorithmes statiques: Simple Sampling</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -745,7 +582,7 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 <div class="sect3">
-<h4 id="_biased_sampling_méthode_de_rosenbluth">Biased Sampling (Méthode de Rosenbluth)</h4>
+<h4 id="_algorithmes_statiques_biased_sampling_méthode_de_rosenbluth">Algorithmes statiques: Biased Sampling (Méthode de Rosenbluth)</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -795,14 +632,8 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_algorithmes_dynamiques_chaînes_de_markov">Algorithmes dynamiques (Chaînes de Markov)</h3>
-<div class="paragraph">
-<p>Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\).</p>
-</div>
 <div class="sect3">
-<h4 id="_algorithme_de_reptation">Algorithme de Reptation</h4>
+<h4 id="_algorithmes_dynamiques_algorithme_de_reptation">Algorithmes dynamiques: Algorithme de Reptation</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -856,7 +687,7 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 <div class="sect3">
-<h4 id="_algorithme_de_pivot">Algorithme de pivot</h4>
+<h4 id="_algorithmes_dynamiques_algorithme_de_pivot">Algorithmes dynamiques: Algorithme de pivot</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -913,34 +744,90 @@ Sous la condition que la distance entre les points voisins est constante, on a \
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_autre_application_vulcanisation">Autre application : Vulcanisation</h3>
+<div class="paragraph">
+<p>Vulcanisation est un procédé chimique consistant à incorporer un agent vulcanisant (soufre) à un polymère pour former des ponts entre les chaînes molèculaires après la cuisson. Cette opération est largement utiliser dans le domaine de la production des pneu, car le polymère vulcanisé devient plus élastique et solide, moins plastique et moins dissoluble en dissolvants organiques.</p>
+</div>
+<div class="paragraph">
+<p>Considèrons un 2-méthylbuta-1,3-diène polymérisé, autrement dit le caoutchouc naturel. Si on rajoute du soufre, après cuisson, on obtient un nouveau matériau qu&#8217;on utilise quotidiennement aujourd&#8217;hui. A l&#8217;echelle moléculaire on voit un réseau des monomères liés entre eux directement (comme le polymère d&#8217;avant) et par les molécules d&#8217;agent vulcanisant.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="vul2.png" alt="vul2">
+</div>
+</div>
+<div class="paragraph">
+<p>Voici un exemple avec le caoutchouc synthétique buta-1,3-diène polymérisé.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="m1.png" alt="m1">
+</div>
+</div>
+<div class="paragraph">
+<p>On rajoute du soufre:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="s.png" alt="s">
+</div>
+</div>
+<div class="paragraph">
+<p>Et après "la cuisson" on obtient le réseau des monomères liés entre eux en polymères et liés aux monomères des macromolécules voisines par les ponts du soufre. La longeur du pont, càd le nombre des atomes du soufre, varie aléatoirement de 1 à 8:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="m2.png" alt="m2">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="vulca2D.png" alt="vulca2D">
+</div>
+</div>
+<div class="paragraph">
+<p>Le soufre n&#8217;affect pas tous les monomères d&#8217;une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augementant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n&#8217;excède 2 atomes : le matériau résultant est ébonite. La longeurs réduite des ponts s&#8217;explique par les condition de cuisson : aux temperatures exrtrêmes ( \(&gt; 800°\) ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2.</p>
+</div>
+<div class="paragraph">
+<p>Pour simuler la vulcanisation en Mathis on va prendre 10 polymères de caoutchouc synthétique de longeur de 30 monomères. Donc ces polymères représentent les lignes horizontals sur une lattice de 80x30 (10*8=80, où 8 - la longeur du pont max). Le taux des doubles liens affectés va dépendre de la concenration du soufre. Les liens à affecter seront choisis aléatoirement, la longeur des ponts sera aussi aléatoire pour chaque pont. Un pont peut aller à 1 de 30 monomères du polymère voisin. Les atomes du soufre font marches aléatoires sans intersection entre les macromolécules, ce qu&#8217;on va simuler avec un méthode statique "Biased Sampling".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="VulcaMine.png" alt="VulcaMine">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="vilcaMine2.png" alt="vilcaMine2">
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_intro">Intro</h2>
+<h2 id="_chapitre_2_edo_edp_et_l_épidémiologie">Chapitre 2 : EDO/EDP et l&#8217;épidémiologie</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d&#8217;être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l&#8217;étude de la science des réseaux.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules.</p>
-</div>
-<div class="paragraph">
-<p>Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l&#8217;équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l&#8217;équation différentielle ordinaire le long d&#8217;une caractéristique permet de retrouver la solution du problème original.</p>
-</div>
 <div class="sect2">
-<h3 id="_si">SI</h3>
+<h3 id="_modèle_si">Modèle SI</h3>
+<div class="paragraph">
+<p>Notre premier example est le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d&#8217;autres maladies qui peuvent être coupées par vaccination.</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="SIscheme.png" alt="SIscheme">
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="SIdyn.png" alt="SIdyn">
+</div>
+</div>
 <div class="paragraph">
-<p>Modèle SI en mathis</p>
+<p>On a fait une simulation du modèle SI en mathis. On a utilisé les marches auto-évitantes sur un arbre, générées par l&#8217;algorithme statique "Biased Sampling".</p>
 </div>
 <div class="videoblock">
 <div class="content">
@@ -953,10 +840,10 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sir">SIR</h2>
+<h2 id="_modèle_sir">Modèle SIR</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>SIR : susceptible, infected, recovered - est un modèle très simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée.</p>
+<p>L&#8217;objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1070,6 +957,18 @@ Your browser does not support the video tag.
 <p>Dans le cas où on suppose qu&#8217;on sait la proportion exacte de \(S,I\) et \( R\) au moment \(t\), donc on peut trouver la solution pour tout \(t\).  Dans notre cas, on ne sait que la loi de  = probabilité, donc l&#8217;équation de Kolmogorov transport cette probabilité dans le temps.</p>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules.</p>
+</div>
+<div class="paragraph">
+<p>Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l&#8217;équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l&#8217;équation différentielle ordinaire le long d&#8217;une caractéristique permet de retrouver la solution du problème original.</p>
+</div>
 <div class="sect3">
 <h4 id="_sir_comme_edp_de_transport">SIR comme EDP de transport</h4>
 <div class="paragraph">
@@ -1102,7 +1001,6 @@ stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
 <h2 id="_gantt">Gantt</h2>
 <div class="sectionbody">
@@ -1111,12 +1009,84 @@ stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
 <img src="gantt.png" alt="gantt">
 </div>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_02.jpg" alt="d1 02"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_02.jpg" alt="s1 02"></span></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_05.jpg" alt="d1 05"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_05.jpg" alt="s1 05"></span></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_08.jpg" alt="d1 08"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_08.jpg" alt="s1 08"></span></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_02.jpg" alt="d20 02"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_02.jpg" alt="s20 02"></span></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_05.jpg" alt="d20 05"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_05.jpg" alt="s20 05"></span></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_08.jpg" alt="d20 08"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_08.jpg" alt="s20 08"></span></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-26 14:03:45 CEST
+Last updated 2017-07-31 10:45:34 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">
