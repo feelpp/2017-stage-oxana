@@ -1,4 +1,4 @@
-= Applications de marches auto-évitantes et des équations differentielles dans l'étude des polymères et de l'épidémiologie
+= Applications de marches auto-évitantes et des EDO/EDP dans l'étude des polymères et de l'épidémiologie
 Oxana USHAKOVA
 :feelpp: Feel++
 :stem: latexmath
@@ -12,7 +12,7 @@ Cette recherche concerne l'étude des processus aléatoires et contient deux par
 La science macromoléculaire est étroitement liée avec la chimie, la biochimie, la pharmacologie, etc. Le développement industriel de ces domaines explique la motivation de cette étude. 
 
 
-== Chapitre 1 : Marches auto-évitantes et les polymères
+== **Chapitre 1** : Marches auto-évitantes et les polymères
 
 Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement stem:[10^3-10^5] monomères, et a la longeur de stem:[10^{-5} - 10^{-2}] cm. La forme géometrique est aussi importante que les propriétes chimiques.
 
@@ -156,18 +156,9 @@ image::VulcaMine.png[]
 image::vilcaMine2.png[]
 
 
+=== Autre application : Modèle SI
 
-
-
-== Chapitre 2 : EDO/EDP et l'épidémiologie
-
-Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d'être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l'étude de la science des réseaux.
-
-
-
-=== Modèle SI
-
-Notre premier example est le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d'autres maladies qui peuvent être coupées par vaccination. 
+Comme l'introduction au chapitre 2 on va considéré un example le plus simple de l'épidémiologie -  le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d'autres maladies qui peuvent être coupées par vaccination. 
 
 image::SIscheme.png[]
 image::SIdyn.png[]
@@ -176,7 +167,16 @@ On a fait une simulation du modèle SI en mathis. On a utilisé les marches auto
 
 video::SI.mp4[]
 
-== Modèle SIR
+
+
+
+== **Chapitre 2** : EDO/EDP et l'épidémiologie
+
+Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d'être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l'étude de la science des réseaux.
+
+
+
+=== Modèle SIR
 
 L'objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n'est ni née, ni décédée.
 
@@ -184,7 +184,7 @@ image::SIRscheme.png[]
 
 image::SIRdynamique.png[]
 
-=== ODEs
+==== ODEs Déterministes
 
 Problème initial:
 
@@ -192,11 +192,11 @@ Problème initial:
 * stem:[I'= \alpha IS - \beta I]
 * stem:[R'= \beta I - \gamma R] 
 
-where stem:[S+I+R=1]
+avec stem:[S+I+R=1]
 
-Et si l'immunauté n'est pas permanent? (la grippe)
+==== ODEs Stochastiques
 
-Stochastique SIR: on fait le choix aléatoire entre S,I,R:
+On fait le choix aléatoire entre S,I,R:
 
 * Si on choisi S, donc on le change pour I avec la probabilité stem:[ \frac{\alpha NI(t)}{N-1}]
 * Si on choisi I, donc on le change pour R avec la probabilité stem:[\beta]
@@ -214,7 +214,59 @@ On obtient la discretization Euler du problème initial:
 * stem:[I(t+\Delta t)=I(t)(1-B(\Delta t))+A(\Delta t) I(t) S(t)]
 * stem:[R(t+\Delta t)=R(t)(1-C(\Delta t))+B(\Delta t)I(t)]
 
-==== Dérivation de EDP hyperbolique de Kolmogorov pour un modèle stochastique discrèt:
+==== Résultats
+
+1 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\nu = 0.1] 
+
+taux d'infection stem:[\beta = 0.2] 
+
+|====
+image:d1_02.jpg[] | image:s1_02.jpg[]
+|====
+
+taux d'infection stem:[\beta = 0.5]
+
+|====
+image:d1_05.jpg[] | image:s1_05.jpg[]
+|====
+
+taux d'infection stem:[\beta = 0.8]
+
+|====
+image:d1_08.jpg[] | image:s1_08.jpg[]
+|====
+
+20 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\nu = 0.1] 
+
+taux d'infection stem:[\beta = 0.2]
+
+|====
+image:d20_02.jpg[] | image:s20_02.jpg[]
+|====
+
+taux d'infection stem:[\beta = 0.5]
+
+|====
+image:d20_05.jpg[] | image:s20_05.jpg[]
+|====
+
+taux d'infection stem:[\beta = 0.8]
+
+|====
+image:d20_08.jpg[] | image:s20_08.jpg[]
+|====
+
+=== Modèle SIR stochastique comme un EDP
+
+Le modèle SIR peut considéré comme un EDP hyperbolique de Kolmogorov, qui peut être résolue par le méthode des caractéristiques
+
+==== La méthode des caractéristiques
+
+La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules. 
+
+Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l'équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l'équation différentielle ordinaire le long d'une caractéristique permet de retrouver la solution du problème original.
+
+==== Dérivation de EDP hyperbolique de Kolmogorov
 
 Supposons stem:[P_{N, \Delta t} (t,n,m)] - la probabilité au moment stem:[t] d'avoir stem:[n] personnes susceptibles, stem:[m] personnes infectées et stem:[N-n-m] personnes immunisées dans population constante stem:[N].
 
@@ -237,11 +289,6 @@ stem:[ \frac{d}{dt} \int_S p(t,x,y)dxdy=0] où S est un triangle.
 
 Dans le cas où on suppose qu'on sait la proportion exacte de stem:[S,I] et stem:[ R] au moment stem:[t], donc on peut trouver la solution pour tout stem:[t].  Dans notre cas, on ne sait que la loi de  = probabilité, donc l'équation de Kolmogorov transport cette probabilité dans le temps.
 
-== La méthode des caractéristiques
-
-La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules. 
-
-Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l'équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l'équation différentielle ordinaire le long d'une caractéristique permet de retrouver la solution du problème original.
 
 ==== SIR comme EDP de transport
 
@@ -259,57 +306,29 @@ stem:[e^{-Q(\phi_t( \textbf{x}_0))}p(t,\phi_t(\textbf{x}_0)) =e^{Q(\textbf{x}_0)
 Donc au final:
 
 stem:[0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= ]
-stem:[=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))+\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))]
+stem:[=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))+\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))] 
 stem:[=\nabla * Fp+ F\nabla p+ \partial_t p]
 stem:[=\partial_t p + \nabla *(pF)]
 
 Les equations du modèle SIR  forment les caractéristiques pour l'EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.
 
 
+== Conclusion
 
 
 
-== Gantt
+== Project Management
 
-
+=== Diagramme de Gantt
 
 image::gantt.png[]
 
+=== GitHub
+
+- https://github.com/vincentvigon/MATHIS2/tree/polymers ( y compris TODO liste, mise à jour chaque semaine)
+- https://github.com/feelpp/2017-stage-oxana (y compris "Project")
 
 
-
-
-|====
-image:d1_02.jpg[] | image:s1_02.jpg[]
-|====
-
-
-|====
-image:d1_05.jpg[] | image:s1_05.jpg[]
-|====
-
-
-|====
-image:d1_08.jpg[] | image:s1_08.jpg[]
-|====
-
-
-
-|====
-image:d20_02.jpg[] | image:s20_02.jpg[]
-|====
-
-
-
-|====
-image:d20_05.jpg[] | image:s20_05.jpg[]
-|====
-
-
-
-|====
-image:d20_08.jpg[] | image:s20_08.jpg[]
-|====
 
 
 

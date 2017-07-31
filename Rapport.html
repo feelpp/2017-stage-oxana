@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
 <meta name="author" content="Oxana USHAKOVA">
-<title>Applications de marches auto-évitantes et des équations differentielles dans l&#8217;étude des polymères et de l&#8217;épidémiologie</title>
+<title>Applications de marches auto-évitantes et des EDO/EDP dans l&#8217;étude des polymères et de l&#8217;épidémiologie</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -421,7 +421,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Applications de marches auto-évitantes et des équations differentielles dans l&#8217;étude des polymères et de l&#8217;épidémiologie</h1>
+<h1>Applications de marches auto-évitantes et des EDO/EDP dans l&#8217;étude des polymères et de l&#8217;épidémiologie</h1>
 <div class="details">
 <span id="author" class="author">Oxana USHAKOVA</span><br>
 </div>
@@ -429,29 +429,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_chapitre_1_marches_auto_évitantes_et_les_polymères">Chapitre 1 : Marches auto-évitantes et les polymères</a>
+<li><a href="#__strong_chapitre_1_strong_marches_auto_évitantes_et_les_polymères"><strong>Chapitre 1</strong> : Marches auto-évitantes et les polymères</a>
 <ul class="sectlevel2">
 <li><a href="#_concept_mathématique">Concept mathématique</a></li>
 <li><a href="#_algorithmes">Algorithmes</a></li>
 <li><a href="#_autre_application_vulcanisation">Autre application : Vulcanisation</a></li>
+<li><a href="#_autre_application_modèle_si">Autre application : Modèle SI</a></li>
 </ul>
 </li>
-<li><a href="#_chapitre_2_edo_edp_et_l_épidémiologie">Chapitre 2 : EDO/EDP et l&#8217;épidémiologie</a>
+<li><a href="#__strong_chapitre_2_strong_edo_edp_et_l_épidémiologie"><strong>Chapitre 2</strong> : EDO/EDP et l&#8217;épidémiologie</a>
 <ul class="sectlevel2">
-<li><a href="#_modèle_si">Modèle SI</a></li>
+<li><a href="#_modèle_sir">Modèle SIR</a></li>
+<li><a href="#_modèle_sir_stochastique_comme_un_edp">Modèle SIR stochastique comme un EDP</a></li>
 </ul>
 </li>
-<li><a href="#_modèle_sir">Modèle SIR</a>
+<li><a href="#_conclusion">Conclusion</a></li>
+<li><a href="#_project_management">Project Management</a>
 <ul class="sectlevel2">
-<li><a href="#_odes">ODEs</a></li>
+<li><a href="#_diagramme_de_gantt">Diagramme de Gantt</a></li>
+<li><a href="#_github">GitHub</a></li>
 </ul>
 </li>
-<li><a href="#_la_méthode_des_caractéristiques">La méthode des caractéristiques</a>
-<ul class="sectlevel3">
-<li><a href="#_sir_comme_edp_de_transport">SIR comme EDP de transport</a></li>
-</ul>
-</li>
-<li><a href="#_gantt">Gantt</a></li>
 </ul>
 </div>
 </div>
@@ -468,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_chapitre_1_marches_auto_évitantes_et_les_polymères">Chapitre 1 : Marches auto-évitantes et les polymères</h2>
+<h2 id="__strong_chapitre_1_strong_marches_auto_évitantes_et_les_polymères"><strong>Chapitre 1</strong> : Marches auto-évitantes et les polymères</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
@@ -803,18 +801,10 @@ image::saw.png[]</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_chapitre_2_edo_edp_et_l_épidémiologie">Chapitre 2 : EDO/EDP et l&#8217;épidémiologie</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d&#8217;être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l&#8217;étude de la science des réseaux.</p>
-</div>
 <div class="sect2">
-<h3 id="_modèle_si">Modèle SI</h3>
+<h3 id="_autre_application_modèle_si">Autre application : Modèle SI</h3>
 <div class="paragraph">
-<p>Notre premier example est le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d&#8217;autres maladies qui peuvent être coupées par vaccination.</p>
+<p>Comme l&#8217;introduction au chapitre 2 on va considéré un example le plus simple de l&#8217;épidémiologie -  le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d&#8217;autres maladies qui peuvent être coupées par vaccination.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -840,8 +830,13 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_modèle_sir">Modèle SIR</h2>
+<h2 id="__strong_chapitre_2_strong_edo_edp_et_l_épidémiologie"><strong>Chapitre 2</strong> : EDO/EDP et l&#8217;épidémiologie</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Les modèles mathématiques de maladies infectieuses ont commencé à être mis en pratique avec le problème du SIDA dans les années 1980. Ces modèles se basent sur le même rincipe :  on divise la population en classes épidémiologiques tels que les individus susceptibles d&#8217;être infectés, ceux qui sont infectieux, et ceux qui ont acquis une immunité à la suite de la guérison. Cette approche est utilisée non seulement   pour modéliser de très nombreuses maladies, mais aussi dans l&#8217;étude de la science des réseaux.</p>
+</div>
+<div class="sect2">
+<h3 id="_modèle_sir">Modèle SIR</h3>
 <div class="paragraph">
 <p>L&#8217;objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée.</p>
 </div>
@@ -855,8 +850,8 @@ Your browser does not support the video tag.
 <img src="SIRdynamique.png" alt="SIRdynamique">
 </div>
 </div>
-<div class="sect2">
-<h3 id="_odes">ODEs</h3>
+<div class="sect3">
+<h4 id="_odes_déterministes">ODEs Déterministes</h4>
 <div class="paragraph">
 <p>Problème initial:</p>
 </div>
@@ -874,13 +869,13 @@ Your browser does not support the video tag.
 </ul>
 </div>
 <div class="paragraph">
-<p>where \(S+I+R=1\)</p>
+<p>avec \(S+I+R=1\)</p>
 </div>
-<div class="paragraph">
-<p>Et si l&#8217;immunauté n&#8217;est pas permanent? (la grippe)</p>
 </div>
+<div class="sect3">
+<h4 id="_odes_stochastiques">ODEs Stochastiques</h4>
 <div class="paragraph">
-<p>Stochastique SIR: on fait le choix aléatoire entre S,I,R:</p>
+<p>On fait le choix aléatoire entre S,I,R:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -927,8 +922,123 @@ Your browser does not support the video tag.
 </li>
 </ul>
 </div>
+</div>
 <div class="sect3">
-<h4 id="_dérivation_de_edp_hyperbolique_de_kolmogorov_pour_un_modèle_stochastique_discrèt">Dérivation de EDP hyperbolique de Kolmogorov pour un modèle stochastique discrèt:</h4>
+<h4 id="_résultats">Résultats</h4>
+<div class="paragraph">
+<p>1 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\nu = 0.1\)</p>
+</div>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.2\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_02.jpg" alt="d1 02"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_02.jpg" alt="s1 02"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.5\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_05.jpg" alt="d1 05"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_05.jpg" alt="s1 05"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.8\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_08.jpg" alt="d1 08"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_08.jpg" alt="s1 08"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>20 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\nu = 0.1\)</p>
+</div>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.2\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_02.jpg" alt="d20 02"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_02.jpg" alt="s20 02"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.5\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_05.jpg" alt="d20 05"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_05.jpg" alt="s20 05"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>taux d&#8217;infection \(\beta = 0.8\)</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_08.jpg" alt="d20 08"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_08.jpg" alt="s20 08"></span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_modèle_sir_stochastique_comme_un_edp">Modèle SIR stochastique comme un EDP</h3>
+<div class="paragraph">
+<p>Le modèle SIR peut considéré comme un EDP hyperbolique de Kolmogorov, qui peut être résolue par le méthode des caractéristiques</p>
+</div>
+<div class="sect3">
+<h4 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h4>
+<div class="paragraph">
+<p>La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules.</p>
+</div>
+<div class="paragraph">
+<p>Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l&#8217;équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l&#8217;équation différentielle ordinaire le long d&#8217;une caractéristique permet de retrouver la solution du problème original.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dérivation_de_edp_hyperbolique_de_kolmogorov">Dérivation de EDP hyperbolique de Kolmogorov</h4>
 <div class="paragraph">
 <p>Supposons \(P_{N, \Delta t} (t,n,m)\) - la probabilité au moment \(t\) d&#8217;avoir \(n\) personnes susceptibles, \(m\) personnes infectées et \(N-n-m\) personnes immunisées dans population constante \(N\).</p>
 </div>
@@ -956,18 +1066,6 @@ Your browser does not support the video tag.
 <div class="paragraph">
 <p>Dans le cas où on suppose qu&#8217;on sait la proportion exacte de \(S,I\) et \( R\) au moment \(t\), donc on peut trouver la solution pour tout \(t\).  Dans notre cas, on ne sait que la loi de  = probabilité, donc l&#8217;équation de Kolmogorov transport cette probabilité dans le temps.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>La méthode des caractéristiques est une technique permettant de résoudre les équations aux dérivées partielles. Particulièrement adaptée aux problèmes de transport, elle est utilisée dans de nombreux domaines tels que la mécanique des fluides ou le transport de particules.</p>
-</div>
-<div class="paragraph">
-<p>Pour une équation aux dérivées partielles du premier ordre, la méthode des caractéristiques cherche des courbes  « caractéristiques » le long desquelles l&#8217;équation aux dérivées partielles se réduit à une simple équation différentielle ordinaire. La résolution de l&#8217;équation différentielle ordinaire le long d&#8217;une caractéristique permet de retrouver la solution du problème original.</p>
 </div>
 <div class="sect3">
 <h4 id="_sir_comme_edp_de_transport">SIR comme EDP de transport</h4>
@@ -1001,92 +1099,43 @@ stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_gantt">Gantt</h2>
+<h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_project_management">Project Management</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_diagramme_de_gantt">Diagramme de Gantt</h3>
 <div class="imageblock">
 <div class="content">
 <img src="gantt.png" alt="gantt">
 </div>
 </div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_02.jpg" alt="d1 02"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_02.jpg" alt="s1 02"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_05.jpg" alt="d1 05"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_05.jpg" alt="s1 05"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d1_08.jpg" alt="d1 08"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s1_08.jpg" alt="s1 08"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_02.jpg" alt="d20 02"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_02.jpg" alt="s20 02"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_05.jpg" alt="d20 05"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_05.jpg" alt="s20 05"></span></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="d20_08.jpg" alt="d20 08"></span></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="s20_08.jpg" alt="s20 08"></span></p></td>
-</tr>
-</tbody>
-</table>
+</div>
+<div class="sect2">
+<h3 id="_github">GitHub</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/vincentvigon/MATHIS2/tree/polymers" class="bare">https://github.com/vincentvigon/MATHIS2/tree/polymers</a> ( y compris TODO liste, mise à jour chaque semaine)</p>
+</li>
+<li>
+<p><a href="https://github.com/feelpp/2017-stage-oxana" class="bare">https://github.com/feelpp/2017-stage-oxana</a> (y compris "Project")</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-31 10:45:34 CEST
+Last updated 2017-07-31 12:09:20 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">
