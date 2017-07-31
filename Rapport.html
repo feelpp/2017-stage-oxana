@@ -441,6 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_modèle_sir">Modèle SIR</a></li>
 <li><a href="#_modèle_sir_stochastique_comme_un_edp">Modèle SIR stochastique comme un EDP</a></li>
+<li><a href="#_améliorations_possibles">Améliorations possibles</a></li>
 </ul>
 </li>
 <li><a href="#_conclusion">Conclusion</a></li>
@@ -469,7 +470,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="__strong_chapitre_1_strong_marches_auto_évitantes_et_les_polymères"><strong>Chapitre 1</strong> : Marches auto-évitantes et les polymères</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
+<p>\gamman polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
 </div>
 <div class="sect2">
 <h3 id="_concept_mathématique">Concept mathématique</h3>
@@ -838,7 +839,7 @@ Your browser does not support the video tag.
 <div class="sect2">
 <h3 id="_modèle_sir">Modèle SIR</h3>
 <div class="paragraph">
-<p>L&#8217;objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée.</p>
+<p>L&#8217;objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n&#8217;est ni née, ni décédée (cause naturelle).</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -853,23 +854,26 @@ Your browser does not support the video tag.
 <div class="sect3">
 <h4 id="_odes_déterministes">ODEs Déterministes</h4>
 <div class="paragraph">
+<p>Le modèle SIR est décrit par le système des ODEs suivant:</p>
+</div>
+<div class="paragraph">
 <p>Problème initial:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>\(S'= \gamma R - \alpha IS\)</p>
+<p>\(\frac{dS}{dt}= - \alpha IS\)</p>
 </li>
 <li>
-<p>\(I'= \alpha IS - \beta I\)</p>
+<p>\(\frac{dI}{dt}= \alpha IS -(\gamma + \beta) I\)</p>
 </li>
 <li>
-<p>\(R'= \beta I - \gamma R\)</p>
+<p>\(\frac{dR}{dt}= \beta I \)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>avec \(S+I+R=1\)</p>
+<p>avec \(\alpha\) - taux d&#8217;infection, \(\beta\) - taux de rétablissement, \(\gamma\) - taux de mortalité, induite par l&#8217;infection.</p>
 </div>
 </div>
 <div class="sect3">
@@ -926,10 +930,10 @@ Your browser does not support the video tag.
 <div class="sect3">
 <h4 id="_résultats">Résultats</h4>
 <div class="paragraph">
-<p>1 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\nu = 0.1\)</p>
+<p>1 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\gamma = 0.1\) et taux de rétablissement \(\beta = 0.3\)</p>
 </div>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.2\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.2\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -944,7 +948,7 @@ Your browser does not support the video tag.
 </tbody>
 </table>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.5\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.5\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -959,7 +963,7 @@ Your browser does not support the video tag.
 </tbody>
 </table>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.8\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.8\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -974,10 +978,10 @@ Your browser does not support the video tag.
 </tbody>
 </table>
 <div class="paragraph">
-<p>20 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\nu = 0.1\)</p>
+<p>20 personne infectée sur 50 avec taux de mortalité induite par l&#8217;infection \(\gamma = 0.1\) et taux de rétablissement \(\beta = 0.3\)</p>
 </div>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.2\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.2\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -992,7 +996,7 @@ Your browser does not support the video tag.
 </tbody>
 </table>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.5\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.5\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -1007,7 +1011,7 @@ Your browser does not support the video tag.
 </tbody>
 </table>
 <div class="paragraph">
-<p>taux d&#8217;infection \(\beta = 0.8\)</p>
+<p>taux d&#8217;infection \(\alpha = 0.8\)</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -1060,41 +1064,78 @@ Your browser does not support the video tag.
 \( \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) \)</p>
 </div>
 <div class="paragraph">
-<p>Enfin, on obtient EDP hyperbolique de Kolmogorov \(\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) \) avec la probabilité
-\( \frac{d}{dt} \int_S p(t,x,y)dxdy=0\) où S est un triangle.</p>
+<p>Enfin, on obtient <strong>EDP hyperbolique de Kolmogorov</strong></p>
+</div>
+<div class="paragraph">
+<p>\(\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) \)</p>
+</div>
+<div class="paragraph">
+<p>avec la probabilité \( \frac{d}{dt} \int_S p(t,x,y)dxdy=0\) où S est l&#8217;ensemble du maillage.</p>
 </div>
 <div class="paragraph">
 <p>Dans le cas où on suppose qu&#8217;on sait la proportion exacte de \(S,I\) et \( R\) au moment \(t\), donc on peut trouver la solution pour tout \(t\).  Dans notre cas, on ne sait que la loi de  = probabilité, donc l&#8217;équation de Kolmogorov transport cette probabilité dans le temps.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_sir_comme_edp_de_transport">SIR comme EDP de transport</h4>
 <div class="paragraph">
-<p><strong>x</strong> = (x,y) , \(\Phi_t(\textbf{x})\)
-* X =c(1-X-Y)-\(\alpha\) XY
-* Y =(aX-b)Y</p>
+<p>Soit <strong>x</strong> = (x,y) , \(\Phi_t(\textbf{x})\) - est la carte des flux pour le modèle SIR :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>X =c(1-X-Y)-\(\alpha\) XY</p>
+</li>
+<li>
+<p>Y =(aX-b)Y</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Let \(p_0(\textbf{x}) \in C^1 (R^2)\)
-\( F * \nabla Q = - \nabla * F \) (F is rhs)</p>
+<p>Let \(p_0(\textbf{x}) \in C^1 (R^2)\) et \(Q\) satisfait:</p>
+</div>
+<div class="paragraph">
+<p>\( F * \nabla Q = - \nabla * F \) (F is rhs).</p>
+</div>
+<div class="paragraph">
+<p>On réecrit :</p>
 </div>
 <div class="paragraph">
 <p>\(p(t,x,y) = e^{Q(\textbf x)-Q(\Phi_{-t}(\textbf{x}))}p_0(\Phi_{-t}(\textbf{x}))\) avec \(\textbf{x}=(x,y)\).</p>
 </div>
 <div class="paragraph">
+<p>Donc au final avec \({x}_0 \in\) S, càd  \({x}_0\) - élément du maillage:</p>
+</div>
+<div class="paragraph">
 <p>\(e^{-Q(\phi_t( \textbf{x}_0))}p(t,\phi_t(\textbf{x}_0)) =e^{Q(\textbf{x}_0)} p_0(\textbf{x}_0) \)</p>
 </div>
 <div class="paragraph">
-<p>Donc au final:</p>
+<p>Par conséquent:</p>
 </div>
 <div class="paragraph">
-<p>\(0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= \)
-\(=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))]
-stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
-\(=\partial_t p + \nabla *(pF)\)</p>
+<p>\(0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= \)</p>
 </div>
 <div class="paragraph">
-<p>Les equations du modèle SIR  forment les caractéristiques pour l&#8217;EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.</p>
+<p>\(=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))+\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))\)</p>
+</div>
+<div class="paragraph">
+<p>\(=\nabla * Fp+ F\nabla p+ \partial_t p\)</p>
+</div>
+<div class="paragraph">
+<p>\(=\partial_t p + \nabla *(pF)\)</p>
+</div>
+<div class="paragraph">
+<p>D&#8217;où vient, que les equations du modèle SIR  forment les caractéristiques pour l&#8217;EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_améliorations_possibles">Améliorations possibles</h3>
+<div class="paragraph">
+<p>Pour les études plus détailées de ce sujet on propose l&#8217;équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d&#8217;un processus de Markov. Vu la nature stochastique de cet EDP, sa solution avec MEF nécessite de l&#8217;adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple:</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<video src="adaptMesh.mp4" controls>
+Your browser does not support the video tag.
+</video>
 </div>
 </div>
 </div>
@@ -1135,7 +1176,7 @@ stem:[=\nabla * Fp F\nabla p+ \partial_t p\)
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-31 12:09:20 CEST
+Last updated 2017-07-31 15:03:11 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">

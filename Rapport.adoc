@@ -13,8 +13,7 @@ La science macromoléculaire est étroitement liée avec la chimie, la biochimie
 
 
 == **Chapitre 1** : Marches auto-évitantes et les polymères
-
-Un polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement stem:[10^3-10^5] monomères, et a la longeur de stem:[10^{-5} - 10^{-2}] cm. La forme géometrique est aussi importante que les propriétes chimiques.
+\gamman polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement stem:[10^3-10^5] monomères, et a la longeur de stem:[10^{-5} - 10^{-2}] cm. La forme géometrique est aussi importante que les propriétes chimiques.
 
 === Concept mathématique
 
@@ -178,7 +177,7 @@ Les modèles mathématiques de maladies infectieuses ont commencé à être mis 
 
 === Modèle SIR
 
-L'objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n'est ni née, ni décédée.
+L'objet principal de cette étude est le modèle SIR : susceptible, infected, recovered - un autre modèle assez  simple, à partir duquel on dérive des modèles plus complexes. SIR permet de modèliser la propagation de la rougele ou parotidite virale. De plus, on supose le cas sans dynamique vitale, c.à.d personne n'est ni née, ni décédée (cause naturelle).
 
 image::SIRscheme.png[]
 
@@ -186,13 +185,15 @@ image::SIRdynamique.png[]
 
 ==== ODEs Déterministes
 
+Le modèle SIR est décrit par le système des ODEs suivant:
+
 Problème initial:
 
-* stem:[S'= \gamma R - \alpha IS] 
-* stem:[I'= \alpha IS - \beta I]
-* stem:[R'= \beta I - \gamma R] 
+* stem:[\frac{dS}{dt}= - \alpha IS] 
+* stem:[\frac{dI}{dt}= \alpha IS -(\gamma + \beta) I]
+* stem:[\frac{dR}{dt}= \beta I ] 
 
-avec stem:[S+I+R=1]
+avec stem:[\alpha] - taux d'infection, stem:[\beta] - taux de rétablissement, stem:[\gamma] - taux de mortalité, induite par l'infection.
 
 ==== ODEs Stochastiques
 
@@ -216,41 +217,41 @@ On obtient la discretization Euler du problème initial:
 
 ==== Résultats
 
-1 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\nu = 0.1] 
+1 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\gamma = 0.1] et taux de rétablissement stem:[\beta = 0.3]
 
-taux d'infection stem:[\beta = 0.2] 
+taux d'infection stem:[\alpha = 0.2] 
 
 |====
 image:d1_02.jpg[] | image:s1_02.jpg[]
 |====
 
-taux d'infection stem:[\beta = 0.5]
+taux d'infection stem:[\alpha = 0.5]
 
 |====
 image:d1_05.jpg[] | image:s1_05.jpg[]
 |====
 
-taux d'infection stem:[\beta = 0.8]
+taux d'infection stem:[\alpha = 0.8]
 
 |====
 image:d1_08.jpg[] | image:s1_08.jpg[]
 |====
 
-20 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\nu = 0.1] 
+20 personne infectée sur 50 avec taux de mortalité induite par l'infection stem:[\gamma = 0.1] et taux de rétablissement stem:[\beta = 0.3]
 
-taux d'infection stem:[\beta = 0.2]
+taux d'infection stem:[\alpha = 0.2]
 
 |====
 image:d20_02.jpg[] | image:s20_02.jpg[]
 |====
 
-taux d'infection stem:[\beta = 0.5]
+taux d'infection stem:[\alpha = 0.5]
 
 |====
 image:d20_05.jpg[] | image:s20_05.jpg[]
 |====
 
-taux d'infection stem:[\beta = 0.8]
+taux d'infection stem:[\alpha = 0.8]
 
 |====
 image:d20_08.jpg[] | image:s20_08.jpg[]
@@ -284,34 +285,51 @@ stem:[+ \beta (y+\frac{1}{N}) p(t,x,y+1/N) + \gamma (1-x-y+\frac{1}{N}) p(t,x-1/
 stem:[ + (x(1-\frac{\alpha y}{1-1/N}) +y(1-\beta)+(1-x-y)(1-\gamma)  p(t,x,y)]
 stem:[ \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) ]
 
-Enfin, on obtient EDP hyperbolique de Kolmogorov stem:[\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) ] avec la probabilité
-stem:[ \frac{d}{dt} \int_S p(t,x,y)dxdy=0] où S est un triangle.
+Enfin, on obtient **EDP hyperbolique de Kolmogorov** 
+
+stem:[\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) ] 
+
+avec la probabilité stem:[ \frac{d}{dt} \int_S p(t,x,y)dxdy=0] où S est l'ensemble du maillage.
 
 Dans le cas où on suppose qu'on sait la proportion exacte de stem:[S,I] et stem:[ R] au moment stem:[t], donc on peut trouver la solution pour tout stem:[t].  Dans notre cas, on ne sait que la loi de  = probabilité, donc l'équation de Kolmogorov transport cette probabilité dans le temps.
 
 
-==== SIR comme EDP de transport
+Soit **x** = (x,y) , stem:[\Phi_t(\textbf{x})] - est la carte des flux pour le modèle SIR :
 
-**x** = (x,y) , stem:[\Phi_t(\textbf{x})]
 * X =c(1-X-Y)-stem:[\alpha] XY
 * Y =(aX-b)Y
 
-Let stem:[p_0(\textbf{x}) \in C^1 (R^2)]
-stem:[ F * \nabla Q = - \nabla * F ] (F is rhs)
+Let stem:[p_0(\textbf{x}) \in C^1 (R^2)] et stem:[Q] satisfait:
+
+stem:[ F * \nabla Q = - \nabla * F ] (F is rhs).
+
+On réecrit :
 
 stem:[p(t,x,y) = e^{Q(\textbf x)-Q(\Phi_{-t}(\textbf{x}))}p_0(\Phi_{-t}(\textbf{x}))] avec stem:[\textbf{x}=(x,y)].
 
+Donc au final avec stem:[{x}_0 \in] S, càd  stem:[{x}_0] - élément du maillage:
+
 stem:[e^{-Q(\phi_t( \textbf{x}_0))}p(t,\phi_t(\textbf{x}_0)) =e^{Q(\textbf{x}_0)} p_0(\textbf{x}_0) ]
 
-Donc au final:
+Par conséquent:
 
 stem:[0=e^{Q(\phi_t (x_0))} \frac{d}{dt} e^{-Q(\phi_t(\textbf{x}_0))}p(t,\phi_t(\textbf{x}_0))= ]
+
 stem:[=-F(\phi_t(\textbf{x}_0))*\nabla Q (\phi_t(\textbf{x}_0))p(t,\phi_t(\textbf{x}_0))+\partial_t p(t,\phi_t (\textbf{x}_0))+F(\phi_t(\textbf{x}_0)) \nabla p(t,\phi_t(\textbf{x}_0))] 
+
 stem:[=\nabla * Fp+ F\nabla p+ \partial_t p]
+
 stem:[=\partial_t p + \nabla *(pF)]
 
-Les equations du modèle SIR  forment les caractéristiques pour l'EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.
+D'où vient, que les equations du modèle SIR  forment les caractéristiques pour l'EDP hyperbolique de Kolmogorov et la densité de la probabilité sera transporté le long de ces caractéristiques.
 
+
+=== Améliorations possibles
+
+Pour les études plus détailées de ce sujet on propose l'équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d'un processus de Markov. Vu la nature stochastique de cet EDP, sa solution avec MEF nécessite de l'adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple: 
+
+
+video::adaptMesh.mp4[]
 
 == Conclusion
 
