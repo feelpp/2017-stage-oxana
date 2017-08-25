@@ -432,7 +432,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__strong_chapitre_1_strong_marches_auto_évitantes_et_les_polymères"><strong>Chapitre 1</strong> : Marches auto-évitantes et les polymères</a>
 <ul class="sectlevel2">
 <li><a href="#_concept_mathématique">Concept mathématique</a></li>
-<li><a href="#_algorithmes">Algorithmes</a></li>
+<li><a href="#_algorithmes_de_contruction_des_saw">Algorithmes de contruction des SAW</a></li>
 <li><a href="#_autre_application_vulcanisation">Autre application : Vulcanisation</a></li>
 <li><a href="#_autre_application_modèle_si">Autre application : Modèle SI</a></li>
 </ul>
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__strong_chapitre_2_strong_edo_edp_et_l_épidémiologie"><strong>Chapitre 2</strong> : EDO/EDP et l&#8217;épidémiologie</a>
 <ul class="sectlevel2">
 <li><a href="#_modèle_sir">Modèle SIR</a></li>
-<li><a href="#_modèle_sir_stochastique_comme_un_edp">Modèle SIR stochastique comme un EDP</a></li>
+<li><a href="#_modèle_sir_déterministe_comme_un_edp">Modèle SIR déterministe comme un EDP</a></li>
 <li><a href="#_améliorations_possibles">Améliorations possibles</a></li>
 </ul>
 </li>
@@ -464,281 +464,166 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>La science macromoléculaire est étroitement liée avec la chimie, la biochimie, la pharmacologie, etc. Le développement industriel de ces domaines explique la motivation de cette étude.</p>
 </div>
+<div class="paragraph">
+<p>Les polymères de synthèse sont devenus l&#8217;élément essentiel d&#8217;un nombre très important d&#8217;objets de la vie courante, dans lesquels ils ont souvent remplacé les substances naturelles. Ils sont présents dans de nombreux domaines industriels:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="usage.png" alt="usage">
+</div>
+</div>
+<div class="paragraph">
+<p>De point de vue économique l&#8217;industrie des polymères est crucial: 100 $ générés en industrie des polymeres donnent 230 $ en PIB et
+1 emploi généré en industrie des polymeres donne 3 emplois dans d&#8217;autres domaines.</p>
+</div>
+<div class="paragraph">
+<p>Les mêmes principes sont utilisés dans la construction des molécules d&#8217;ADN et dans l&#8217;épidémiologie, mais pour l&#8217;épidémiologie on veut se  concentrer sur l&#8217;approche classique, càd le système des ODEs.  On va voir les ODEs déterministes et stochastiques, mais aussi leur dérivation à partir d&#8217;un EDP avec le méthode des caractéristiques.</p>
+</div>
+<div class="paragraph">
+<p>La motivation de l&#8217;étude de l&#8217;épidémiologie est difficile à sous-estimer. Cette science permet à modéliser de nombreuses maladies, à éffectuer la prévention et/ou controle des epidémies. De plus, on utlise les mêmes idées dans networking, spam, etc.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="__strong_chapitre_1_strong_marches_auto_évitantes_et_les_polymères"><strong>Chapitre 1</strong> : Marches auto-évitantes et les polymères</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>\gamman polymères est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
+<p>Un polymère est une marcomolécule constitueé des la répétition des nombreuses monomères à liason covalente. Une chaîne contient typiquement \(10^3-10^5\) monomères, et a la longeur de \(10^{-5} - 10^{-2}\) cm. La forme géometrique est aussi importante que les propriétes chimiques.</p>
 </div>
 <div class="sect2">
 <h3 id="_concept_mathématique">Concept mathématique</h3>
 <div class="paragraph">
-<p>On appele une SAW ("Self-avoiding walk") une marche des points toutes distincts dans une lattice à dimension \(d\). Ce modèle a été créé spécialement pour simuler des polymères linéaires dans un dissolvant il y 50 ans.</p>
+<p>On appele une marche auto-évitante (SAW, Self-avoiding walk) une marche des points toutes distincts dans une lattice à dimension \(d\). Ce modèle a été créé spécialement pour simuler des polymères linéaires dans un dissolvant il y 50 ans.</p>
 </div>
 <div class="paragraph">
 <p>Sous la condition que la distance entre les points voisins est constante, on a \(2d\) pas possibles à chaque étape. Si de plus on suppose, que la marche ne peut pas revenir en arrière, on a \(2d-1\) pas possible à chaque étape sauf le premier (\(2d\)).</p>
 </div>
 <div class="paragraph">
-<p>La fonction de partition qui donne l&#8217;information su l&#8217;efficacité des marches générées de longeur \(N\) peut être écrite comme :</p>
+<p>Voici un exemple d&#8217;un marche auto-évitante sur 2D lattice:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>fonction de partition</p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="saw.png" alt="saw">
 </div>
-<div class="paragraph">
-<p>\( &lt;Z(N)&gt;_{ss}=\frac{nb-marches-acceptée}{nb-des-simulations}\)</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>fonction de partition pour les marches "poindérés"</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>\( Z_{bs}=\frac{\sum_{toutes-les-marches}W_{marche}}{nb des simulations}=&lt;W&gt;\)</p>
-</div>
-<div class="paragraph">
-<p>Pour les méthodes statiques, la fonction de partition est de la forme:</p>
-</div>
-<div class="paragraph">
-<p>\(Z_N=C exp (-\lambda N)N^{\gamma-1}\) avec</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(C\) - constante de normalisation</p>
-</li>
-<li>
-<p>\(\lambda\) - attrition constant</p>
-</li>
-<li>
-<p>\(\gamma\) - critical exponent (ne dépend pas du modèle)
-image::saw.png[]</p>
-</li>
-</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_algorithmes">Algorithmes</h3>
+<h3 id="_algorithmes_de_contruction_des_saw">Algorithmes de contruction des SAW</h3>
 <div class="paragraph">
-<p>Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\). Les algorithmes dynamiques se basent sur SAW, autrement dit l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
+<p>Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\).</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Algorithmes Statiques</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Algorithmes</th>
+<th class="tableblock halign-left valign-top">Etapes d&#8217;algorithme</th>
+<th class="tableblock halign-left valign-top">Avantages</th>
+<th class="tableblock halign-left valign-top">Disavantages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithme de  Simple Sampling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Se mettre à l&#8217;origine du polymère
+</p><p class="tableblock">* Générer le premier pas aléatoirement/Choisir le premier pas arbitrairement
+</p><p class="tableblock">* Choisir aléatoirement un des \(2d-1\) pas
+</p><p class="tableblock">* Si la marche générée s&#8217;intersecte, on la rejète et commence dès le début - étape 1
+</p><p class="tableblock">* Si la marche générée nous convient, on rajoute ce pas dans la marche
+</p><p class="tableblock">* Si la marche générée est de longeur souhaitée,on accepte la marche. Sinon, on revient vers étape 3.
+</p><p class="tableblock">* Répéter jusqu&#8217;à la marche soit de la longeur souhaitée.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Facile à programmer
+</p><p class="tableblock">* Pas de bias : toutes configurations sont possibles</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Pas efficace pour des chaînes longues dans petites dimensions car la taux du rejet devient trop élévé.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithme de Biased Sampling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Se mettre à l&#8217;origine du polymère
+</p><p class="tableblock">* Générer le premier pas aléatoirement/Choisir le premier pas arbitrairement
+</p><p class="tableblock">* Trouver tous les pas qui ne donne pas l&#8217;intersection
+</p><p class="tableblock">* Si il n&#8217;y a pas de tels pas - on met le poids \(\omega=0\), on rejète la marche générée et on revient vers le début - étape 2. Sinon on ajoute ce pas à la marche et recalculont le poids \(\omega\).
+</p><p class="tableblock">* Si la marche générée est de longeur souhaitée, on accepte la marche et on calcule le poids total. Sinon, on revient vers étape 3.
+</p><p class="tableblock">* Répéter jusqu&#8217;à la marche soit de la longeur souhaitée</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Pas difficile à programmer
+</p><p class="tableblock">* Beaucoup plus efficace que l&#8217;algorithme précedent
+</p><p class="tableblock">* Pas de bias : toutes configurations sont possibles</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Pas efficace pour des chaînes trop longues dans petites dimensions car la taux du rejet devient trop élévé</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Les algorithmes dynamiques se basent sur SAW, autrement dit l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Algorithmes Dynamiques</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Algorithmes</th>
+<th class="tableblock halign-left valign-top">Etapes d&#8217;algorithme</th>
+<th class="tableblock halign-left valign-top">Avantages</th>
+<th class="tableblock halign-left valign-top">Disavantages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithme de Reptation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Générer ou chisir un SAW à n pas
+</p><p class="tableblock">* Choisir une fin aléatoirement et la retirer
+</p><p class="tableblock">* Choisir aléatoirement un des \(2d-1\) pas possibles de l&#8217;autre côté
+</p><p class="tableblock">* Si ce pas donne l&#8217;intersection, on revient à l&#8217;arrière et considère  cette configuration comme nouvelle
+</p><p class="tableblock">* Si ce pas ne donne pas de l&#8217;intersection,   on considère cette configuration comme nouvelle
+</p><p class="tableblock">* On revient à l&#8217;étape 2 jusqu&#8217;à on a la longeur  souhaitée de la marche</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Très efficace
+</p><p class="tableblock">* Chaque itération ne demande que un peu de calcul</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Pas intuitive
+</p><p class="tableblock">* Le résultat dépend de l&#8217;origine, de la condition initiale
+</p><p class="tableblock">* Bias : il y a des configuration qu&#8217;on ne peut jamais obtenir</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithme de Pivot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Générer ou chisir un SAW à n pas
+</p><p class="tableblock">* Choisir aléatoirement un pivot sur la marche. Ce pivot divise la marche en deux
+</p><p class="tableblock">* Choisir aléatoirement une des deux sous-marches
+</p><p class="tableblock">* Choisir aléatoirement un opération symétrique et l&#8217;appliquer à la sous-marche
+</p><p class="tableblock">* Si cette opération donne l&#8217;intersection, on revient à l&#8217;arrière et considère  cette configuration comme nouvelle
+</p><p class="tableblock">* Si cette opération ne donne pas de l&#8217;intersection,   on considère cette configuration comme nouvelle
+</p><p class="tableblock">* On revient à l&#8217;étape 2 jusqu&#8217;à on a la longeur  souhaitée de la marche</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Converge vite
+</p><p class="tableblock">* Pas de bias : toutes configurations sont possibles</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* Chaque itération demande beaucoup de calcul
+</p><p class="tableblock">* Difficile à implémenter à l&#8217;ordinateur : nombres des symétries augmentent très vite
+</p><p class="tableblock">* Pas trop efficace pour des chaînes longues, mais converge toujours aussi vite</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sect3">
-<h4 id="_algorithmes_statiques_simple_sampling">Algorithmes statiques: Simple Sampling</h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Se mettre à l&#8217;origine du polymère</p>
-</li>
-<li>
-<p>Générer le premier pas aléatoirement/Choisir le premier pas arbitrairement</p>
-</li>
-<li>
-<p>Choisir aléatoirement un des \(2d-1\) pas</p>
-</li>
-<li>
-<p>Si la marche générée s&#8217;intersecte, on la rejète et commence dès le début - étape 1</p>
-</li>
-<li>
-<p>Si la marche générée nous convient, on rajoute ce pas dans la marche</p>
-</li>
-<li>
-<p>Si la marche générée est de longeur souhaitée,on accepte la marche. Sinon, on revient vers étape 3.</p>
-</li>
-<li>
-<p>Répéter jusqu&#8217;à la marche soit de la longeur souhaitée.</p>
-</li>
-</ol>
+<h4 id="_comparaisons_des_algorithmes">Comparaisons des algorithmes</h4>
+<div class="paragraph">
+<p>Les résultats réçus ne sont pas étonnants: on peut observer l&#8217;augmentation du temps d&#8217;exécution pour les algorithmes statiques en fonction de N. L&#8217;algorithme de Reptation est assez stable, par contre l&#8217;algorothme de pivot ne semble pas trop éfficace par rapport aux autres.</p>
 </div>
-<div class="sect4">
-<h5 id="__em_avantages_em"><em>Avantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Facile à programmer</p>
-</li>
-<li>
-<p>Pas de bias : toutes configurations sont possibles</p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="time.png" alt="time">
 </div>
 </div>
-<div class="sect4">
-<h5 id="__em_disavantages_em"><em>Disavantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Pas efficace pour des chaînes longues dans petites dimensions car la taux du rejet devient trop élévé.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Le nombre d&#8217;essai avant succèss est un autre moyen de voir l&#8217;efficacité. Ici de nouveau les méthodes statiques, surtout le méthode simple, demande de plus en plus tentatives pour construire la chaine nécessaire.  <strong>L&#8217;algorithmede Reptation</strong> reste toujours le plus optimal. De plus, le coefficient de corrélation entre temps d&#8217;exécution et nb d&#8217;essais avant succès pour cet algorithme est presque égal à 1, ce qui est important pour la gestion de grands projets (à l&#8217;étape de planification). Il faut quand même tenir compte que les méthodes dynamiques ont besoin de la marche auto-évitante initiale, contruite évidemment par un des méthodes statiques.</p>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_algorithmes_statiques_biased_sampling_méthode_de_rosenbluth">Algorithmes statiques: Biased Sampling (Méthode de Rosenbluth)</h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Se mettre à l&#8217;origine du polymère</p>
-</li>
-<li>
-<p>Générer le premier pas aléatoirement/Choisir le premier pas arbitrairement</p>
-</li>
-<li>
-<p>Trouver tous les pas qui ne donne pas l&#8217;intersection</p>
-</li>
-<li>
-<p>Si il n&#8217;y a pas de tels pas - on met le poids \(\omega=0\), on rejète la marche générée et on revient vers le début - étape 2. Sinon on ajoute ce pas à la marche et recalculont le poids \(\omega\).</p>
-</li>
-<li>
-<p>Si la marche générée est de longeur souhaitée, on accepte la marche et on calcule le poids total. Sinon, on revient vers étape 3.</p>
-</li>
-<li>
-<p>Répéter jusqu&#8217;à la marche soit de la longeur souhaitée</p>
-</li>
-</ol>
-</div>
-<div class="sect4">
-<h5 id="__em_avantages_em_2"><em>Avantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Pas difficile à programmer</p>
-</li>
-<li>
-<p>Beaucoup plus efficace que l&#8217;algorithme précedent</p>
-</li>
-<li>
-<p>Pas de bias : toutes configurations sont possibles</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="__em_disavantages_em_2"><em>Disavantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Pas efficace pour des chaînes trop longues dans petites dimensions car la taux du rejet devient trop élévé.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_algorithmes_dynamiques_algorithme_de_reptation">Algorithmes dynamiques: Algorithme de Reptation</h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Générer ou chisir un SAW à n pas</p>
-</li>
-<li>
-<p>Choisir une fin aléatoirement et la retirer</p>
-</li>
-<li>
-<p>Choisir aléatoirement un des \(2d-1\) pas possibles de l&#8217;autre côté</p>
-</li>
-<li>
-<p>Si ce pas donne l&#8217;intersection, on revient à l&#8217;arrière et considère  cette configuration comme nouvelle</p>
-</li>
-<li>
-<p>Si ce pas ne donne pas de l&#8217;intersection,   on considère cette configuration comme nouvelle</p>
-</li>
-<li>
-<p>On revient à l&#8217;étape 2 jusqu&#8217;à on a la longeur  souhaitée de la marche</p>
-</li>
-</ol>
-</div>
-<div class="sect4">
-<h5 id="__em_avantages_em_3"><em>Avantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Très efficace</p>
-</li>
-<li>
-<p>Chaque itération ne demande que un peu de calcul</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="__em_disavantages_em_3"><em>Disavantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Pas intuitive</p>
-</li>
-<li>
-<p>Le résultat dépend de l&#8217;origine, de la condition initiale</p>
-</li>
-<li>
-<p>Bias : il y a des configuration qu&#8217;on ne peut jamais obtenir</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_algorithmes_dynamiques_algorithme_de_pivot">Algorithmes dynamiques: Algorithme de pivot</h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Générer ou chisir un SAW à n pas</p>
-</li>
-<li>
-<p>Choisir aléatoirement un pivot sur la marche. Ce pivot divise la marche en deux</p>
-</li>
-<li>
-<p>Choisir aléatoirement une des deux sous-marches</p>
-</li>
-<li>
-<p>Choisir aléatoirement un opération symétrique et l&#8217;appliquer à la sous-marche</p>
-</li>
-<li>
-<p>Si cette opération donne l&#8217;intersection, on revient à l&#8217;arrière et considère  cette configuration comme nouvelle</p>
-</li>
-<li>
-<p>Si cette opération ne donne pas de l&#8217;intersection,   on considère cette configuration comme nouvelle</p>
-</li>
-<li>
-<p>On revient à l&#8217;étape 2 jusqu&#8217;à on a la longeur  souhaitée de la marche</p>
-</li>
-</ol>
-</div>
-<div class="sect4">
-<h5 id="__em_avantages_em_4"><em>Avantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Converge vite</p>
-</li>
-<li>
-<p>Pas de bias : toutes configurations sont possibles</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="__em_disavantages_em_4"><em>Disavantages</em></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Chaque itération demande beaucoup de calcul</p>
-</li>
-<li>
-<p>Difficile à implémenter à l&#8217;ordinateur : nombres des symétries augement très vite</p>
-</li>
-<li>
-<p>Pas trop efficace pour des chaînes longues, mais converge toujours aussi vite</p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="att.png" alt="att">
 </div>
 </div>
 </div>
@@ -751,11 +636,6 @@ image::saw.png[]</p>
 <div class="paragraph">
 <p>Considèrons un 2-méthylbuta-1,3-diène polymérisé, autrement dit le caoutchouc naturel. Si on rajoute du soufre, après cuisson, on obtient un nouveau matériau qu&#8217;on utilise quotidiennement aujourd&#8217;hui. A l&#8217;echelle moléculaire on voit un réseau des monomères liés entre eux directement (comme le polymère d&#8217;avant) et par les molécules d&#8217;agent vulcanisant.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="vul2.png" alt="vul2">
-</div>
-</div>
 <div class="paragraph">
 <p>Voici un exemple avec le caoutchouc synthétique buta-1,3-diène polymérisé.</p>
 </div>
@@ -765,47 +645,36 @@ image::saw.png[]</p>
 </div>
 </div>
 <div class="paragraph">
-<p>On rajoute du soufre:</p>
+<p>On rajoute du soufre et après "la cuisson" on obtient le réseau des monomères liés entre eux en polymères et liés aux monomères des macromolécules voisines par les ponts du soufre. La longeur du pont, càd le nombre des atomes du soufre, varie aléatoirement de 1 à 8:</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="s.png" alt="s">
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="m2.png" alt="m2"></span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="image"><img src="vulca2D.png" alt="vulca2D"></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Le soufre n&#8217;affect pas tous les monomères d&#8217;une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augmentant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n&#8217;excède 2 atomes : le matériau résultant est l&#8217;ébonite. La longeurs réduite des ponts s&#8217;explique par les condition de cuisson : aux temperatures exrtrêmes ( \(&gt; 800°\) ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2.</p>
 </div>
 <div class="paragraph">
-<p>Et après "la cuisson" on obtient le réseau des monomères liés entre eux en polymères et liés aux monomères des macromolécules voisines par les ponts du soufre. La longeur du pont, càd le nombre des atomes du soufre, varie aléatoirement de 1 à 8:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="m2.png" alt="m2">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="vulca2D.png" alt="vulca2D">
-</div>
-</div>
-<div class="paragraph">
-<p>Le soufre n&#8217;affect pas tous les monomères d&#8217;une molécule, même pas tous les molécules - les doubles liens affectés sont choisi aléatoirement. Mais en augementant la concentration du soufre à 30% on se retrouve dans le cas où tous les doubles liens sont pris par soufre et la longeur des pont n&#8217;excède 2 atomes : le matériau résultant est ébonite. La longeurs réduite des ponts s&#8217;explique par les condition de cuisson : aux temperatures exrtrêmes ( \(&gt; 800°\) ) le nombre des atomes dans une molécule de soufre diminue de 8 à 1-2.</p>
-</div>
-<div class="paragraph">
-<p>Pour simuler la vulcanisation en Mathis on va prendre 10 polymères de caoutchouc synthétique de longeur de 30 monomères. Donc ces polymères représentent les lignes horizontals sur une lattice de 80x30 (10*8=80, où 8 - la longeur du pont max). Le taux des doubles liens affectés va dépendre de la concenration du soufre. Les liens à affecter seront choisis aléatoirement, la longeur des ponts sera aussi aléatoire pour chaque pont. Un pont peut aller à 1 de 30 monomères du polymère voisin. Les atomes du soufre font marches aléatoires sans intersection entre les macromolécules, ce qu&#8217;on va simuler avec un méthode statique "Biased Sampling".</p>
+<p>Pour simuler la vulcanisation en Mathis on utilise le méthode statique "Biased Sampling". On peut changer la taille du "réseau" et le nombre des molécules du soufre :</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="VulcaMine.png" alt="VulcaMine">
 </div>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="vilcaMine2.png" alt="vilcaMine2">
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_autre_application_modèle_si">Autre application : Modèle SI</h3>
 <div class="paragraph">
-<p>Comme l&#8217;introduction au chapitre 2 on va considéré un example le plus simple de l&#8217;épidémiologie -  le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d&#8217;autres maladies qui peuvent être coupées par vaccination.</p>
+<p>Comme l&#8217;introduction au chapitre 2 on va considéré un exemple le plus simple de l&#8217;épidémiologie -  le modèle SI : susceptible, infected - est un modèle très simple, qui permet de modèliser la propagation de la varicelle et d&#8217;autres maladies qui peuvent être coupées par vaccination.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1028,7 +897,7 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_modèle_sir_stochastique_comme_un_edp">Modèle SIR stochastique comme un EDP</h3>
+<h3 id="_modèle_sir_déterministe_comme_un_edp">Modèle SIR déterministe comme un EDP</h3>
 <div class="paragraph">
 <p>Le modèle SIR peut considéré comme un EDP hyperbolique de Kolmogorov, qui peut être résolue par le méthode des caractéristiques</p>
 </div>
@@ -1064,7 +933,7 @@ Your browser does not support the video tag.
 \( \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) \)</p>
 </div>
 <div class="paragraph">
-<p>Enfin, on obtient <strong>EDP hyperbolique de Kolmogorov</strong></p>
+<p>Enfin, on obtient l&#8217;EDP hyperbolique de Kolmogorov:</p>
 </div>
 <div class="paragraph">
 <p>\(\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) \)</p>
@@ -1081,10 +950,10 @@ Your browser does not support the video tag.
 <div class="ulist">
 <ul>
 <li>
-<p>X =c(1-X-Y)-\(\alpha\) XY</p>
+<p>\(X = c(1-X-Y)- \alpha XY\)</p>
 </li>
 <li>
-<p>Y =(aX-b)Y</p>
+<p>\(Y = (aX-b)Y\)</p>
 </li>
 </ul>
 </div>
@@ -1129,7 +998,7 @@ Your browser does not support the video tag.
 <div class="sect2">
 <h3 id="_améliorations_possibles">Améliorations possibles</h3>
 <div class="paragraph">
-<p>Pour les études plus détailées de ce sujet on propose l&#8217;équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d&#8217;un processus de Markov. Vu la nature stochastique de cet EDP, sa solution avec MEF nécessite de l&#8217;adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple:</p>
+<p>Pour l&#8217;étude plus détailée de l&#8217;épidémiologie on propose l&#8217;équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d&#8217;un processus de Markov. Vue la nature stochastique de cet EDP, sa solution avec MEF nécessite de l&#8217;adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple:</p>
 </div>
 <div class="videoblock">
 <div class="content">
@@ -1144,7 +1013,13 @@ Your browser does not support the video tag.
 <div class="sect1">
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p><strong>Partie 1</strong>: Les méthodes statiques sont très facile à implémenter et ils sont nécessaires pour créer des marches pour les méthodes dynamiques. Par contre, pour des simulations réelles l&#8217;efficacité de ces méthodes est limité par le nombre des monomères dans une chaîne.
+En revanche, les méthodes dynamiques ne sont pas si intuitives mais leur complexité est compensé par la diversité des chaines qu&#8217;ils peuvent créer.</p>
+</div>
+<div class="paragraph">
+<p><strong>Partie 2</strong>: Les EDOs stochastiques sont largement utilisées dans L&#8217;épidémiologie. On a vue 2 approches : solutions du système des EDOs avec Octave et dérviation des EDOs à partir l&#8217;EDP hyperbolique de Kolmogorov par le méthode des caractéristiques, qui peut être vu comme l&#8217;alternative à MEF pour les EDPs de transport (y compris stochastiques).</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1176,7 +1051,7 @@ Your browser does not support the video tag.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-31 15:03:11 CEST
+Last updated 2017-08-25 17:01:20 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">

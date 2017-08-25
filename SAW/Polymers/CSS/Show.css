@@ -29,3 +29,13 @@ html, body {
     height: 50%;
     outline:1px solid black;
 }
+
+#pieceOfCodeChain_V {
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    outline:1px solid black;
+}

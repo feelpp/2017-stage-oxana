@@ -1,12 +1,11 @@
 function SIR_determ
-% Simulation of a deterministic SIR model using a differential
-% equation solver.
+
 
 %params.m = 1e-4; % host death rate
 params.m = 0;
-params.b = 0.08; % infection rate
-params.v = 0.1;  % pathogen-induced mortality rate
-params.r = 0.3;  % rate of recovery
+params.alpha = 0.08; % infection rate
+params.gamma = 0.1;  % pathogen-induced mortality rate
+params.beta = 0.3;  % rate of recovery
 
 initial.S = 50;  % number of susceptible individuals
 initial.I = 15;   % number of infected individuals
@@ -43,7 +42,7 @@ function f = derivative (t, x, params)
 S = x(1);
 I = x(2);
 R = x(3);
-ds = params.m * (S+I+R) - params.m * S - params.b * I * S;
-di = params.b * I * S - (params.m + params.v + params.r) * I;
-dr = params.r * I - params.m * R;
+ds = params.m * (S+I+R) - params.m * S - params.alpha * I * S;
+di = params.alpha * I * S - (params.m + params.gamma + params.beta) * I;
+dr = params.beta * I - params.m * R;
 f = [ds; di; dr];

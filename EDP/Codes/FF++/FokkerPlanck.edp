@@ -55,7 +55,7 @@ func dyv2 = - mu - k2*x -0.5 * k2;
 //
 v1h=v1;
 v2h=v2;
-plot([v1h, v2h], ps="fokker_velocity.ps");
+
 //
 // Set the initial PDF
 //
@@ -96,10 +96,10 @@ for ( it = 0; it < 200; it++ )
   p = p / massp;
   pold = p;
   plot ( p, Th, nbiso=60 );
+
   cout << "  Mass = " << int2d(Th)(p) << endl;
 }
-plot ( p, nbiso=40, ps="fokker_p_final.ps");
-plot ( p, Th, nbiso=40, ps="fokker_p_final_mesh.ps");
+
 //
 //  Terminate.
 //

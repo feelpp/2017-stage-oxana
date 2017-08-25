@@ -1,11 +1,11 @@
 function SIR_stoch_run
-% Simulation of the stochastic SIR model
+
 
 %params.m = 1e-4; % host death rate
 params.m = 0;
-params.b = 0.08; % infection rate
-params.v = 0.1;  % pathogen-induced mortality rate
-params.r = 0.3;  % rate of recovery
+params.alpha = 0.08; % infection rate
+params.gamma = 0.1;  % pathogen-induced mortality rate
+params.beta = 0.3;  % rate of recovery
 
 
 

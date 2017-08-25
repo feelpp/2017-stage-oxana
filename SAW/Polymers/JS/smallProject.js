@@ -305,28 +305,17 @@ var mathis;
         epi.epi1 = epi1;
     })(epi = mathis.epi || (mathis.epi = {}));
 })(mathis || (mathis = {}));
+/*TODO check why stoped working!!*/
 var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        function pivot() {
-            var mathisFrame = new mathis.MathisFrame();
-            var mamesh = new mathis.Mamesh();
-            var mamesh2 = new mathis.Mamesh();
-            //A given SAW
-            var vertex0 = new mathis.Vertex().setPosition(0, 0, 0); //0
-            var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
-            var vertex2 = new mathis.Vertex().setPosition(0, 0, 1); //2
-            var vertex3 = new mathis.Vertex().setPosition(1, 0, 1); //3
-            var vertex4 = new mathis.Vertex().setPosition(1, 1, 0); //4
-            var vertex5 = new mathis.Vertex().setPosition(2, 2, 0); //5
-            var vertex6 = new mathis.Vertex().setPosition(2, 3, -1); //6
-            var vertex7 = new mathis.Vertex().setPosition(3, 3, -2); //7
-            var vertex8 = new mathis.Vertex().setPosition(3, 4, -3); //8
-            var vertex9 = new mathis.Vertex().setPosition(3, 5, -2); //9
-            mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
+        var SAW_dynamic_Pivot = (function () {
+            function SAW_dynamic_Pivot() {
+                this.chainSize = 10;
+            }
             // function that checks the list of used coordinates
-            function contains(points, onePoint) {
+            SAW_dynamic_Pivot.prototype.contains = function (points, onePoint) {
                 for (var _i = 0, points_3 = points; _i < points_3.length; _i++) {
                     var point = points_3[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
@@ -334,287 +323,342 @@ var mathis;
                     }
                 }
                 return false;
-            }
+            };
             // function that replaces a value 1 at i by value 2
-            function replaceValue(array, valueToReplace, newValue) {
+            SAW_dynamic_Pivot.prototype.replaceValue = function (array, valueToReplace, newValue) {
                 for (var i = 0; i < array.length; i++) {
                     if (array[i] == valueToReplace) {
                         array[i] = newValue;
                     }
                 }
-            }
+            };
             // function that find index of a given value in a given array
-            function findIndex(array, value) {
+            SAW_dynamic_Pivot.prototype.findIndex = function (array, value) {
                 for (var i = 0; i < array.length; i++) {
                     if (array[i] == value) {
                         var res = i;
                     }
                 }
                 return res;
-            }
-            //All initial the coordinates are stocked in ALLc (XYZ)
-            var ALLc = [mamesh.vertices[0].position, mamesh.vertices[1].position, mamesh.vertices[2].position,
-                mamesh.vertices[3].position, mamesh.vertices[4].position, mamesh.vertices[5].position,
-                mamesh.vertices[6].position, mamesh.vertices[7].position, mamesh.vertices[8].position,
-                mamesh.vertices[9].position];
-            //Counter for unsuccessful attempts
-            var attempts = 1;
-            //Nb of chains generated (=nb of operations)
-            var chain = 1;
-            //pre-chain is not validated subchain (Let subchain length e equal to 4, so prechain becomes subchain when prechain = 4)
-            var prechain = 0;
-            var NOTfinished = true;
-            // All modified coordinates are stored in ALLc_new
-            var ALLc_new = ALLc;
-            while (NOTfinished) {
-                var ALLc_prenew = ALLc_new;
-                // Choose a random vertex (by index) in ALLc
-                var randomVertex = Math.floor(Math.random() * (ALLc_new.length - 1 - 0)) + 0;
-                cc('Random Vertex in ALLc_new', ALLc_new[randomVertex]);
-                //Learn its value
-                var indexOfVertex = ALLc_new.indexOf(ALLc_new[randomVertex]);
-                var myIndex = findIndex(ALLc_new, ALLc_new[randomVertex]);
-                cc('Index of the chosen vertex', indexOfVertex);
-                //cc('MyIndex', myIndex);
-                // Choose randomly one of 7 operations of refletion (over x,y,z,xy,xz,yz or xyz plane)
-                var randomOperation = Math.floor(Math.random() * (7 - 0)) + 0;
-                //let randomOperation= 0;
-                cc('Chosen reflexion operation', randomOperation);
-                // Choose randomly a subchain
-                var subChain = [];
-                subChain = ALLc_new;
-                var randomSubChain = Math.floor(Math.random() * (2 - 0)) + 0;
-                if (randomSubChain == 0) {
-                    subChain = subChain.slice(0, myIndex + 1);
-                    cc('Chosen subChain: from head to random vertex ', subChain);
+            };
+            SAW_dynamic_Pivot.prototype.go = function () {
+                cc('DYNAMIC PIVOT STATIC METHOD');
+                var mamesh = new mathis.Mamesh();
+                var vertex0 = new mathis.Vertex().setPosition(0, -1, 0); //0
+                var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
+                var vertex2 = new mathis.Vertex().setPosition(0, 0, 1); //2
+                var vertex3 = new mathis.Vertex().setPosition(1, 0, 1); //3
+                var vertex4 = new mathis.Vertex().setPosition(1, 1, 0); //4
+                var vertex5 = new mathis.Vertex().setPosition(2, 2, 0); //5
+                var vertex6 = new mathis.Vertex().setPosition(2, 3, -1); //6
+                var vertex7 = new mathis.Vertex().setPosition(3, 3, 0); //7
+                var vertex8 = new mathis.Vertex().setPosition(3, 4, 0); //8
+                var vertex9 = new mathis.Vertex().setPosition(3, 5, -1); //9
+                var vertex10 = new mathis.Vertex().setPosition(4, 5, 0); //0
+                var vertex11 = new mathis.Vertex().setPosition(4, 4, 1); //1
+                var vertex12 = new mathis.Vertex().setPosition(4, 5, 2); //2
+                var vertex13 = new mathis.Vertex().setPosition(5, 5, 2); //3
+                var vertex14 = new mathis.Vertex().setPosition(5, 6, 1); //4
+                var vertex15 = new mathis.Vertex().setPosition(6, 6, 2); //5
+                var vertex16 = new mathis.Vertex().setPosition(6, 5, 3); //6
+                var vertex17 = new mathis.Vertex().setPosition(7, 4, 3); //7
+                var vertex18 = new mathis.Vertex().setPosition(6, 3, 4); //8
+                var vertex19 = new mathis.Vertex().setPosition(7, 2, 5); //9
+                var vertex20 = new mathis.Vertex().setPosition(8, 3, 5); //0
+                var vertex21 = new mathis.Vertex().setPosition(9, 3, 5); //1
+                var vertex22 = new mathis.Vertex().setPosition(9, 3, 4); //2
+                var vertex23 = new mathis.Vertex().setPosition(8, 4, 4); //3
+                var vertex24 = new mathis.Vertex().setPosition(7, 3, 5); //4
+                var vertex25 = new mathis.Vertex().setPosition(6, 4, 6); //5
+                var vertex26 = new mathis.Vertex().setPosition(7, 5, 6); //6
+                var vertex27 = new mathis.Vertex().setPosition(8, 5, 5); //7
+                var vertex28 = new mathis.Vertex().setPosition(8, 5, 6); //8
+                var vertex29 = new mathis.Vertex().setPosition(9, 5, 7); //9
+                var vertex30 = new mathis.Vertex().setPosition(10, 5, 7); //0
+                var vertex31 = new mathis.Vertex().setPosition(10, 6, 6); //1
+                var vertex32 = new mathis.Vertex().setPosition(10, 7, 6); //2
+                var vertex33 = new mathis.Vertex().setPosition(10, 7, 5); //3
+                var vertex34 = new mathis.Vertex().setPosition(9, 7, 5); //4
+                var vertex35 = new mathis.Vertex().setPosition(10, 6, 6); //5
+                var vertex36 = new mathis.Vertex().setPosition(11, 5, 7); //6
+                var vertex37 = new mathis.Vertex().setPosition(12, 5, 8); //7
+                var vertex38 = new mathis.Vertex().setPosition(11, 6, 9); //8
+                var vertex39 = new mathis.Vertex().setPosition(12, 5, 10); //9
+                var vertex40 = new mathis.Vertex().setPosition(11, 4, 10); //0
+                var vertex41 = new mathis.Vertex().setPosition(12, 4, 11); //1
+                var vertex42 = new mathis.Vertex().setPosition(13, 3, 11); //2
+                var vertex43 = new mathis.Vertex().setPosition(13, 2, 11); //3
+                var vertex44 = new mathis.Vertex().setPosition(12, 1, 10); //4
+                var vertex45 = new mathis.Vertex().setPosition(11, 2, 10); //5
+                var vertex46 = new mathis.Vertex().setPosition(11, 3, 11); //6
+                var vertex47 = new mathis.Vertex().setPosition(12, 3, 10); //7
+                var vertex48 = new mathis.Vertex().setPosition(13, 4, 10); //8
+                var vertex49 = new mathis.Vertex().setPosition(14, 5, 9); //9
+                if (this.chainSize == 5) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4);
+                }
+                else if (this.chainSize == 10) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
+                }
+                else if (this.chainSize == 20) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19);
                 }
                 else {
-                    subChain = subChain.slice(myIndex, ALLc_new.length);
-                    cc('Chosen subChain:  from random vertex to tail ', subChain);
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19, vertex20, vertex21, vertex22, vertex23, vertex24, vertex25, vertex26, vertex27, vertex28, vertex29, vertex30, vertex31, vertex32, vertex33, vertex34, vertex35, vertex36, vertex37, vertex38, vertex39, vertex40, vertex41, vertex42, vertex43, vertex44, vertex45, vertex46, vertex47, vertex48, vertex49);
                 }
-                if (randomOperation == 0) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var x_s = mamesh.vertices[randomVertex].position.x;
-                        var x_n = x_s + (x_s - x);
-                        var coordinateNew = new mathis.XYZ(x_n, y, z);
-                        //cc('New x,y,z', x_n, y_n, z_n);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
-                        }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                //All initial the coordinates are stocked in ALLc (XYZ)
+                var ALLc = [];
+                for (var i = 0; i < mamesh.vertices.length; i++) {
+                    ALLc.push(mamesh.vertices[i].position);
+                }
+                //Counter for unsuccessful attempts
+                var attempts = 1;
+                //Nb of chains generated (=nb of operations)
+                var chain = 1;
+                //pre-chain is not validated subchain (Let subchain length e equal to 4, so prechain becomes subchain when prechain = 4)
+                var prechain = 0;
+                var NOTfinished = true;
+                // All modified coordinates are stored in ALLc_new
+                var ALLc_new = ALLc;
+                while (NOTfinished) {
+                    var ALLc_prenew = ALLc_new;
+                    // Choose a random vertex (by index) in ALLc
+                    var randomVertex = Math.floor(Math.random() * (ALLc_new.length - 1 - 0)) + 0;
+                    cc('Random Vertex in ALLc_new', ALLc_new[randomVertex]);
+                    //Learn its value
+                    var indexOfVertex = ALLc_new.indexOf(ALLc_new[randomVertex]);
+                    var myIndex = this.findIndex(ALLc_new, ALLc_new[randomVertex]);
+                    cc('Index of the chosen vertex', indexOfVertex);
+                    //cc('MyIndex', myIndex);
+                    // Choose randomly one of 7 operations of refletion (over x,y,z,xy,xz,yz or xyz plane)
+                    var randomOperation = Math.floor(Math.random() * (7 - 0)) + 0;
+                    //let randomOperation= 0;
+                    cc('Chosen reflexion operation', randomOperation);
+                    // Choose randomly a subchain
+                    var subChain = [];
+                    subChain = ALLc_new;
+                    var randomSubChain = Math.floor(Math.random() * (2 - 0)) + 0;
+                    if (randomSubChain == 0) {
+                        subChain = subChain.slice(0, myIndex + 1);
+                        cc('Chosen subChain: from head to random vertex ', subChain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 1) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var y_s = mamesh.vertices[randomVertex].position.y;
-                        var y_n = y_s + (y_s - y);
-                        var coordinateNew = new mathis.XYZ(x, y_n, z);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
-                        }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                    else {
+                        subChain = subChain.slice(myIndex, ALLc_new.length);
+                        cc('Chosen subChain:  from random vertex to tail ', subChain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 2) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var z_s = mamesh.vertices[randomVertex].position.z;
-                        var z_n = z_s + (z_s - z);
-                        var coordinateNew = new mathis.XYZ(x, y, z_n);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
+                    if (randomOperation == 0) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var x_s = mamesh.vertices[randomVertex].position.x;
+                            var x_n = x_s + (x_s - x);
+                            var coordinateNew = new mathis.XYZ(x_n, y, z);
+                            //cc('New x,y,z', x_n, y_n, z_n);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
                         }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 3) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var x_s = mamesh.vertices[randomVertex].position.x;
-                        var x_n = x_s + (x_s - x);
-                        var y_s = mamesh.vertices[randomVertex].position.y;
-                        var y_n = y_s + (y_s - y);
-                        var coordinateNew = new mathis.XYZ(x_n, y_n, z);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
+                    else if (randomOperation == 1) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var y_s = mamesh.vertices[randomVertex].position.y;
+                            var y_n = y_s + (y_s - y);
+                            var coordinateNew = new mathis.XYZ(x, y_n, z);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
                         }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 4) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var x_s = mamesh.vertices[randomVertex].position.x;
-                        var x_n = x_s + (x_s - x);
-                        var z_s = mamesh.vertices[randomVertex].position.z;
-                        var z_n = z_s + (z_s - z);
-                        var coordinateNew = new mathis.XYZ(x_n, y, z_n);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
+                    else if (randomOperation == 2) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var z_s = mamesh.vertices[randomVertex].position.z;
+                            var z_n = z_s + (z_s - z);
+                            var coordinateNew = new mathis.XYZ(x, y, z_n);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
                         }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 5) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        var y_s = mamesh.vertices[randomVertex].position.y;
-                        var y_n = y_s + (y_s - y);
-                        var z_s = mamesh.vertices[randomVertex].position.z;
-                        var z_n = z_s + (z_s - z);
-                        var coordinateNew = new mathis.XYZ(x, y_n, z_n);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
+                    else if (randomOperation == 3) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var x_s = mamesh.vertices[randomVertex].position.x;
+                            var x_n = x_s + (x_s - x);
+                            var y_s = mamesh.vertices[randomVertex].position.y;
+                            var y_n = y_s + (y_s - y);
+                            var coordinateNew = new mathis.XYZ(x_n, y_n, z);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
                         }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('Validated steps so far', chain);
-                }
-                else if (randomOperation == 6) {
-                    for (var i = 0; i < subChain.length; i++) {
-                        var x = mamesh.vertices[i].position.x;
-                        var y = mamesh.vertices[i].position.y;
-                        var z = mamesh.vertices[i].position.z;
-                        var coordinateOld = new mathis.XYZ(x, y, z);
-                        //cc('Old x,y,z', x, y, z);
-                        var x_s = mamesh.vertices[randomVertex].position.x;
-                        var x_n = x_s + (x_s - x);
-                        var y_s = mamesh.vertices[randomVertex].position.y;
-                        var y_n = y_s + (y_s - y);
-                        var z_s = mamesh.vertices[randomVertex].position.z;
-                        var z_n = z_s + (z_s - z);
-                        var coordinateNew = new mathis.XYZ(x_n, y_n, z_n);
-                        //cc('New x,y,z', x_n, y_n, z_n);
-                        if (!contains(ALLc_new, coordinateNew)) {
-                            replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
-                            prechain++;
+                    else if (randomOperation == 4) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var x_s = mamesh.vertices[randomVertex].position.x;
+                            var x_n = x_s + (x_s - x);
+                            var z_s = mamesh.vertices[randomVertex].position.z;
+                            var z_n = z_s + (z_s - z);
+                            var coordinateNew = new mathis.XYZ(x_n, y, z_n);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
                         }
-                        else {
-                            cc('!!!Bad configuration- stop counting!!!', coordinateNew);
-                            attempts++;
-                            prechain = 0;
-                            //ALLc_new=ALLc;
-                            break;
-                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
                     }
-                    ALLc_new = ALLc_prenew;
-                    chain = chain + prechain;
-                    cc('How many chains are generated?:', chain);
+                    else if (randomOperation == 5) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            var y_s = mamesh.vertices[randomVertex].position.y;
+                            var y_n = y_s + (y_s - y);
+                            var z_s = mamesh.vertices[randomVertex].position.z;
+                            var z_n = z_s + (z_s - z);
+                            var coordinateNew = new mathis.XYZ(x, y_n, z_n);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
+                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('Validated steps so far', chain);
+                    }
+                    else if (randomOperation == 6) {
+                        for (var i = 0; i < subChain.length; i++) {
+                            var x = mamesh.vertices[i].position.x;
+                            var y = mamesh.vertices[i].position.y;
+                            var z = mamesh.vertices[i].position.z;
+                            var coordinateOld = new mathis.XYZ(x, y, z);
+                            //cc('Old x,y,z', x, y, z);
+                            var x_s = mamesh.vertices[randomVertex].position.x;
+                            var x_n = x_s + (x_s - x);
+                            var y_s = mamesh.vertices[randomVertex].position.y;
+                            var y_n = y_s + (y_s - y);
+                            var z_s = mamesh.vertices[randomVertex].position.z;
+                            var z_n = z_s + (z_s - z);
+                            var coordinateNew = new mathis.XYZ(x_n, y_n, z_n);
+                            //cc('New x,y,z', x_n, y_n, z_n);
+                            if (!this.contains(ALLc_new, coordinateNew)) {
+                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                prechain++;
+                            }
+                            else {
+                                cc('!!!Bad configuration- stop counting!!!', coordinateNew);
+                                attempts++;
+                                prechain = 0;
+                                ALLc_new = ALLc;
+                                break;
+                            }
+                        }
+                        ALLc_new = ALLc_prenew;
+                        chain = chain + prechain;
+                        cc('How many chains are generated?:', chain);
+                    }
+                    NOTfinished = (chain < 4);
                 }
-                NOTfinished = (chain < 2);
-            }
-            cc('Chain is done!:', ALLc_new);
-            cc('Attempts:', attempts);
-            for (var i = 0; i < ALLc_new.length; i++) {
-                var vertex = new mathis.Vertex();
-                vertex.position = ALLc_new[i];
-                mamesh2.vertices.push(vertex);
-            }
-            var verticesViewer2 = new mathis.visu3d.VerticesViewer(mamesh2, mathisFrame.scene);
-            verticesViewer2.radiusAbsolute = 0.3;
-            verticesViewer2.go();
-            for (var i = 1; i < mamesh2.vertices.length - 1; i++) {
-                mamesh2.vertices[i].setTwoOppositeLinks(mamesh2.vertices[i - 1], mamesh2.vertices[i + 1]);
-            }
-            mamesh2.vertices[0].setOneLink(mamesh2.vertices[1]);
-            mamesh2.vertices[mamesh2.vertices.length - 1].setOneLink(mamesh2.vertices[mamesh2.vertices.length - 2]);
-            var linkViewer2 = new mathis.visu3d.LinksViewer(mamesh2, mathisFrame.scene);
-            linkViewer2.radiusAbsolute = 0.01;
-            linkViewer2.go();
-            for (var i = 1; i < mamesh.vertices.length - 1; i++) {
-                mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
-            }
-            mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
-            mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-            linkViewer.color = new mathis.Color(mathis.Color.names.yellow);
-            linkViewer.radiusAbsolute = 0.01;
-            linkViewer.go();
-            var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-            verticesViewer.color = new mathis.Color(mathis.Color.names.blueviolet);
-            verticesViewer.radiusAbsolute = 0.1;
-            verticesViewer.go();
-        }
-        polymer.pivot = pivot;
+                cc('Chain is done!:', ALLc_new);
+                cc('Attempts:', attempts);
+                cc('Chain:', chain);
+                for (var i = 0; i < mamesh.vertices.length; i++) {
+                    mamesh.vertices.pop;
+                }
+                cc('mamesh.vertices.length:', mamesh.vertices.length);
+                for (var i = 0; i < ALLc_new.length; i++) {
+                    var vertex = new mathis.Vertex();
+                    vertex.position = ALLc_new[i];
+                    mamesh.vertices.push(vertex);
+                }
+                cc('me', mamesh.vertices.length);
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                return mamesh;
+            };
+            return SAW_dynamic_Pivot;
+        }());
+        polymer.SAW_dynamic_Pivot = SAW_dynamic_Pivot;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 var mathis;
@@ -935,25 +979,12 @@ var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        function snake() {
-            var mathisFrame = new mathis.MathisFrame();
-            var mamesh = new mathis.Mamesh();
-            var camera = mathisFrame.getGrabberCamera();
-            camera.changePosition(new mathis.XYZ(0, 0, -35));
-            //A given SAW
-            var vertex0 = new mathis.Vertex().setPosition(0, 0, 0); //0
-            var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
-            var vertex2 = new mathis.Vertex().setPosition(0, 0, 1); //2
-            var vertex3 = new mathis.Vertex().setPosition(1, 0, 1); //3
-            var vertex4 = new mathis.Vertex().setPosition(1, 1, 0); //4
-            var vertex5 = new mathis.Vertex().setPosition(2, 2, 0); //5
-            var vertex6 = new mathis.Vertex().setPosition(2, 3, -1); //6
-            var vertex7 = new mathis.Vertex().setPosition(3, 3, 0); //7
-            var vertex8 = new mathis.Vertex().setPosition(3, 4, 0); //8
-            var vertex9 = new mathis.Vertex().setPosition(3, 5, -1); //9
-            mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
-            // function that checks thes list of used coordinates
-            function contains(points, onePoint) {
+        var SAW_dynamic_Snake = (function () {
+            function SAW_dynamic_Snake() {
+                this.chainSize = 10;
+            }
+            // function that checks the list of used coordinates
+            SAW_dynamic_Snake.prototype.contains = function (points, onePoint) {
                 for (var _i = 0, points_5 = points; _i < points_5.length; _i++) {
                     var point = points_5[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
@@ -961,28 +992,109 @@ var mathis;
                     }
                 }
                 return false;
-            }
-            //All the coordinates are stocked in ALLc
-            var ALLc = [mamesh.vertices[0].position, mamesh.vertices[1].position, mamesh.vertices[2].position,
-                mamesh.vertices[3].position, mamesh.vertices[4].position, mamesh.vertices[5].position,
-                mamesh.vertices[6].position, mamesh.vertices[7].position, mamesh.vertices[8].position,
-                mamesh.vertices[9].position];
-            //Counter for unsuccessful attempts
-            var attempts = 0;
-            //Nb of generated chains  (=nb of operations)
-            var chain = 0;
-            var t = 0;
-            var test = mamesh.vertices;
-            var action = new mathis.PeriodicAction(function () {
-                //   let NOTfinished = true;
+            };
+            // function that replaces a value 1 at i by value 2
+            SAW_dynamic_Snake.prototype.replaceValue = function (array, valueToReplace, newValue) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] == valueToReplace) {
+                        array[i] = newValue;
+                    }
+                }
+            };
+            // function that find index of a given value in a given array
+            SAW_dynamic_Snake.prototype.findIndex = function (array, value) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] == value) {
+                        var res = i;
+                    }
+                }
+                return res;
+            };
+            SAW_dynamic_Snake.prototype.go = function () {
+                cc('DYNAMIC PIVOT STATIC METHOD');
+                var mamesh = new mathis.Mamesh();
+                //A given SAW
+                var vertex0 = new mathis.Vertex().setPosition(0, -1, 0); //0
+                var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
+                var vertex2 = new mathis.Vertex().setPosition(0, 0, 1); //2
+                var vertex3 = new mathis.Vertex().setPosition(1, 0, 1); //3
+                var vertex4 = new mathis.Vertex().setPosition(1, 1, 0); //4
+                var vertex5 = new mathis.Vertex().setPosition(2, 2, 0); //5
+                var vertex6 = new mathis.Vertex().setPosition(2, 3, -1); //6
+                var vertex7 = new mathis.Vertex().setPosition(3, 3, 0); //7
+                var vertex8 = new mathis.Vertex().setPosition(3, 4, 0); //8
+                var vertex9 = new mathis.Vertex().setPosition(3, 5, -1); //9
+                var vertex10 = new mathis.Vertex().setPosition(4, 5, 0); //0
+                var vertex11 = new mathis.Vertex().setPosition(4, 4, 1); //1
+                var vertex12 = new mathis.Vertex().setPosition(4, 5, 2); //2
+                var vertex13 = new mathis.Vertex().setPosition(5, 5, 2); //3
+                var vertex14 = new mathis.Vertex().setPosition(5, 6, 1); //4
+                var vertex15 = new mathis.Vertex().setPosition(6, 6, 2); //5
+                var vertex16 = new mathis.Vertex().setPosition(6, 5, 3); //6
+                var vertex17 = new mathis.Vertex().setPosition(7, 4, 3); //7
+                var vertex18 = new mathis.Vertex().setPosition(6, 3, 4); //8
+                var vertex19 = new mathis.Vertex().setPosition(7, 2, 5); //9
+                var vertex20 = new mathis.Vertex().setPosition(8, 3, 5); //0
+                var vertex21 = new mathis.Vertex().setPosition(9, 3, 5); //1
+                var vertex22 = new mathis.Vertex().setPosition(9, 3, 4); //2
+                var vertex23 = new mathis.Vertex().setPosition(8, 4, 4); //3
+                var vertex24 = new mathis.Vertex().setPosition(7, 3, 5); //4
+                var vertex25 = new mathis.Vertex().setPosition(6, 4, 6); //5
+                var vertex26 = new mathis.Vertex().setPosition(7, 5, 6); //6
+                var vertex27 = new mathis.Vertex().setPosition(8, 5, 5); //7
+                var vertex28 = new mathis.Vertex().setPosition(8, 5, 6); //8
+                var vertex29 = new mathis.Vertex().setPosition(9, 5, 7); //9
+                var vertex30 = new mathis.Vertex().setPosition(10, 5, 7); //0
+                var vertex31 = new mathis.Vertex().setPosition(10, 6, 6); //1
+                var vertex32 = new mathis.Vertex().setPosition(10, 7, 6); //2
+                var vertex33 = new mathis.Vertex().setPosition(10, 7, 5); //3
+                var vertex34 = new mathis.Vertex().setPosition(9, 7, 5); //4
+                var vertex35 = new mathis.Vertex().setPosition(10, 6, 6); //5
+                var vertex36 = new mathis.Vertex().setPosition(11, 5, 7); //6
+                var vertex37 = new mathis.Vertex().setPosition(12, 5, 8); //7
+                var vertex38 = new mathis.Vertex().setPosition(11, 6, 9); //8
+                var vertex39 = new mathis.Vertex().setPosition(12, 5, 10); //9
+                var vertex40 = new mathis.Vertex().setPosition(11, 4, 10); //0
+                var vertex41 = new mathis.Vertex().setPosition(12, 4, 11); //1
+                var vertex42 = new mathis.Vertex().setPosition(13, 3, 11); //2
+                var vertex43 = new mathis.Vertex().setPosition(13, 2, 11); //3
+                var vertex44 = new mathis.Vertex().setPosition(12, 1, 10); //4
+                var vertex45 = new mathis.Vertex().setPosition(11, 2, 10); //5
+                var vertex46 = new mathis.Vertex().setPosition(11, 3, 11); //6
+                var vertex47 = new mathis.Vertex().setPosition(12, 3, 10); //7
+                var vertex48 = new mathis.Vertex().setPosition(13, 4, 10); //8
+                var vertex49 = new mathis.Vertex().setPosition(14, 5, 9); //9
+                if (this.chainSize == 5) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4);
+                }
+                else if (this.chainSize == 10) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
+                }
+                else if (this.chainSize == 20) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19);
+                }
+                else {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19, vertex20, vertex21, vertex22, vertex23, vertex24, vertex25, vertex26, vertex27, vertex28, vertex29, vertex30, vertex31, vertex32, vertex33, vertex34, vertex35, vertex36, vertex37, vertex38, vertex39, vertex40, vertex41, vertex42, vertex43, vertex44, vertex45, vertex46, vertex47, vertex48, vertex49);
+                }
+                //All the coordinates are stocked in ALLc
+                var ALLc = [];
+                for (var i = 0; i < mamesh.vertices.length; i++) {
+                    ALLc.push(mamesh.vertices[i].position);
+                }
+                //Counter for unsuccessful attempts
+                var attempts = 0;
+                //Nb of generated chains  (=nb of operations)
+                var chain = 0;
+                var t = 0;
+                var test = mamesh.vertices;
+                var NOTfinished = true;
                 var max = 2;
                 var min = 0;
                 //for (let y=0; y<chain; y++){
-                //while (NOTfinished) {
-                t += 0.1;
-                // Choose randomly the end to delete:
-                var choice = Math.floor(Math.random() * (max - min)) + min;
-                {
+                while (NOTfinished) {
+                    t += 0.1;
+                    // Choose randomly the end to delete:
+                    var choice = Math.floor(Math.random() * (max - min)) + min;
                     //delete head, go to tail
                     if (choice == 0) {
                         var x = test[test.length - 1].position.x;
@@ -997,7 +1109,7 @@ var mathis;
                         var zN = alea_z + z;
                         cc('TAIL-xyz new:', xN, yN, zN);
                         var coordinate = new mathis.XYZ(xN, yN, zN);
-                        if (!contains(ALLc, coordinate)) {
+                        if (!this.contains(ALLc, coordinate)) {
                             test.shift();
                             ALLc.shift();
                             var vertex = new mathis.Vertex();
@@ -1024,7 +1136,7 @@ var mathis;
                         var zN = alea_z + z;
                         cc('HEAD xyz new:', xN, yN, zN);
                         var coordinate = new mathis.XYZ(xN, yN, zN);
-                        if (!contains(ALLc, coordinate)) {
+                        if (!this.contains(ALLc, coordinate)) {
                             var vertex = new mathis.Vertex();
                             test.pop();
                             ALLc.pop();
@@ -1038,95 +1150,602 @@ var mathis;
                             attempts++;
                         }
                     }
+                    NOTfinished = (chain < 1);
                 }
-                //NOTfinished = (chain < 10);
-                // }
                 mamesh.vertices = test;
                 for (var i = 1; i < mamesh.vertices.length - 1; i++) {
                     mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
                 }
                 mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
                 mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
-                var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
-                linkViewer.radiusAbsolute = 0.01;
-                linkViewer.go();
-                var verticesViewer = new mathis.visu3d.VerticesViewer(mamesh, mathisFrame.scene);
-                verticesViewer.radiusAbsolute = 0.1;
-                verticesViewer.go();
-                cc('t', t);
-            });
-            action.frameInterval = 5;
-            action.nbTimesThisActionMustBeFired = 20;
-            // mathisFrame.cleanAllPeriodicActions();
-            mathisFrame.pushPeriodicAction(action);
-            cc('atempts:', attempts);
-            cc('How many chains are generated?:', chain);
-        }
-        polymer.snake = snake;
+                return mamesh;
+            };
+            return SAW_dynamic_Snake;
+        }());
+        polymer.SAW_dynamic_Snake = SAW_dynamic_Snake;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 var mathis;
 (function (mathis) {
-    var display;
-    (function (display) {
-        function tests() {
-            var mathisFrame = new mathis.MathisFrame();
-            var mamesh = new mathis.Mamesh();
-            function outbreak(N, b) {
-                var max_t = 20;
-                var I = 1;
-                var S = N - 1;
-                var incidence = [{ t: 0, I: I }];
-                for (var t_2 = 1; t_2 < max_t; t_2++) {
-                    var p_inf = 1.0 - Math.exp(-b * I / N);
-                    var new_I = 0;
-                    for (var i = 0; i < S; i++) {
-                        if (Math.random() < p_inf) {
-                            new_I++;
+    var ChainPresentation_P = (function () {
+        function ChainPresentation_P(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_P";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_P.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_P.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_dynamic_Pivot();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_P;
+    }());
+    mathis.ChainPresentation_P = ChainPresentation_P;
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var ChainPresentation_S = (function () {
+        function ChainPresentation_S(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_S";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_S.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_S.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_dynamic_Snake();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            cc(mamesh.toString());
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_S;
+    }());
+    mathis.ChainPresentation_S = ChainPresentation_S;
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var ChainPresentation_A = (function () {
+        function ChainPresentation_A(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_A";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_A.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_A.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_Creator_static_Simple();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            cc(mamesh.toString());
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_A;
+    }());
+    mathis.ChainPresentation_A = ChainPresentation_A;
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        function start_Chain_Static() {
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_SB");
+                var aPieceOfCode = new mathis.ChainPresentation_A(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_SS");
+                var aPieceOfCode = new mathis.ChainPresentation_B(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+        }
+        polymer.start_Chain_Static = start_Chain_Static;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        function start_Chain_DS() {
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_Init");
+                var aPieceOfCode = new mathis.ChainPresentation_Init(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_DS");
+                var aPieceOfCode = new mathis.ChainPresentation_S(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+        }
+        polymer.start_Chain_DS = start_Chain_DS;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var ChainPresentation_B = (function () {
+        function ChainPresentation_B(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_B";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_B.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_B.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_Creator_static_Biased();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            cc(mamesh.toString());
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_B;
+    }());
+    mathis.ChainPresentation_B = ChainPresentation_B;
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        var SAW_Init = (function () {
+            function SAW_Init() {
+                this.chainSize = 10;
+            }
+            SAW_Init.prototype.go = function () {
+                cc('Init');
+                var mamesh = new mathis.Mamesh();
+                //A given SAW
+                var vertex0 = new mathis.Vertex().setPosition(0, -1, 0); //0
+                var vertex1 = new mathis.Vertex().setPosition(-1, 0, 1); //1
+                var vertex2 = new mathis.Vertex().setPosition(0, 0, 1); //2
+                var vertex3 = new mathis.Vertex().setPosition(1, 0, 1); //3
+                var vertex4 = new mathis.Vertex().setPosition(1, 1, 0); //4
+                var vertex5 = new mathis.Vertex().setPosition(2, 2, 0); //5
+                var vertex6 = new mathis.Vertex().setPosition(2, 3, -1); //6
+                var vertex7 = new mathis.Vertex().setPosition(3, 3, 0); //7
+                var vertex8 = new mathis.Vertex().setPosition(3, 4, 0); //8
+                var vertex9 = new mathis.Vertex().setPosition(3, 5, -1); //9
+                var vertex10 = new mathis.Vertex().setPosition(4, 5, 0); //0
+                var vertex11 = new mathis.Vertex().setPosition(4, 4, 1); //1
+                var vertex12 = new mathis.Vertex().setPosition(4, 5, 2); //2
+                var vertex13 = new mathis.Vertex().setPosition(5, 5, 2); //3
+                var vertex14 = new mathis.Vertex().setPosition(5, 6, 1); //4
+                var vertex15 = new mathis.Vertex().setPosition(6, 6, 2); //5
+                var vertex16 = new mathis.Vertex().setPosition(6, 5, 3); //6
+                var vertex17 = new mathis.Vertex().setPosition(7, 4, 3); //7
+                var vertex18 = new mathis.Vertex().setPosition(6, 3, 4); //8
+                var vertex19 = new mathis.Vertex().setPosition(7, 2, 5); //9
+                var vertex20 = new mathis.Vertex().setPosition(8, 3, 5); //0
+                var vertex21 = new mathis.Vertex().setPosition(9, 3, 5); //1
+                var vertex22 = new mathis.Vertex().setPosition(9, 3, 4); //2
+                var vertex23 = new mathis.Vertex().setPosition(8, 4, 4); //3
+                var vertex24 = new mathis.Vertex().setPosition(7, 3, 5); //4
+                var vertex25 = new mathis.Vertex().setPosition(6, 4, 6); //5
+                var vertex26 = new mathis.Vertex().setPosition(7, 5, 6); //6
+                var vertex27 = new mathis.Vertex().setPosition(8, 5, 5); //7
+                var vertex28 = new mathis.Vertex().setPosition(8, 5, 6); //8
+                var vertex29 = new mathis.Vertex().setPosition(9, 5, 7); //9
+                var vertex30 = new mathis.Vertex().setPosition(10, 5, 7); //0
+                var vertex31 = new mathis.Vertex().setPosition(10, 6, 6); //1
+                var vertex32 = new mathis.Vertex().setPosition(10, 7, 6); //2
+                var vertex33 = new mathis.Vertex().setPosition(10, 7, 5); //3
+                var vertex34 = new mathis.Vertex().setPosition(9, 7, 5); //4
+                var vertex35 = new mathis.Vertex().setPosition(10, 6, 6); //5
+                var vertex36 = new mathis.Vertex().setPosition(11, 5, 7); //6
+                var vertex37 = new mathis.Vertex().setPosition(12, 5, 8); //7
+                var vertex38 = new mathis.Vertex().setPosition(11, 6, 9); //8
+                var vertex39 = new mathis.Vertex().setPosition(12, 5, 10); //9
+                var vertex40 = new mathis.Vertex().setPosition(11, 4, 10); //0
+                var vertex41 = new mathis.Vertex().setPosition(12, 4, 11); //1
+                var vertex42 = new mathis.Vertex().setPosition(13, 3, 11); //2
+                var vertex43 = new mathis.Vertex().setPosition(13, 2, 11); //3
+                var vertex44 = new mathis.Vertex().setPosition(12, 1, 10); //4
+                var vertex45 = new mathis.Vertex().setPosition(11, 2, 10); //5
+                var vertex46 = new mathis.Vertex().setPosition(11, 3, 11); //6
+                var vertex47 = new mathis.Vertex().setPosition(12, 3, 10); //7
+                var vertex48 = new mathis.Vertex().setPosition(13, 4, 10); //8
+                var vertex49 = new mathis.Vertex().setPosition(14, 5, 9); //9
+                if (this.chainSize == 5) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4);
+                }
+                else if (this.chainSize == 10) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9);
+                }
+                else if (this.chainSize == 20) {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19);
+                }
+                else {
+                    mamesh.vertices.push(vertex0, vertex1, vertex2, vertex3, vertex4, vertex5, vertex6, vertex7, vertex8, vertex9, vertex10, vertex11, vertex12, vertex13, vertex14, vertex15, vertex16, vertex17, vertex18, vertex19, vertex20, vertex21, vertex22, vertex23, vertex24, vertex25, vertex26, vertex27, vertex28, vertex29, vertex30, vertex31, vertex32, vertex33, vertex34, vertex35, vertex36, vertex37, vertex38, vertex39, vertex40, vertex41, vertex42, vertex43, vertex44, vertex45, vertex46, vertex47, vertex48, vertex49);
+                }
+                for (var i = 1; i < mamesh.vertices.length - 1; i++) {
+                    mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
+                }
+                mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
+                mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
+                return mamesh;
+            };
+            return SAW_Init;
+        }());
+        polymer.SAW_Init = SAW_Init;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
+})(mathis || (mathis = {}));
+/**
+ * Created by vigon on 17/07/2017.
+ */
+var mathis;
+(function (mathis) {
+    var ChainPresentation_Init = (function () {
+        function ChainPresentation_Init(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_Init";
+            this.TITLE = "";
+            this.chainSize = 10;
+            this.$$$chainSize = [5, 10, 20, 50];
+        }
+        ChainPresentation_Init.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -30));
+            this.go();
+        };
+        ChainPresentation_Init.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.SAW_Init();
+            creator.chainSize = this.chainSize;
+            var mamesh = creator.go();
+            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
+            verticeViewer.radiusAbsolute = 0.1;
+            verticeViewer.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_Init;
+    }());
+    mathis.ChainPresentation_Init = ChainPresentation_Init;
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        function start_Chain_DP() {
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_Init");
+                var aPieceOfCode = new mathis.ChainPresentation_Init(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_DP");
+                var aPieceOfCode = new mathis.ChainPresentation_P(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+        }
+        polymer.start_Chain_DP = start_Chain_DP;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
+})(mathis || (mathis = {}));
+/*This class is supposed to creat buttons in CHrome, but as my mesh is made of 5 submeshes, I have no idea how to exort them all
+* al once*/
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        var vulcaSimple = (function () {
+            function vulcaSimple() {
+                this.n = 3; //molecules
+                this.m = 5; //monomères
+                this.nbOfChains = 3;
+            }
+            //*****************USEFULL FUNCTIONS************************//
+            /**check if a raw belongs to a matrix for XYZ*/
+            vulcaSimple.prototype.contains = function (points, onePoint) {
+                for (var _i = 0, points_6 = points; _i < points_6.length; _i++) {
+                    var point = points_6[_i];
+                    if (mathis.geo.distance(point, onePoint) < 0.0001) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            /**check if a raw belongs to a matrix for number*/
+            vulcaSimple.prototype.containsN = function (points, onePoint) {
+                if (onePoint in points) {
+                    return true;
+                }
+                return false;
+            };
+            /**function that find index of a given value in a given array*/
+            vulcaSimple.prototype.findIndex = function (array, value) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] == value) {
+                        var res = i;
+                    }
+                }
+                return res;
+            };
+            /**shuffles an array */
+            vulcaSimple.prototype.shuffle = function (array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                while (0 !== currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                return array;
+            };
+            /**Deletes a certain value from array */
+            vulcaSimple.prototype.rm = function (array, toDelete) {
+                for (var i = array.length - 1; i >= 0; i--) {
+                    if (array[i] === toDelete) {
+                        array.splice(i, 1);
+                    }
+                }
+                return array;
+            };
+            /**Find a random neighbour */
+            vulcaSimple.prototype.go = function () {
+                var mamesh = new mathis.Mamesh();
+                var grilleS = [];
+                var C_unitaire = [];
+                var C_double = [];
+                var S = [];
+                var verticesNon = [];
+                function possibleNeighbours_f(me) {
+                    var me_x1 = me.x + 3;
+                    var me_x2 = me.x - 3;
+                    var me_y1 = me.y + 2;
+                    var me_y2 = me.y - 2;
+                    var me_y11 = me.y + 3;
+                    var me_y22 = me.y - 3;
+                    var coordinates1 = new mathis.XYZ(me_x1, me_y1, 0);
+                    var coordinates2 = new mathis.XYZ(me_x1, me_y2, 0);
+                    var coordinates3 = new mathis.XYZ(me_x2, me_y1, 0);
+                    var coordinates4 = new mathis.XYZ(me_x2, me_y2, 0);
+                    var coordinates5 = new mathis.XYZ(me_x1, me.y, 0);
+                    var coordinates6 = new mathis.XYZ(me_x2, me.y, 0);
+                    var coordinates7 = new mathis.XYZ(me.x, me_y1, 0);
+                    var coordinates8 = new mathis.XYZ(me.x, me_y2, 0);
+                    var coordinates9 = new mathis.XYZ(me_x1, me_y11, 0);
+                    var coordinates10 = new mathis.XYZ(me_x1, me_y22, 0);
+                    var coordinates11 = new mathis.XYZ(me_x2, me_y11, 0);
+                    var coordinates12 = new mathis.XYZ(me_x2, me_y22, 0);
+                    var coordinates13 = new mathis.XYZ(me.x, me_y11, 0);
+                    var coordinates14 = new mathis.XYZ(me.x, me_y22, 0);
+                    var coordinates = [];
+                    coordinates.push(coordinates1, coordinates2, coordinates3, coordinates4, coordinates5, coordinates6, coordinates7, coordinates8, coordinates9, coordinates10, coordinates11, coordinates12, coordinates13, coordinates14);
+                    var possibleNeighbours = [];
+                    for (var i = 0; i < coordinates.length; i++) {
+                        if (this.contains(grilleS_XYZ, coordinates[i])) {
+                            possibleNeighbours.push(coordinates[i]);
+                            cc('coordinates  ok', coordinates[i]);
+                        }
+                        else {
+                            cc('coordinates not ok', coordinates[i]);
                         }
                     }
-                    if (new_I == 0) {
-                        break;
+                    return possibleNeighbours;
+                }
+                //Atomes de carbone de type -CH_2-CH_2-
+                var C_unitaire_XYZ = []; //C_unitaire
+                //Atomes de carbone de type -CH=CH-
+                var C_double_XYZ = []; //C_double
+                //Atome de carbone de type -CHS-CHS- (ancien C_double)
+                var C_affecte_XYZ = [];
+                var C_affecte = [];
+                //Atomes de soufre
+                var S_XYZ = []; //verticesS
+                //Places possilbes pour la soufre
+                var grilleS_XYZ = []; //grilleS
+                var w1 = 20;
+                var h1 = 20;
+                //****************Building a grill************************//
+                // reseau initial (3 marcomolécule à 5 monomère)
+                for (var j = 0; j < this.n; j++) {
+                    var v_1_in = new mathis.Vertex().setPosition(1, 3 + h1 * j, 0); //not visible
+                    mamesh.vertices.push(v_1_in);
+                    verticesNon.push(v_1_in);
+                    for (var i = 0; i < this.m; i++) {
+                        var v_1_C1 = new mathis.Vertex().setPosition(3 + w1 * i, 3 + h1 * j, 0);
+                        var v_1_C2 = new mathis.Vertex().setPosition(6 + w1 * i, 3 + h1 * j, 0);
+                        var v_1_C3 = new mathis.Vertex().setPosition(9 + w1 * i, 3 + h1 * j, 0);
+                        var v_1_C4 = new mathis.Vertex().setPosition(12 + w1 * i, 3 + h1 * j, 0);
+                        //C_unitaire.push(v_1_C1,v_1_C2);
+                        //C_double.push(v_1_C3,v_1_C4);
+                        mamesh.vertices.push(v_1_C1, v_1_C2, v_1_C3, v_1_C4);
+                        C_unitaire.push(v_1_C1, v_1_C2);
+                        C_double.push(v_1_C3, v_1_C4);
                     }
-                    incidence.push({ t: t_2, I: new_I });
-                    S -= new_I;
-                    I = new_I;
+                    var v_1_out = new mathis.Vertex().setPosition(15 + w1 * 4, 3 + h1 * j, 0); //not visible
+                    mamesh.vertices.push(v_1_out);
+                    verticesNon.push(v_1_out);
                 }
-                return (incidence);
-            }
-            var N = 20;
-            var b = 0.01;
-            var t = 1;
-            var max_t = 20;
-            var I = 1;
-            var S = N - 1;
-            var incidence = [];
-            var action = new mathis.PeriodicAction(function () {
-                t += 0.1;
-                var p_inf = 1.0 - Math.exp(-b * I / N);
-                var new_I = 0;
-                for (var i = 0; i < S; i++) {
-                    if (Math.random() < p_inf) {
-                        new_I++;
+                //Soufre Grille
+                var hS = 2;
+                var nS = 8;
+                var mS = 5;
+                var p = 0;
+                for (var k = 0; k < this.n - 1; k++) {
+                    for (var j = 0; j < nS; j++) {
+                        for (var i = 0; i < mS; i++) {
+                            var S1 = new mathis.Vertex().setPosition(3 + w1 * i, 6 + p + hS * j, 0);
+                            var S2 = new mathis.Vertex().setPosition(6 + w1 * i, 6 + p + hS * j, 0);
+                            var S3 = new mathis.Vertex().setPosition(9 + w1 * i, 6 + p + hS * j, 0);
+                            var S4 = new mathis.Vertex().setPosition(12 + w1 * i, 6 + p + hS * j, 0);
+                            mamesh.vertices.push(S1, S2, S3, S4);
+                            grilleS.push(S1, S2, S3, S4);
+                            grilleS_XYZ.push(S1.position, S2.position, S3.position, S4.position);
+                        }
                     }
+                    p = p + 20;
                 }
-                incidence.push(new_I);
-                for (var i = 0; i < new_I; i++) {
+                var test = [];
+                for (var i = 0; i < C_double.length; i++) {
+                    test.push(C_double[i]);
                 }
-                S -= new_I;
-                I = new_I;
-                var vertex = new mathis.Vertex();
-                vertex.position = test;
-                mamesh.vertices.push(vertex);
-                cc('I', I);
-            });
-            action.frameInterval = 5;
-            action.nbTimesThisActionMustBeFired = 20;
-            mathisFrame.cleanAllPeriodicActions();
-            mathisFrame.pushPeriodicAction(action);
-        }
-        display.tests = tests;
-    })(display = mathis.display || (mathis.display = {}));
+                for (var i = 0; i < this.nbOfChains; i++) {
+                    var indexesInMamesh = [];
+                    //Actual chain at i
+                    var thisChain = [];
+                    var thisChain_XYZ = [];
+                    //Choose S chain lenght
+                    var bridgeS = Math.floor(Math.random() * (10 - 1)) + 1;
+                    //Choose a random vertex in CS by index
+                    var indexOfRandomVertex1 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                    var RandomVertex1inCS = test[indexOfRandomVertex1];
+                    cc('RandomVertex1inCS', RandomVertex1inCS);
+                    //add it to C_affected
+                    C_affecte.push(RandomVertex1inCS);
+                    //delete it from C_double
+                    this.rm(test, RandomVertex1inCS);
+                    //add it to thisChain
+                    thisChain_XYZ.push(RandomVertex1inCS.position);
+                    var indexRandomVertex1 = mamesh.vertices.indexOf(test[indexOfRandomVertex1]);
+                    indexesInMamesh.push(indexRandomVertex1);
+                    var Security = mamesh.vertices;
+                    for (var j = 1; j < bridgeS; j++) {
+                        cc('thisChain_XYZ[j-1]', thisChain_XYZ[j - 1]);
+                        var possible_Neighbours_list = [];
+                        possible_Neighbours_list = possibleNeighbours_f(thisChain_XYZ[j - 1]);
+                        cc('possible_Neighbours_list', possible_Neighbours_list);
+                        var randomNeighbour_index = Math.floor(Math.random() * (possible_Neighbours_list.length - 1 - 0)) + 0;
+                        var random_Neighbour = possible_Neighbours_list[randomNeighbour_index];
+                        cc('random_Neighbour', random_Neighbour);
+                        if (!random_Neighbour) {
+                            cc('thisChain_XYZ', thisChain_XYZ);
+                            break;
+                        }
+                        if (!this.contains(S_XYZ, random_Neighbour)) {
+                            S_XYZ.push(random_Neighbour);
+                            var coordinates = new mathis.XYZ(random_Neighbour.x, random_Neighbour.y, 0);
+                            var vertex = new mathis.Vertex();
+                            vertex.position = coordinates;
+                            S.push(vertex);
+                            mamesh.vertices.push(vertex);
+                            cc('S added', coordinates);
+                            var index = mamesh.vertices.indexOf(vertex);
+                            indexesInMamesh.push(index);
+                            thisChain_XYZ.push(random_Neighbour);
+                            cc('grille', grilleS_XYZ);
+                        }
+                        else {
+                            cc('Doublons! New chain');
+                            mamesh.vertices = Security;
+                            break;
+                        }
+                    }
+                    cc('indexesS', indexesInMamesh);
+                    var randomVertex2 = Math.floor(Math.random() * (test.length - 1 - 0)) + 0;
+                    var indexRandomVertex2 = mamesh.vertices.indexOf(test[randomVertex2]);
+                    C_affecte.push(test[randomVertex2]);
+                    this.rm(test, test[randomVertex2]);
+                    indexesInMamesh.push(indexRandomVertex2);
+                    for (var i_1 = 1; i_1 < indexesInMamesh.length - 1; i_1++) {
+                        mamesh.vertices[indexesInMamesh[i_1]].setTwoOppositeLinks(mamesh.vertices[indexesInMamesh[i_1 - 1]], mamesh.vertices[indexesInMamesh[i_1 + 1]]);
+                    }
+                    mamesh.vertices[indexesInMamesh[0]].setOneLink(mamesh.vertices[indexesInMamesh[1]]);
+                    mamesh.vertices[indexesInMamesh.length - 1].setOneLink(mamesh.vertices[indexesInMamesh.length - 2]);
+                }
+                var x = 0;
+                for (var k = 0; k < this.n; k++) {
+                    mamesh.vertices[0 + x].setOneLink(mamesh.vertices[x + 1]);
+                    for (var j = 0; j < this.m; j++) {
+                        mamesh.vertices[x + 0 + 4 * j].setOneLink(mamesh.vertices[x + 1 + 4 * j]);
+                        mamesh.vertices[x + 1 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 0 + 4 * j], mamesh.vertices[x + 2 + 4 * j]);
+                        mamesh.vertices[x + 2 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 1 + 4 * j], mamesh.vertices[x + 3 + 4 * j]);
+                        mamesh.vertices[x + 3 + 4 * j].setTwoOppositeLinks(mamesh.vertices[x + 2 + 4 * j], mamesh.vertices[x + 4 + 4 * j]);
+                    }
+                    x = x + 22;
+                }
+                /*
+                                this.verticesViewerS = new visu3d.VerticesViewer(grilleS, mathisFrame.scene);
+                                verticesViewerS.color = new mathis.Color(mathis.Color.names.lightyellow);
+                                verticesViewerS.radiusAbsolute = 0.3;
+                                verticesViewerS.go();
+                
+                                let verticesViewerC = new visu3d.VerticesViewer(C_unitaire, mathisFrame.scene);
+                                verticesViewerC.color = new mathis.Color(mathis.Color.names.darkviolet);
+                                verticesViewerC.radiusAbsolute = 0.7;
+                                verticesViewerC.go();
+                
+                                let verticesViewerCS = new visu3d.VerticesViewer(C_double, mathisFrame.scene);
+                                verticesViewerCS.color = new mathis.Color(mathis.Color.names.red);
+                                verticesViewerCS.radiusAbsolute = 0.9;
+                                verticesViewerCS.go();*/
+                return mamesh;
+            };
+            return vulcaSimple;
+        }());
+        polymer.vulcaSimple = vulcaSimple;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
 })(mathis || (mathis = {}));
 var mathis;
 (function (mathis) {
@@ -1373,7 +1992,87 @@ var mathis;
 (function (mathis) {
     var polymer;
     (function (polymer) {
-        function vulcaSimple() {
+        function start_Chain_V() {
+            {
+                var mathisFrame = new mathis.MathisFrame("pieceOfCodeChain_V");
+                var aPieceOfCode = new mathis.ChainPresentation_V(mathisFrame);
+                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
+                binder.go();
+                aPieceOfCode.goForTheFirstTime();
+            }
+        }
+        polymer.start_Chain_V = start_Chain_V;
+    })(polymer = mathis.polymer || (mathis.polymer = {}));
+})(mathis || (mathis = {}));
+var mathis;
+(function (mathis) {
+    var ChainPresentation_V = (function () {
+        function ChainPresentation_V(mathisFrame) {
+            this.mathisFrame = mathisFrame;
+            this.NAME = "ChainPresentation_V";
+            this.TITLE = "";
+            this.nbOfChains = 10;
+            this.$$$nbOfChains = [5, 10, 20, 50];
+            this.n = 3; //molecules
+            this.$$$n = [1, 3, 5, 7];
+            this.m = 5; //monomères
+            this.$$$m = [1, 3, 5, 7];
+        }
+        ChainPresentation_V.prototype.goForTheFirstTime = function () {
+            this.mathisFrame.clearScene();
+            this.mathisFrame.addDefaultCamera();
+            this.mathisFrame.addDefaultLight();
+            var camera = this.mathisFrame.getGrabberCamera();
+            camera.changePosition(new mathis.XYZ(0, 0, -40));
+            this.go();
+        };
+        ChainPresentation_V.prototype.go = function () {
+            this.mathisFrame.clearScene(false, false);
+            var creator = new mathis.polymer.vulcaSimple();
+            creator.nbOfChains = this.nbOfChains;
+            creator.m = this.m;
+            creator.n = this.n;
+            creator.grilleS = this.grilleS;
+            creator.C_unitaire = this.C_unitaire;
+            creator.C_double = this.C_double;
+            creator.S = this.S;
+            creator.verticesNon = this.verticesNon;
+            var mamesh = creator.go();
+            var verticesViewerS = new mathis.visu3d.VerticesViewer(this.grilleS, this.mathisFrame.scene);
+            verticesViewerS.color = new mathis.Color(mathis.Color.names.lightyellow);
+            verticesViewerS.radiusAbsolute = 0.3;
+            verticesViewerS.go();
+            var verticesViewerC = new mathis.visu3d.VerticesViewer(this.C_unitaire, this.mathisFrame.scene);
+            verticesViewerC.color = new mathis.Color(mathis.Color.names.darkviolet);
+            verticesViewerC.radiusAbsolute = 0.7;
+            verticesViewerC.go();
+            var verticesViewerCS = new mathis.visu3d.VerticesViewer(this.C_double, this.mathisFrame.scene);
+            verticesViewerCS.color = new mathis.Color(mathis.Color.names.red);
+            verticesViewerCS.radiusAbsolute = 0.9;
+            verticesViewerCS.go();
+            var verticesViewerSS = new mathis.visu3d.VerticesViewer(this.S, this.mathisFrame.scene);
+            verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
+            verticesViewerSS.radiusAbsolute = 0.9;
+            verticesViewerSS.go();
+            var verticesViewerNon = new mathis.visu3d.VerticesViewer(this.verticesNon, this.mathisFrame.scene);
+            //verticesViewerNon.go();
+            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
+            linkViewer.go();
+        };
+        return ChainPresentation_V;
+    }());
+    mathis.ChainPresentation_V = ChainPresentation_V;
+})(mathis || (mathis = {}));
+/**
+ * Created by ushakova on 03/08/17.
+ */
+var mathis;
+(function (mathis) {
+    var polymer;
+    (function (polymer) {
+        function myVulca() {
+            var n = 3; //maromolecules
+            var m = 5; //monomères
             var mathisFrame = new mathis.MathisFrame();
             var mamesh = new mathis.Mamesh();
             var camera = mathisFrame.getGrabberCamera();
@@ -1381,8 +2080,8 @@ var mathis;
             //*****************USEFULL FUNCTIONS************************//
             /**check if a raw belongs to a matrix for XYZ*/
             function contains(points, onePoint) {
-                for (var _i = 0, points_6 = points; _i < points_6.length; _i++) {
-                    var point = points_6[_i];
+                for (var _i = 0, points_7 = points; _i < points_7.length; _i++) {
+                    var point = points_7[_i];
                     if (mathis.geo.distance(point, onePoint) < 0.0001) {
                         return true;
                     }
@@ -1480,8 +2179,6 @@ var mathis;
             var verticesNon = [];
             var w1 = 20;
             var h1 = 20;
-            var n = 3;
-            var m = 5;
             //****************Building a grill************************//
             // reseau initial (3 marcomolécule à 5 monomère)
             for (var j = 0; j < n; j++) {
@@ -1584,8 +2281,8 @@ var mathis;
                 C_affecte.push(test[randomVertex2]);
                 rm(test, test[randomVertex2]);
                 indexesInMamesh.push(indexRandomVertex2);
-                for (var i_1 = 1; i_1 < indexesInMamesh.length - 1; i_1++) {
-                    mamesh.vertices[indexesInMamesh[i_1]].setTwoOppositeLinks(mamesh.vertices[indexesInMamesh[i_1 - 1]], mamesh.vertices[indexesInMamesh[i_1 + 1]]);
+                for (var i_2 = 1; i_2 < indexesInMamesh.length - 1; i_2++) {
+                    mamesh.vertices[indexesInMamesh[i_2]].setTwoOppositeLinks(mamesh.vertices[indexesInMamesh[i_2 - 1]], mamesh.vertices[indexesInMamesh[i_2 + 1]]);
                 }
                 mamesh.vertices[indexesInMamesh[0]].setOneLink(mamesh.vertices[indexesInMamesh[1]]);
                 mamesh.vertices[indexesInMamesh.length - 1].setOneLink(mamesh.vertices[indexesInMamesh.length - 2]);
@@ -1614,17 +2311,17 @@ var mathis;
             verticesViewerCS.radiusAbsolute = 0.9;
             verticesViewerCS.go();
             /*
-                            let verticesViewerT= new visu3d.VerticesViewer(test, mathisFrame.scene);
-                            verticesViewerT.color = new mathis.Color(mathis.Color.names.red);
-                            verticesViewerT.radiusAbsolute = 0.9;
-                            verticesViewerT.go();
-            
-            
-                            let verticesViewerA= new visu3d.VerticesViewer(C_affecte, mathisFrame.scene);
-                            verticesViewerA.color = new mathis.Color(mathis.Color.names.black);
-                            verticesViewerA.radiusAbsolute = 0.9;
-                            verticesViewerA.go();
-            */
+             let verticesViewerT= new visu3d.VerticesViewer(test, mathisFrame.scene);
+             verticesViewerT.color = new mathis.Color(mathis.Color.names.red);
+             verticesViewerT.radiusAbsolute = 0.9;
+             verticesViewerT.go();
+
+
+             let verticesViewerA= new visu3d.VerticesViewer(C_affecte, mathisFrame.scene);
+             verticesViewerA.color = new mathis.Color(mathis.Color.names.black);
+             verticesViewerA.radiusAbsolute = 0.9;
+             verticesViewerA.go();
+             */
             var verticesViewerSS = new mathis.visu3d.VerticesViewer(S, mathisFrame.scene);
             verticesViewerSS.color = new mathis.Color(mathis.Color.names.yellow);
             verticesViewerSS.radiusAbsolute = 0.9;
@@ -1634,107 +2331,7 @@ var mathis;
             var linkViewer = new mathis.visu3d.LinksViewer(mamesh, mathisFrame.scene);
             linkViewer.go();
         }
-        polymer.vulcaSimple = vulcaSimple;
+        polymer.myVulca = myVulca;
     })(polymer = mathis.polymer || (mathis.polymer = {}));
-})(mathis || (mathis = {}));
-var mathis;
-(function (mathis) {
-    var polymer;
-    (function (polymer) {
-        function start_Chain_Simple() {
-            {
-                var mathisFrame = new mathis.MathisFrame();
-                var aPieceOfCode = new mathis.ChainPresentation(mathisFrame);
-                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
-                binder.go();
-                aPieceOfCode.goForTheFirstTime();
-            }
-        }
-        polymer.start_Chain_Simple = start_Chain_Simple;
-        function start_Chain_Biased() {
-            {
-                var mathisFrame = new mathis.MathisFrame();
-                var aPieceOfCode = new mathis.ChainPresentation_B(mathisFrame);
-                var binder = new mathis.appli.Binder(aPieceOfCode, null, mathisFrame);
-                binder.go();
-                aPieceOfCode.goForTheFirstTime();
-            }
-        }
-        polymer.start_Chain_Biased = start_Chain_Biased;
-    })(polymer = mathis.polymer || (mathis.polymer = {}));
-})(mathis || (mathis = {}));
-/**
- * Created by vigon on 17/07/2017.
- */
-var mathis;
-(function (mathis) {
-    var ChainPresentation = (function () {
-        function ChainPresentation(mathisFrame) {
-            this.mathisFrame = mathisFrame;
-            this.NAME = "VariableReseau";
-            this.TITLE = "";
-            this.chainSize = 10;
-            this.$$$chainSize = [5, 10, 20, 50];
-        }
-        ChainPresentation.prototype.goForTheFirstTime = function () {
-            this.mathisFrame.clearScene();
-            this.mathisFrame.addDefaultCamera();
-            this.mathisFrame.addDefaultLight();
-            var camera = this.mathisFrame.getGrabberCamera();
-            camera.changePosition(new mathis.XYZ(0, 0, -30));
-            this.go();
-        };
-        ChainPresentation.prototype.go = function () {
-            this.mathisFrame.clearScene(false, false);
-            var creator = new mathis.polymer.SAW_Creator_static_Simple();
-            creator.chainSize = this.chainSize;
-            var mamesh = creator.go();
-            cc(mamesh.toString());
-            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
-            verticeViewer.radiusAbsolute = 0.1;
-            verticeViewer.go();
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
-            linkViewer.go();
-        };
-        return ChainPresentation;
-    }());
-    mathis.ChainPresentation = ChainPresentation;
-})(mathis || (mathis = {}));
-/**
- * Created by vigon on 17/07/2017.
- */
-var mathis;
-(function (mathis) {
-    var ChainPresentation_B = (function () {
-        function ChainPresentation_B(mathisFrame) {
-            this.mathisFrame = mathisFrame;
-            this.NAME = "VariableReseau";
-            this.TITLE = "";
-            this.chainSize = 10;
-            this.$$$chainSize = [5, 10, 20, 50];
-        }
-        ChainPresentation_B.prototype.goForTheFirstTime = function () {
-            this.mathisFrame.clearScene();
-            this.mathisFrame.addDefaultCamera();
-            this.mathisFrame.addDefaultLight();
-            var camera = this.mathisFrame.getGrabberCamera();
-            camera.changePosition(new mathis.XYZ(0, 0, -30));
-            this.go();
-        };
-        ChainPresentation_B.prototype.go = function () {
-            this.mathisFrame.clearScene(false, false);
-            var creator = new mathis.polymer.SAW_Creator_static_Biased();
-            creator.chainSize = this.chainSize;
-            var mamesh = creator.go();
-            cc(mamesh.toString());
-            var verticeViewer = new mathis.visu3d.VerticesViewer(mamesh, this.mathisFrame.scene);
-            verticeViewer.radiusAbsolute = 0.1;
-            verticeViewer.go();
-            var linkViewer = new mathis.visu3d.LinksViewer(mamesh, this.mathisFrame.scene);
-            linkViewer.go();
-        };
-        return ChainPresentation_B;
-    }());
-    mathis.ChainPresentation_B = ChainPresentation_B;
 })(mathis || (mathis = {}));
 //# sourceMappingURL=smallProject.js.map

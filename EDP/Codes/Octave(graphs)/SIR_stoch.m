@@ -1,5 +1,4 @@
 function result = SIR_stoch (params, initial, end_time)
-% Simulation of the stochastic SIR model
 
 state = initial; % holds the state variables S, I and R
 
@@ -55,10 +54,10 @@ end
 function which = process (probs)
 % Determines which process happens
 
-r = rand * sum(probs);
+beta = rand * sum(probs);
 which = 1;
 s = probs(1);
-while (r > s)
+while (beta > s)
     which = which + 1;
     s = s + probs(which);
 end
@@ -71,7 +70,7 @@ a(1) = params.m * (state.S + state.I + state.R); % host birth
 a(2) = params.m * state.S; % death of susceptible host
 a(3) = params.m * state.I; % death of infected host (unrelated to infection)
 a(4) = params.m * state.R; % death of recovered host
-a(5) = params.b * state.S * state.I; % infection
-a(6) = params.v * state.I; % death due to infection
-a(7) = params.r * state.I; % recovery
+a(5) = params.alpha * state.S * state.I; % infection
+a(6) = params.gamma * state.I; % death due to infection
+a(7) = params.beta * state.I; % recovery
 
