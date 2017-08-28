@@ -75,7 +75,7 @@ module mathis {
 
 
                 validatedVertexes[0] = new XYZ(x, y, z);
-                cc('validatedVertexes[0]', validatedVertexes[0]);
+                //cc('validatedVertexes[0]', validatedVertexes[0]);
 
                 while (NOTfinished && attempts < security) {
 
@@ -95,11 +95,11 @@ module mathis {
                             }
 
                             else {
-                                cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
+                                //cc('testJump=testJump.add(allJumps[i]) NOT OK', testJump);
                             }
 
                         }
-                        cc('availableJumps', availableJumps);
+                        //cc('availableJumps', availableJumps);
 
 
                         //Now we have a list of available jumps at step i that won't lead to self intersection.
@@ -107,8 +107,8 @@ module mathis {
 
                             let randomStep = availableJumps[Math.floor(Math.random() * availableJumps.length)];
 
-                            cc('validatedVertexes[j-1]', validatedVertexes[j - 1]);
-                            cc('randomStep', randomStep);
+                            //cc('validatedVertexes[j-1]', validatedVertexes[j - 1]);
+                            //cc('randomStep', randomStep);
 
 
                             let newVertex = new XYZ(validatedVertexes[j - 1].x + randomStep.x, validatedVertexes[j - 1].y + randomStep.y, validatedVertexes[j - 1].z + randomStep.z);
@@ -118,7 +118,7 @@ module mathis {
                             let vertex = new mathis.Vertex();
                             vertex.position = newVertex;
                             mamesh.vertices.push(vertex);
-                            cc('We add ', newVertex);
+                            //cc('We add ', newVertex);
 
                             if (validatedVertexes.length > this.chainSize) {
                                 break;
@@ -129,7 +129,7 @@ module mathis {
                         //So if availableJumps is empty, then any jump will give intersection => Start over!
                         else {
                             attempts++;
-                            cc('Cul de sac!');
+                            //cc('Cul de sac!');
 
                             while (mamesh.vertices.length > 0) {
                                 mamesh.vertices.pop();
@@ -143,9 +143,7 @@ module mathis {
 
 
                 }
-                cc('validatedVertexes', validatedVertexes);
-                cc('Attempts', attempts)
-
+                //cc('validatedVertexes', validatedVertexes);
 
                 for (let i = 1; i < mamesh.vertices.length - 1; i++) {
                     mamesh.vertices[i].setTwoOppositeLinks(mamesh.vertices[i - 1], mamesh.vertices[i + 1]);
@@ -154,8 +152,13 @@ module mathis {
                 mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
 
 
+
                 let end = new Date().getTime();
-                cc('Execution Time in sec', (end-start)*1000)
+                cc('Execution Time in sec', (end-start))
+                cc('Attempts', attempts)
+                cc('chainSize',this.chainSize)
+
+
 
                 return mamesh
             }

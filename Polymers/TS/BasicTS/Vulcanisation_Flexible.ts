@@ -48,7 +48,8 @@ module mathis {
             }
 
 
-            /**function that find index of a given value in a given array*/
+            /**function that find
+             *  of a given value in a given array*/
             private findIndex(array: Vertex[], value: Vertex): number {
                 for (let i = 0; i < array.length; i++) {
                     if (array[i] == value) {

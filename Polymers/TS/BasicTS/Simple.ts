@@ -9,12 +9,12 @@ module mathis {
 
             /**check if a raw belongs to a matrix*/
             private  contains(points: XYZ[], onePoint: XYZ) :boolean{
-            for (let point of points){
-                if (geo.distance(point,onePoint)<0.0001) {
-                    return true
+                for (let point of points){
+                    if (geo.distance(point,onePoint)<0.0001) {
+                        return true
+                    }
                 }
-            }
-            return false
+                return false
             }
 
             go():Mamesh{
@@ -82,7 +82,9 @@ module mathis {
                 mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
 
                 let end = new Date().getTime();
-                cc('Execution Time in sec', (end-start)*1000)
+                cc('Execution Time in sec', (end-start))
+                cc('Attempts', attempts)
+                cc('chainSize',this.chainSize)
 
                 return mamesh
             }

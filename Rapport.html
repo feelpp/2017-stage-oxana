@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<meta name="author" content="Oxana USHAKOVA">
+<meta name="author" content="Oxana USHAKOVA (Encadrants : V. Vigon, C. Prud'homme)">
 <title>Applications de marches auto-évitantes et des EDO/EDP dans l&#8217;étude des polymères et de l&#8217;épidémiologie</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -423,7 +423,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>Applications de marches auto-évitantes et des EDO/EDP dans l&#8217;étude des polymères et de l&#8217;épidémiologie</h1>
 <div class="details">
-<span id="author" class="author">Oxana USHAKOVA</span><br>
+<span id="author" class="author">Oxana USHAKOVA (Encadrants : V. Vigon, C. Prud'homme)</span><br>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__strong_chapitre_2_strong_edo_edp_et_l_épidémiologie"><strong>Chapitre 2</strong> : EDO/EDP et l&#8217;épidémiologie</a>
 <ul class="sectlevel2">
 <li><a href="#_modèle_sir">Modèle SIR</a></li>
-<li><a href="#_modèle_sir_déterministe_comme_un_edp">Modèle SIR déterministe comme un EDP</a></li>
+<li><a href="#_modèle_sir_déterministe_comme_une_edp">Modèle SIR déterministe comme une EDP</a></li>
 <li><a href="#_améliorations_possibles">Améliorations possibles</a></li>
 </ul>
 </li>
@@ -451,6 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_github">GitHub</a></li>
 </ul>
 </li>
+<li><a href="#_bibliographie">Bibliographie</a></li>
 </ul>
 </div>
 </div>
@@ -473,11 +474,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>De point de vue économique l&#8217;industrie des polymères est crucial: 100 $ générés en industrie des polymeres donnent 230 $ en PIB et
-1 emploi généré en industrie des polymeres donne 3 emplois dans d&#8217;autres domaines.</p>
+<p>De point de vue économique l&#8217;industrie des polymères est crucial:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>100 $ générés en industrie des polymères donnent 230 $ en PIB</p>
+</li>
+<li>
+<p>1 emploi généré en industrie des polymères donne 3 emplois dans d&#8217;autres domaines.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Les mêmes principes sont utilisés dans la construction des molécules d&#8217;ADN et dans l&#8217;épidémiologie, mais pour l&#8217;épidémiologie on veut se  concentrer sur l&#8217;approche classique, càd le système des ODEs.  On va voir les ODEs déterministes et stochastiques, mais aussi leur dérivation à partir d&#8217;un EDP avec le méthode des caractéristiques.</p>
+<p>Les mêmes principes sont utilisés dans la construction des protéines et dans l&#8217;épidémiologie, mais pour l&#8217;épidémiologie on veut se  concentrer sur l&#8217;approche classique, càd le système des ODEs.  On va voir les ODEs déterministes et stochastiques, mais aussi leur dérivation à partir d&#8217;un EDP avec le méthode des caractéristiques.</p>
 </div>
 <div class="paragraph">
 <p>La motivation de l&#8217;étude de l&#8217;épidémiologie est difficile à sous-estimer. Cette science permet à modéliser de nombreuses maladies, à éffectuer la prévention et/ou controle des epidémies. De plus, on utlise les mêmes idées dans networking, spam, etc.</p>
@@ -499,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Sous la condition que la distance entre les points voisins est constante, on a \(2d\) pas possibles à chaque étape. Si de plus on suppose, que la marche ne peut pas revenir en arrière, on a \(2d-1\) pas possible à chaque étape sauf le premier (\(2d\)).</p>
 </div>
 <div class="paragraph">
-<p>Voici un exemple d&#8217;un marche auto-évitante sur 2D lattice:</p>
+<p>Voici un exemple d&#8217;une marche auto-évitante sur 2D lattice:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -510,7 +520,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_algorithmes_de_contruction_des_saw">Algorithmes de contruction des SAW</h3>
 <div class="paragraph">
-<p>Les algorithmes statiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\).</p>
+<p>Dans les algorithmes statiques l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 1. Algorithmes Statiques</caption>
@@ -558,7 +568,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <div class="paragraph">
-<p>Les algorithmes dynamiques se basent sur SAW, autrement dit l&#8217;itération \(n\) ne dépend pas de \(\sum_0^{n-1}\).</p>
+<p>Les algorithmes dynamiques se basent sur les chaînes de Markov, autrement dit l&#8217;itération \(n\) ne dépend que de \(n-1\).</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 2. Algorithmes Dynamiques</caption>
@@ -608,6 +618,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>La simulation des algorithmes statiques est assez intuitive et ne nécessite pas de l&#8217;explication graphiques, donc on affiche à la fois les deux chaînes générées:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="ss.png" alt="ss">
+</div>
+</div>
+<div class="paragraph">
+<p>Par contre, pour les algorithmes dynamiques on a fait deux fenêtres : la chaîne initiale et la chaîne générée:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Algorithme de Reptation</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="snake.png" alt="snake">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Algorithme de Pivot</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pivot.png" alt="pivot">
+</div>
+</div>
 <div class="sect3">
 <h4 id="_comparaisons_des_algorithmes">Comparaisons des algorithmes</h4>
 <div class="paragraph">
@@ -631,7 +676,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_autre_application_vulcanisation">Autre application : Vulcanisation</h3>
 <div class="paragraph">
-<p>Vulcanisation est un procédé chimique consistant à incorporer un agent vulcanisant (soufre) à un polymère pour former des ponts entre les chaînes molèculaires après la cuisson. Cette opération est largement utiliser dans le domaine de la production des pneu, car le polymère vulcanisé devient plus élastique et solide, moins plastique et moins dissoluble en dissolvants organiques.</p>
+<p>Vulcanisation est un procédé chimique consistant à incorporer un agent vulcanisant (soufre) à un polymère pour former des ponts entre les chaînes molèculaires après la cuisson. Cette opération est largement utiliser dans le domaine de la production des pneus, car le polymère vulcanisé devient plus élastique et solide, moins plastique et moins dissoluble en dissolvants organiques.</p>
 </div>
 <div class="paragraph">
 <p>Considèrons un 2-méthylbuta-1,3-diène polymérisé, autrement dit le caoutchouc naturel. Si on rajoute du soufre, après cuisson, on obtient un nouveau matériau qu&#8217;on utilise quotidiennement aujourd&#8217;hui. A l&#8217;echelle moléculaire on voit un réseau des monomères liés entre eux directement (comme le polymère d&#8217;avant) et par les molécules d&#8217;agent vulcanisant.</p>
@@ -731,70 +776,64 @@ Your browser does not support the video tag.
 <div class="ulist">
 <ul>
 <li>
-<p>\(\frac{dS}{dt}= - \alpha IS\)</p>
+<p>\(\frac{dS}{dt}= m(S+I+R) - mS-bSI\)</p>
 </li>
 <li>
-<p>\(\frac{dI}{dt}= \alpha IS -(\gamma + \beta) I\)</p>
+<p>\(\frac{dI}{dt}= bSI -(m + v)I- rI\)</p>
 </li>
 <li>
-<p>\(\frac{dR}{dt}= \beta I \)</p>
+<p>\(\frac{dR}{dt}= rI - mR\)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>avec \(\alpha\) - taux d&#8217;infection, \(\beta\) - taux de rétablissement, \(\gamma\) - taux de mortalité, induite par l&#8217;infection.</p>
+<p>avec m - taux d&#8217;mortalité , pas induite par l&#8217;infection; b - taux d&#8217;infection;  v - taux de mortalité, induite par l&#8217;infection; r - taux de rétablissement</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_odes_stochastiques">ODEs Stochastiques</h4>
 <div class="paragraph">
-<p>On fait le choix aléatoire entre S,I,R:</p>
+<p>Dans le cas stochastique on remplace les taux par les probabilités. A chaque pas un des processus choisi aléatoirement est lancé et les valeurs de S,I et R sont mis à jour.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Si on choisi S, donc on le change pour I avec la probabilité \( \frac{\alpha NI(t)}{N-1}\)</p>
-</li>
-<li>
-<p>Si on choisi I, donc on le change pour R avec la probabilité \(\beta\)</p>
-</li>
-<li>
-<p>Si on choisi R, donc on le change pour S avec la probabilité \(\gamma\)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Sous les hypothèses:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(A(\Delta t) \approx A_0 \Delta t\)</p>
-</li>
-<li>
-<p>\(B(\Delta t) \approx B_0 \Delta t\)</p>
-</li>
-<li>
-<p>\(C(\Delta t) \approx C_0 \Delta t\)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>On obtient la discretization Euler du problème initial:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>\(S(t+\Delta t)=S(t)(1-A(\Delta t)I(t))+R(t)C(\Delta t)\)</p>
-</li>
-<li>
-<p>\(I(t+\Delta t)=I(t)(1-B(\Delta t))+A(\Delta t) I(t) S(t)\)</p>
-</li>
-<li>
-<p>\(R(t+\Delta t)=R(t)(1-C(\Delta t))+B(\Delta t)I(t)\)</p>
-</li>
-</ul>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Processus pour SIR stochastique</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Processus</th>
+<th class="tableblock halign-left valign-top">Probabilité</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Naissance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_1=m(S+I+R)\)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mort, pas induite par l&#8217;infection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_2=mS\)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mort, induite par l&#8217;infection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_3=(m+v)I\)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mort d&#8217;individu, qui a rétabli</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_4=mR\)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Infection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_5=bSI\)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rétablissement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(a_6=rI\)</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_résultats">Résultats</h4>
@@ -897,9 +936,9 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_modèle_sir_déterministe_comme_un_edp">Modèle SIR déterministe comme un EDP</h3>
+<h3 id="_modèle_sir_déterministe_comme_une_edp">Modèle SIR déterministe comme une EDP</h3>
 <div class="paragraph">
-<p>Le modèle SIR peut considéré comme un EDP hyperbolique de Kolmogorov, qui peut être résolue par le méthode des caractéristiques</p>
+<p>Le modèle SIR peut considéré comme une EDP hyperbolique de Kolmogorov, qui peut être résolue par le méthode des caractéristiques</p>
 </div>
 <div class="sect3">
 <h4 id="_la_méthode_des_caractéristiques">La méthode des caractéristiques</h4>
@@ -913,27 +952,40 @@ Your browser does not support the video tag.
 <div class="sect3">
 <h4 id="_dérivation_de_edp_hyperbolique_de_kolmogorov">Dérivation de EDP hyperbolique de Kolmogorov</h4>
 <div class="paragraph">
+<p>Regardons sur le système SIR de l&#8217;autre côté. On fait le choix aléatoire entre S,I,R:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Si on choisi S, donc on le change pour I avec la probabilité \( \frac{\alpha NI(t)}{N-1}\)</p>
+</li>
+<li>
+<p>Si on choisi I, donc on le change pour R avec la probabilité \(\beta\)</p>
+</li>
+<li>
+<p>Si on choisi R, donc on le change pour S avec la probabilité \(\gamma\)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p>Supposons \(P_{N, \Delta t} (t,n,m)\) - la probabilité au moment \(t\) d&#8217;avoir \(n\) personnes susceptibles, \(m\) personnes infectées et \(N-n-m\) personnes immunisées dans population constante \(N\).</p>
 </div>
 <div class="paragraph">
-<p>Les constantes \(\alpha, \beta, \gamma\) au limite</p>
-</div>
-<div class="paragraph">
-<p>\(P_{N, \Delta t} (t+\Delta t,n,m) = \alpha \frac{(n+1)(m-1)}{N(N-1)} P_{N, \Delta t}(t,n+1,m-1)\)
+<p>\(P_{N, \Delta t}(t+\Delta t,n,m) = \alpha \frac{(n+1)(m-1)}{N(N-1)} P_{N, \Delta t}(t,n+1,m-1)\)
 \( + \beta \frac{m+1}{N} P_{N, \Delta t} (t,n,m+1) + \gamma \frac{N-n-m+1}{N}P_{N, \Delta t}(t,n-1,m) \)
 \( + (\frac{n}{N} (1-\alpha \frac{m}{N-1}) +\frac{m}{N}(1-\beta) + \frac {N-n-m}{N}(1-\gamma)  ) P_{N, \Delta t}(t,n,m)\)</p>
 </div>
 <div class="paragraph">
-<p>Maintenant, on pose \(x=n/N\), \(y=m/N\) et \(p(t,x,y)=NP_{N, \Delta t}(t,xN,yN)\).</p>
+<p>Maintenant, on pose \(x=n/N\), \(y=m/N\) et \(p(t,x,y)=P(t,xN,yN;N)\).</p>
 </div>
 <div class="paragraph">
-<p>\(t+\Delta t,x,y)= \alpha \frac{(x+1/N)(y-1/N)}{1-1/N} p(t,x+1/N,y-1/N)\)
+<p>\(p(t+\Delta t,x,y)= \alpha \frac{(x+1/N)(y-1/N)}{1-1/N} p(t,x+1/N,y-1/N)\)
 \(+ \beta (y+\frac{1}{N}) p(t,x,y+1/N) + \gamma (1-x-y+\frac{1}{N}) p(t,x-1/N,y)\)
 \( + (x(1-\frac{\alpha y}{1-1/N}) y(1-\beta)(1-x-y)(1-\gamma)  p(t,x,y)\)
 \( \approx p+\frac{1}{N} (\partial_x ((\alpha xy - \gamma(1-x-y))p) +\partial_y((\beta-\alpha x)yp) \)</p>
 </div>
 <div class="paragraph">
-<p>Enfin, on obtient l&#8217;EDP hyperbolique de Kolmogorov:</p>
+<p>Enfin, on obtient <strong>l&#8217;EDP hyperbolique de Kolmogorov</strong>:</p>
 </div>
 <div class="paragraph">
 <p>\(\partial_t p = \partial_x ((axy-c(1-x-y))p)+\partial_y ((b-ax)yp) \)</p>
@@ -942,7 +994,7 @@ Your browser does not support the video tag.
 <p>avec la probabilité \( \frac{d}{dt} \int_S p(t,x,y)dxdy=0\) où S est l&#8217;ensemble du maillage.</p>
 </div>
 <div class="paragraph">
-<p>Dans le cas où on suppose qu&#8217;on sait la proportion exacte de \(S,I\) et \( R\) au moment \(t\), donc on peut trouver la solution pour tout \(t\).  Dans notre cas, on ne sait que la loi de  = probabilité, donc l&#8217;équation de Kolmogorov transport cette probabilité dans le temps.</p>
+<p>Maintenant, regardons sur SIR comme sur un problème de transport:</p>
 </div>
 <div class="paragraph">
 <p>Soit <strong>x</strong> = (x,y) , \(\Phi_t(\textbf{x})\) - est la carte des flux pour le modèle SIR :</p>
@@ -998,7 +1050,7 @@ Your browser does not support the video tag.
 <div class="sect2">
 <h3 id="_améliorations_possibles">Améliorations possibles</h3>
 <div class="paragraph">
-<p>Pour l&#8217;étude plus détailée de l&#8217;épidémiologie on propose l&#8217;équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d&#8217;un processus de Markov. Vue la nature stochastique de cet EDP, sa solution avec MEF nécessite de l&#8217;adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple:</p>
+<p>Pour l&#8217;étude plus détailée de l&#8217;épidémiologie on propose l&#8217;équation de Fokker-Planck - une équation aux dérivées partielles linéaire que doit satisfaire la densité de probabilité de transition d&#8217;un processus de Markov. Cette équation a permit à étudier le mouvement brownien d&#8217;une particule dans un champ de forces. Vue la nature stochastique de cet EDP, sa solution avec MEF nécessite de l&#8217;adaptation du maillage à chaque pas. FreeFem++ permet le faire assez simple:</p>
 </div>
 <div class="videoblock">
 <div class="content">
@@ -1015,10 +1067,10 @@ Your browser does not support the video tag.
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Partie 1</strong>: Les méthodes statiques sont très facile à implémenter et ils sont nécessaires pour créer des marches pour les méthodes dynamiques. Par contre, pour des simulations réelles l&#8217;efficacité de ces méthodes est limité par le nombre des monomères dans une chaîne.
-En revanche, les méthodes dynamiques ne sont pas si intuitives mais leur complexité est compensé par la diversité des chaines qu&#8217;ils peuvent créer.</p>
+En revanche, les méthodes dynamiques ne sont pas si intuitives mais leur complexité est compensée par la diversité des chaines qu&#8217;ils peuvent créer.</p>
 </div>
 <div class="paragraph">
-<p><strong>Partie 2</strong>: Les EDOs stochastiques sont largement utilisées dans L&#8217;épidémiologie. On a vue 2 approches : solutions du système des EDOs avec Octave et dérviation des EDOs à partir l&#8217;EDP hyperbolique de Kolmogorov par le méthode des caractéristiques, qui peut être vu comme l&#8217;alternative à MEF pour les EDPs de transport (y compris stochastiques).</p>
+<p><strong>Partie 2</strong>: Les EDOs stochastiques sont largement utilisées dans L&#8217;épidémiologie. On a vue 2 approches : solution du système des EDOs avec Octave et dérviation des EDOs à partir l&#8217;EDP hyperbolique de Kolmogorov par le méthode des caractéristiques, qui peut être vu comme une alternative à MEF pour les EDPs de transport (y compris stochastiques).</p>
 </div>
 </div>
 </div>
@@ -1048,10 +1100,31 @@ En revanche, les méthodes dynamiques ne sont pas si intuitives mais leur comple
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_bibliographie">Bibliographie</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Sokal, D.A. "Monte Carlo methods for the self-avoiding walk". New York University, Department of Physics, May 1994;</p>
+</li>
+<li>
+<p>Beleno, C., Yau, K. "Polymers". Universitãt Bonn, Computational Physics Project, WS 10/11;</p>
+</li>
+<li>
+<p>Isham, V. "Stochastic Models for Epidemics". University College London, Department of Statistical Science, December 2004;</p>
+</li>
+<li>
+<p>Chalub, F., Souza, M. "The SIR epidemic model from a PDE point of view". Mathematical and Computer Modelling, Volume 53, Issues 7–8, April 2011, Pages 1568-1574;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-08-25 17:01:20 CEST
+Last updated 2017-08-28 07:41:29 CEST
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -40,7 +40,8 @@ module mathis {
 
             go(): Mamesh {
 
-                cc('DYNAMIC PIVOT STATIC METHOD');
+                cc('DYNAMIC SNAKE STATIC METHOD');
+                let start = new Date().getTime();
 
 
                 let mamesh = new mathis.Mamesh();
@@ -241,7 +242,10 @@ module mathis {
                     mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
                     mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
 
-
+                    let end = new Date().getTime();
+                    cc('Execution Time in sec', (end-start))
+                    cc('Attempts', attempts)
+                    cc('chainSize',this.chainSize)
                     return mamesh
 
                 }

@@ -19,20 +19,21 @@ module mathis {
             return false
             }
 
+
             // function that replaces a value 1 at i by value 2
-            private replaceValue(array: XYZ[], valueToReplace: XYZ, newValue: XYZ):void {
-            for (let i = 0; i< array.length; i++) {
-                if (array[i] == valueToReplace) {
-                    array[i]=newValue;
+            private replaceValue(array: XYZ[], valueToReplace: XYZ, newValue: XYZ) {
+                let index = array.indexOf(valueToReplace);
+                if (index !== -1) {
+                    array[index] = newValue;
                 }
-            }
+            return array
             }
 
 
             // function that find index of a given value in a given array
             private findIndex (array: XYZ[], value: XYZ ): number{
             for (let i = 0; i< array.length; i++) {
-                if (array[i] == value) {
+                if (array[i] === value) {
                     var res = i;
                 }
             }
@@ -40,10 +41,21 @@ module mathis {
             }
 
 
+            private replaceValue1 (array: XYZ[], value: XYZ) {
+                for(let i=0; i<array.length; i++){
+                    if(geo.distance(array[i],value)<0.0001){
+
+                        return i;
+                    }
+                }
+            }
+
+
 
             go():Mamesh{
 
                 cc('DYNAMIC PIVOT STATIC METHOD');
+                let start = new Date().getTime();
 
 
                 let mamesh = new mathis.Mamesh();
@@ -139,7 +151,7 @@ module mathis {
 
 
                 //Counter for unsuccessful attempts
-                let attempts = 1;
+                let attempts = 0;
 
                 //Nb of chains generated (=nb of operations)
                 let chain = 1;
@@ -169,8 +181,8 @@ module mathis {
 
 
                     // Choose randomly one of 7 operations of refletion (over x,y,z,xy,xz,yz or xyz plane)
-                    let randomOperation = Math.floor(Math.random() * (7 - 0)) + 0;
-                    //let randomOperation= 0;
+                    //let randomOperation = Math.floor(Math.random() * (7 - 0)) + 0;
+                    let randomOperation= 3;
                     cc('Chosen reflexion operation', randomOperation);
 
                     // Choose randomly a subchain
@@ -204,14 +216,25 @@ module mathis {
                             //cc('New x,y,z', x_n, y_n, z_n);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
 
@@ -235,17 +258,27 @@ module mathis {
                             let coordinateNew: XYZ = new XYZ(x, y_n, z);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
-
 
                         }
                         ALLc_new=ALLc_prenew;
@@ -266,14 +299,25 @@ module mathis {
                             let coordinateNew: XYZ = new XYZ(x, y, z_n);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
 
@@ -296,20 +340,32 @@ module mathis {
                             let x_n = x_s + ( x_s - x);
                             let y_s = mamesh.vertices[randomVertex].position.y;
                             let y_n = y_s + (y_s - y);
+                            let z_s = mamesh.vertices[randomVertex].position.z;
+                            let z_n = z_s + (z_s - z);
                             let coordinateNew: XYZ = new XYZ(x_n, y_n, z);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                               // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
-
 
                         }
                         ALLc_new=ALLc_prenew;
@@ -331,14 +387,25 @@ module mathis {
                             let coordinateNew: XYZ = new XYZ(x_n, y, z_n);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
 
@@ -364,18 +431,27 @@ module mathis {
                             let coordinateNew: XYZ = new XYZ(x, y_n, z_n);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
-
-
                         }
                         ALLc_new=ALLc_prenew;
                         chain= chain + prechain;
@@ -402,14 +478,25 @@ module mathis {
                             //cc('New x,y,z', x_n, y_n, z_n);
 
                             if (!this.contains(ALLc_new, coordinateNew)) {
-                                this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
+                                cc('ALLc_prenew before', ALLc_prenew);
+
+                                let ii = this.replaceValue1(ALLc_prenew,coordinateOld)
+                                ALLc_prenew[ii]=coordinateNew
+
+                                // ALLc_prenew = this.replaceValue(ALLc_prenew, coordinateOld, coordinateNew);
                                 prechain++;
+                                cc('coordinateOld', coordinateOld);
+                                cc('coordinateNew', coordinateNew);
+                                cc('ALLc_prenew after', ALLc_prenew);
                             }
+
+
                             else {
+
                                 cc('!!!Bad configuration- stop counting!!!', coordinateNew);
                                 attempts++;
                                 prechain=0;
-                                ALLc_new=ALLc;
+                                ALLc_prenew=ALLc_new;
                                 break;
                             }
 
@@ -420,7 +507,7 @@ module mathis {
                         cc('How many chains are generated?:', chain);
                     }
 
-                    NOTfinished = (chain < 4);
+                    NOTfinished = (chain < 1);
                 }
                 cc('Chain is done!:', ALLc_new);
                 cc('Attempts:',attempts);
@@ -428,10 +515,8 @@ module mathis {
 
 
 
-                for (let i=0; i < mamesh.vertices.length; i++){
-                    mamesh.vertices.pop;
-                }
 
+                mamesh.vertices=[]
 
                 cc('mamesh.vertices.length:',mamesh.vertices.length);
 
@@ -454,6 +539,10 @@ module mathis {
                 mamesh.vertices[0].setOneLink(mamesh.vertices[1]);
                 mamesh.vertices[mamesh.vertices.length - 1].setOneLink(mamesh.vertices[mamesh.vertices.length - 2]);
 
+                let end = new Date().getTime();
+                cc('Execution Time in sec', (end-start))
+                cc('Attempts', attempts)
+                cc('chainSize',this.chainSize)
 
 
                 return mamesh
